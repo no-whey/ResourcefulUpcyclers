@@ -1,0 +1,6 @@
+# Environment
+.env
+
+# Database files
+.DS_Store
+*.sqlite3
