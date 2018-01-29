@@ -1,5 +1,6 @@
 # Environment
 .env
+__pycache__/
 
 # Database files
 .DS_Store
