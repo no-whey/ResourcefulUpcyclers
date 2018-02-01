@@ -21,6 +21,6 @@ from website.apps.profiles import views as profiles_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', core_views.index, name='index'),
+    path('', core_views.index, name='home'),
     path('profiles/', profiles_views.index, name='profiles'),
 ]

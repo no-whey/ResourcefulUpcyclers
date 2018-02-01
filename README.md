@@ -1,7 +1,7 @@
 # ResourcefulUpcyclers
 In Development, Release 1.0 expected late March 2018
 
-MISSION
+MISSION: 
 Make businesses more efficient and effective with the help of novel supply chain operations. 
 A piece of software that empowers a business to act as a depot for office supplies. 
 Gather the surplus consumables and durable office supplies from the community at large - donations from people's utility drawers, closets and desks. 
