@@ -3,3 +3,4 @@ ChangeLog for ResourcefulUpcyclers Repo:
 Date -- Name -- Description of change
 
 1/18/18 -- Sean -- Created RU website, added two apps (core, profiles). No models yet, just url redirects.
+2/1/18 -- Riley -- Added Repo, pushing to set up github on local drive.
