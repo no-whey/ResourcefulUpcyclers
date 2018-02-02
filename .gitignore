@@ -1,7 +1,7 @@
 # Environment
-.env
+*.env
 __pycache__/
 
 # Database files
-.DS_Store
+*.DS_Store
 *.sqlite3
