@@ -1,6 +1,6 @@
 # Environment
 *.env
-__pycache__/
+__pycache__/*
 
 # Database files
 *.DS_Store
