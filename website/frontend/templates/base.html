@@ -150,14 +150,23 @@
             {% block sb_admin_sidebar %}<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li {% if nav_active == "dashboard" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-dashboard"></i> About Us</a>
+                    <li {% if nav_active == "aboutus" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-question"></i> About Us</a>
                     </li>
                     <li {% if nav_active == "login" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-user"></i> Login</a>
+                        <a href="{% url "profiles" %}"><i class="fa fa-fw fa-user"></i> Login</a>
                     </li>
-                    <li {% if nav_active == "charts" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-bar-chart-o"></i> Inventory</a>
+                    <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
+                    </li>
+					<li {% if nav_active == "requests" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+                    </li>
+					<li {% if nav_active == "offers" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
+                    </li>
+					<li {% if nav_active == "donate" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-gift"></i> Donate</a>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
@@ -200,7 +209,7 @@
                 </div>
 {% endif %}
                 {% block sb_admin_content %}
-                <!-- Calls sb_admin_content block for specified page maybe? -->
+                <!-- Calls sb_admin_content block for specified page -->
                 {% endblock sb_admin_content %}
 
             </div>

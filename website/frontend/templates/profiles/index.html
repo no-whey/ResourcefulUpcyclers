@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block sb_admin_content %}
 You are at the Profiles Index page
 
 <h2>{{ user.get_full_name }}</h2>
@@ -6,3 +9,4 @@ You are at the Profiles Index page
 	<li>Email: {{ user.email }}</li>
 	<li>Bio: {{ user.profile.bio }}</li>
 </ul>
+{% endblock sb_admin_content %}
