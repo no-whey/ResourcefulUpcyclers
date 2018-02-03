@@ -153,9 +153,14 @@
                     <li {% if nav_active == "aboutus" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-question"></i> About Us</a>
                     </li>
-                    <li {% if nav_active == "login" %}class="active"{% endif %}>
-                        <a href="{% url "profiles" %}"><i class="fa fa-fw fa-user"></i> Login</a>
-                    </li>
+					{% if not user.username  %}
+						<li {% if nav_active == "login" %}class="active"{% endif %}>
+							<a href="{% url "home" %}"><i class="fa fa-fw fa-user"></i> Log In</a>
+						</li>
+						<li {% if nav_active == "signup" %}class="active"{% endif %}>
+							<a href="{% url "signup" %}"><i class="fa fa-fw fa-user"></i> Sign Up</a>
+						</li>
+					{% endif %}
                     <li {% if nav_active == "inventory" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
                     </li>
