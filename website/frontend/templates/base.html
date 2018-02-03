@@ -44,6 +44,14 @@
                 </button>
             </div>
             <!-- Top Menu Items -->
+			{% block sb_admin_navbar_left %}
+			<a href="{% url "home" %}" style="color:#999;" >
+				<img src="{% static 'images/ru_logo_background.png' %}" width="50" height="50">
+				Resourceful Upcyclers
+			</a>
+			
+			{% endblock sb_admin_navbar_left %}
+			
             {% block sb_admin_navbar_right %}<ul class="nav navbar-right top-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
@@ -153,9 +161,18 @@
                     <li {% if nav_active == "aboutus" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-question"></i> About Us</a>
                     </li>
-                    <li {% if nav_active == "login" %}class="active"{% endif %}>
-                        <a href="{% url "profiles" %}"><i class="fa fa-fw fa-user"></i> Login</a>
-                    </li>
+					{% if not user.username  %}
+						<li {% if nav_active == "login" %}class="active"{% endif %}>
+							<a href="{% url "home" %}"><i class="fa fa-fw fa-user"></i> Log In</a>
+						</li>
+						<li {% if nav_active == "signup" %}class="active"{% endif %}>
+							<a href="{% url "signup" %}"><i class="fa fa-fw fa-user"></i> Sign Up</a>
+						</li>
+					{% else %}
+						<li {% if nav_active == "profile" %}class="active"{% endif %}>
+							<a href="{% url "home" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
+						</li>
+					{% endif %}
                     <li {% if nav_active == "inventory" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
                     </li>
