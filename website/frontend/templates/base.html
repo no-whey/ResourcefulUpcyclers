@@ -160,6 +160,10 @@
 						<li {% if nav_active == "signup" %}class="active"{% endif %}>
 							<a href="{% url "signup" %}"><i class="fa fa-fw fa-user"></i> Sign Up</a>
 						</li>
+					{% else %}
+						<li {% if nav_active == "profile" %}class="active"{% endif %}>
+							<a href="{% url "home" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
+						</li>
 					{% endif %}
                     <li {% if nav_active == "inventory" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
