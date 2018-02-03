@@ -151,19 +151,13 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li {% if nav_active == "dashboard" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-dashboard"></i> About Us</a>
                     </li>
                     <li {% if nav_active == "login" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-user"></i> Login</a>
                     </li>
                     <li {% if nav_active == "charts" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-bar-chart-o"></i> Inventory</a>
-                    </li>
-                    <li {% if nav_active == "tables" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-table"></i> Stuff-1</a>
-                    </li>
-                    <li {% if nav_active == "forms" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-edit"></i> Stuff-2</a>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
@@ -176,9 +170,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li {% if nav_active == "blank" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-file"></i> Blank</a>
-                    </li>
+                   
 
                 </ul>
             </div>{% endblock sb_admin_sidebar %}
