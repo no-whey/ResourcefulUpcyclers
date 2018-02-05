@@ -184,6 +184,13 @@
 	                    <ul>
 							<li>Name: {{ user.get_full_name }}</li>
 							<li>Email: {{ user.email }}</li>
+                            <li>User Status:
+                                {% if user.profile.isOwner %}
+                                    Owner
+                                {% else %}
+                                    Customer
+                                {% endif %}
+                            </li>
 							<li>Bio: {{ user.profile.bio }}</li>
 						</ul>
 	                </div>
