@@ -61,7 +61,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [ PROJECT_DIR.child('frontend').child('templates'),
-                  COURSE_DIR.child('frontend').child('templates') ],
+                  COURSE_DIR.child('frontend').child('templates'),
+                  os.path.join(BASE_DIR, 'templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +128,6 @@ STATIC_URL = '/frontend/static/'
 STATICFILES_DIRS = (
     PROJECT_DIR.child('frontend').child('static'),
 )
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'

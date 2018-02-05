@@ -6,7 +6,7 @@ from decouple import config
 from .forms import SignUpForm
 
 def index(request):
-    return render(request, 'profiles/index.html')
+    return render(request, 'profile/index.html')
 
 def signup(request):
     if request.method == 'POST':
@@ -47,8 +47,8 @@ def signup(request):
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'profiles/signup.html', {'form': form})
+    return render(request, 'profile/signup.html', {'form': form})
 
 def logout_user(request):
     logout(request)
-    return render(request, 'profiles/logout.html')
+    return render(request, 'profile/logout.html')

@@ -1,13 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
+
+{% load static %}<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{% block sb_admin_description %}{% endblock sb_admin_description %}">
     <meta name="author" content="{% block sb_admin_author %}{% endblock %}">
-    <title>{% block title %}Resourceful Upcyclers{% endblock %}</title>
+    <title>{% block title %}Resourceful Upcyclers | Sign Up{% endblock %}</title>
 
     <!-- Bootstrap Core CSS -->
     {% block sb_admin_bootstrap_css %}<link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">{% endblock sb_admin_bootstrap_css %}
@@ -29,20 +30,15 @@
 
 </head>
 
-<body>
-
-    <div id="wrapper">
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
             <!-- Top Menu Items -->
             {% block sb_admin_navbar_left %}
             <a href="{% url "home" %}" style="color:#999;" >
@@ -147,7 +143,7 @@
                     <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
                         <li>
-                            <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            <a href="/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
@@ -170,89 +166,32 @@
                     </ul>
                 </li>
             </ul>{% endblock sb_admin_navbar_right %}
-            {% block sb_admin_sidebar %}<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li {% if nav_active == "aboutus" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-question"></i> About Us</a>
-                    </li>
-                    {% if not user.is_authenticated  %}
-                        <li {% if nav_active == "login" %}class="active"{% endif %}>
-                            <a href="{% url "login" %}"><i class="fa fa-fw fa-user"></i> Log In</a>
-                        </li>
-                        <li {% if nav_active == "signup" %}class="active"{% endif %}>
-                            <a href="{% url "signup" %}"><i class="fa fa-fw fa-user"></i> Sign Up</a>
-                        </li>
-                    {% else %}
-                        <li {% if nav_active == "profile" %}class="active"{% endif %}>
-                            <a href="{% url "profile" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                    {% endif %}
-                    <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
-                    </li>
-                    <li {% if nav_active == "requests" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
-                    </li>
-                    <li {% if nav_active == "offers" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
-                    </li>
-                    <li {% if nav_active == "donate" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-gift"></i> Donate</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                        </ul>
-                    </li>
-
-
-                </ul>
-            </div>{% endblock sb_admin_sidebar %}
-            <!-- /.navbar-collapse -->
         </nav>
 
-        <div id="page-wrapper">
 
-            <div class="container-fluid">
+{% block sb_admin_content %}
 
+<body class="bg-dark">
+	<div class="container">
+		<div class="row">
+	        <div class="col-md-4 col-md-offset-4">
+	            <div class="login-panel panel panel-default">
+	                <div class="panel-heading">
+						<h2>{{ user.username|title }}'s Profile</h2>
 
-                <!-- /.row -->
-{% if messages %}
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-<ul class="messages">
-    {% for message in messages %}
-    <div class="alert alert-info alert-dismissable">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <i class="fa fa-info-circle"></i>  {{ message }}
+					</div>
+	                <div class="panel-body">
+	                    <ul>
+							<li>Name: {{ user.get_full_name }}</li>
+							<li>Email: {{ user.email }}</li>
+							<li>Bio: {{ user.profile.bio }}</li>
+						</ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     </div>
-    <!--<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>-->
-    {% endfor %}
-</ul>
-                    </div>
-                </div>
-{% endif %}
-                {% block sb_admin_content %}
-                <!-- Calls sb_admin_content block for specified page -->
-                {% endblock sb_admin_content %}
-
-            </div>
-            <!-- /.container-fluid -->
-
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
+  </div>
     <!-- jQuery -->
     <script src="{% static "js/jquery.js"%}"></script>
 
@@ -260,7 +199,6 @@
     <script src="{% static "js/bootstrap.min.js"%}"></script>
 
     {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
-
 </body>
-
-</html>
+					
+{% endblock sb_admin_content %}
