@@ -30,5 +30,6 @@ urlpatterns = [
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
     path('inventory/', item_views.inventory, name='inventory'),
+    path('item/', item_views.newOffer, name='newOffer'),
     path('donations/', item_views.index, name='donations')
 ]

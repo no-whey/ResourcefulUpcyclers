@@ -188,11 +188,17 @@
                             <a href="{% url "profile" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
                     {% endif %}
+                    
                     {% if user.profile.isOwner %}
+                        <!-- Put owner-specific sidebar buttons here -->
                         <li {% if nav_active == "inventory" %}class="active"{% endif %}>
                             <a href="{% url "inventory" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
                         </li>
+                        <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                            <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
+                        </li>
                     {% else %}
+                        <!-- Put customer-specific sidebar buttons here -->
                     {% endif %}
                     <li {% if nav_active == "requests" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
