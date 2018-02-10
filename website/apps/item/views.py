@@ -13,10 +13,5 @@ def index(request):
         return render(request, 'donations/customer_index.html')
 
 def inventory(request):
-    if(request.user.is_authenticated):
-        if(request.user.profile.isOwner):
-            return render(request, 'inventory/owner_index.html')
-        else:
-            return render(request, 'inventory/customer_index.html')
-    else:
-        return render(request, 'inventory/customer_index.html')
+    return render(request, 'inventory/index.html')
+    
