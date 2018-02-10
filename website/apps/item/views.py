@@ -18,7 +18,7 @@ def inventory(request):
     return render(request, 'inventory/index.html')
     
 def newOffer(request):
-    if request.method == 'POST':
+    if request.method == 'post':
         form = newOffer(request.POST)
         if form.is_valid():
             # Applies Offer fields
