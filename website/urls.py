@@ -29,5 +29,6 @@ urlpatterns = [
     path('signup/', core_views.signup, name='signup'),
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
+    path('inventory/', item_views.inventory, name='inventory'),
     path('donations/', item_views.index, name='donations')
 ]
