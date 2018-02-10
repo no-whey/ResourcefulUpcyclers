@@ -11,8 +11,11 @@ class Donation(models.Model):
     donor_email = models.EmailField(max_length=255)
     archived = models.BooleanField(default=False)
 
-class Offer (models.Model):
+class Offer(models.Model):
     
     name = models.TextField(max_length=30, blank=True)
+    price = models.TextField(max_length=30, blank=True)
+    location = models.TextField(max_length=60, blank=True)
     text_description = models.TextField(max_length=500, blank=True)
     img_link = models.URLField(max_length=200, blank=True)
+    

@@ -7,6 +7,12 @@
 		<img src="{% static 'images/favicon.ico' %}" width="100" height="100">
 		Inventory Test!
 	</h1>
+    
+    <form action="/your-name/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
 	
 	
 {% endblock sb_admin_content %}
