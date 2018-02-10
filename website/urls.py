@@ -18,6 +18,7 @@ from django.urls import path, include
 
 from website.apps.core import views as core_views
 from website.apps.profiles import views as profiles_views
+from website.apps.item import views as item_views
 
 from django.contrib.auth import views as auth_views
 
@@ -25,8 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.index, name='home'),
     path('profile/', profiles_views.index, name='profile'),
-    
     path('signup/', core_views.signup, name='signup'),
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
+    path('donations/', item_views.index, name='donations')
 ]
