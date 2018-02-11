@@ -8,35 +8,7 @@
 		Inventory Test!
 	</h1>
     
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h1>Create a new Offer</h1>
-                    </div>
-                    <div class="panel-body">
-                            <form method="post">
-                            {% csrf_token %}
-                            {% for field in form %}
-                              <p>
-                                {{ field.label_tag }}<br>
-                                {{ field }}
-                                {% if field.help_text %}
-                                  <small style="color: grey">{{ field.help_text }}</small>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                  <p style="color: red">{{ error }}</p>
-                                {% endfor %}
-                              </p>
-                            {% endfor %}
-                            <button class="btn btn-primary btn-block" type="submit">Submit</button>
-                          </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 	
 	
 {% endblock sb_admin_content %}

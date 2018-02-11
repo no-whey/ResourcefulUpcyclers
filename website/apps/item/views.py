@@ -40,5 +40,5 @@ def newOffer(request):
             return redirect('inventory')
     else:
         form = OfferForm()
-    return render(request, 'inventory/index.html', {'form': form})
+    return render(request, 'inventory/newOffer.html', {'form': form})
     
