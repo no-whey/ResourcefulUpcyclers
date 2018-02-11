@@ -12,7 +12,7 @@ class Donation(models.Model):
     archived = models.BooleanField(default=False)
 
 class Offer(models.Model):
-    
+        
     name = models.TextField(max_length=30, blank=True)
     price = models.TextField(max_length=30, blank=True)
     location = models.TextField(max_length=60, blank=True)
