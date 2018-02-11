@@ -14,9 +14,15 @@ def index(request):
     else:
         return render(request, 'donations/customer_index.html')
 
+@login_required    
 def inventory(request):
-    return render(request, 'inventory/index.html')
+    if(request.user.profile.isOwner):
+        return render(request, 'inventory/index.html')
+    else:
+        return render(request, 'index.html')
     
+
+@login_required    
 def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
