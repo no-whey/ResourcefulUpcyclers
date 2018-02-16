@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, render_to_response, get_object_or
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from website.apps.item.models import Donation
-from website.apps.item.models import Offer
+from website.apps.item.models import Inventory
 
 from .forms import DonationForm
 from .forms import OfferForm
@@ -39,7 +39,8 @@ def index(request):
 @login_required    
 def inventory(request):
     if(request.user.profile.isOwner):
-        return render(request, 'inventory/index.html')
+        inventory_list = Inventory.objects.all()
+        return render(request, 'inventory/index.html', {'inventory' : inventory_list})
     else:
         return render(request, 'index.html')
     
@@ -51,7 +52,7 @@ def newOffer(request):
         if form.is_valid():
             # Applies Offer fields
             #offer = form.save()
-            offer = Offer()
+            offer = Inventory()
             offer.save()
             offer.refresh_from_db()
             
@@ -79,7 +80,7 @@ def newOffer(request):
     
 
 def viewOffer(request):
-    offers = Offer.objects.all()
+    offers = Inventory.objects.all()
     # offers = Offer.objects.all().filter(private = false)  
 
     return render(request, 'inventory/viewOffer.html', {'offers_list' : offers})

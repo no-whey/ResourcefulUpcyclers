@@ -1,6 +1,6 @@
 from django import forms
 from website.apps.item.models import Donation
-from website.apps.item.models import Offer
+from website.apps.item.models import Inventory
 
 # Note for future stylizing: if you want to make a text BOX use widget=forms.Textarea, if you just want to make the CharField
 # box longer, use widget=forms.TextIput. We can just use Textarea if that's easier, set rows to 1.
@@ -39,7 +39,7 @@ class OfferForm(forms.Form):
     img_link = forms.URLField (max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
     # Be sure to add extra fields here
     class Meta:
-        model = Offer
+        model = Inventory
         fields = (  'name',
                     'price',
                     'location',
