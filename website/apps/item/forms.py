@@ -37,7 +37,6 @@ class OfferForm(forms.Form):
     location = forms.CharField (max_length=60, required=True, help_text='In-House Item Location')
     text_description = forms.CharField (max_length=500, required=True, help_text='Describe the Item')
     img_link = forms.URLField (max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
-    
     # Be sure to add extra fields here
     class Meta:
         model = Offer

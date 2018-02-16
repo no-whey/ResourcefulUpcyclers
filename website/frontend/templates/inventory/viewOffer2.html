@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block sb_admin_content %}
+
+<body class="bg-dark">
+	<div class="container">
+		<div class="row">
+	        <div class="col-md-4 col-md-offset-4">
+	            <div class="login-panel panel panel-default">
+	                <div class="panel-heading">
+						<h2>Available Offers</h2>
+
+					</div>
+					<div class="card-columns">
+
+						{% for off in offers_list %}
+
+		                <div class="card mb-3">
+        					<a href="#">
+        					<img class="card-img-top img-fluid w-100" src={{ off.img_link }} alt="">
+        					</a>
+        					<div class="card-body">
+            					<h6 class="card-title mb-1"><a href="#">{{ off.name }}</a></h6>
+            					<p class="card-text small">{{ off.price }}</p>
+        					</div>
+        					<hr class="my-0">
+        					<div class="card-footer small text-muted">{{ off.text_description }}</div>
+    					</div>
+
+		                {% endfor %}
+
+		            </div>
+	            </div>
+	        </div>
+	    </div>
+    </div>
+  </div>
+    
+
+    {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
+</body>
+{% endblock sb_admin_content %}

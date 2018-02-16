@@ -190,12 +190,20 @@
                     {% endif %}
                     
                     {% if user.profile.isOwner %}
-                        <!-- Put owner-specific sidebar buttons here -->
-                        <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                            <a href="{% url "inventory" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
-                        </li>
-                        <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                            <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
+                        <li>
+                            <!-- Put owner-specific sidebar buttons here -->
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-clipboard"></i> Item Management <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo" class="collapse">
+                                <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                                    <a href="{% url "inventory" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
+                                </li>
+                                <li {% if nav_active == "offers" %}class="active"{% endif %}>
+                                    <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Your Offers</a>
+                                </li>
+                                <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                                    <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
+                                </li>
+                            </ul>
                         </li>
                     {% else %}
                         <!-- Put customer-specific sidebar buttons here -->
@@ -203,6 +211,7 @@
                             <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
                         </li>
                     {% endif %}
+
                     <li {% if nav_active == "requests" %}class="active"{% endif %}>
                         <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
                     </li>
