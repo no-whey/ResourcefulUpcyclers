@@ -18,4 +18,5 @@ class Offer(models.Model):
     location = models.TextField(max_length=60, blank=True)
     text_description = models.TextField(max_length=500, blank=True)
     img_link = models.URLField(max_length=200, blank=True)
+    #private = models.BooleanField(blank=True)
     

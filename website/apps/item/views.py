@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from website.apps.item.models import Donation
@@ -69,4 +69,11 @@ def newOffer(request):
     else:
         form = OfferForm()
     return render(request, 'inventory/newOffer.html', {'form': form})
+    
+
+def viewOffer(request):
+    offers = Offer.objects.all()
+    # offers = Offer.objects.all().filter(private = false)  
+
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers})
     

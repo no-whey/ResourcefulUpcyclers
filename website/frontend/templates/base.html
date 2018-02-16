@@ -200,7 +200,7 @@
                     {% else %}
                         <!-- Put customer-specific sidebar buttons here -->
                         <li {% if nav_active == "offers" %}class="active"{% endif %}>
-                            <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
+                            <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
                         </li>
                     {% endif %}
                     <li {% if nav_active == "requests" %}class="active"{% endif %}>
