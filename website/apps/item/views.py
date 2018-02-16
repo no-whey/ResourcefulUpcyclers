@@ -12,7 +12,29 @@ def index(request):
     if(request.user.profile.isOwner):
         return render(request, 'donations/owner_index.html')
     else:
-        return render(request, 'donations/customer_index.html')
+        if request.method == 'POST':
+            form = DonationForm(request.POST)
+            if form.is_valid():
+                # Applies Offer fields
+                #offer = form.save()
+                donation = Donation()
+                donation.save()
+                donation.refresh_from_db()
+            
+                donation.name = form.cleaned_data.get('name')
+                donation.donor_email = form.cleaned_data.get('donor_email')
+                donation.city = form.cleaned_data.get('city')
+                donation.text_description = form.cleaned_data.get('text_description')
+                donation.img_link = form.cleaned_data.get('img_link')
+            
+            
+                donation.save()
+            
+                # Redirect to Home, Maybe a "Thank you" page???
+                return redirect('home')
+        else:
+            form = DonationForm()
+        return render(request, 'donations/customer_index.html', {'form': form})
 
 @login_required    
 def inventory(request):
