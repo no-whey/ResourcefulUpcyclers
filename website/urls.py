@@ -32,5 +32,6 @@ urlpatterns = [
     path('inventory/', item_views.inventory, name='inventory'),
     path('item/', item_views.newOffer, name='newOffer'),
     path('offers/', item_views.viewOffer, name='viewOffer'),
-    path('donations/', item_views.index, name='donations')
+    path('newdonation/', item_views.newDonation, name='newDonation'),
+    path('donations/', item_views.allDonations, name='allDonations'),
 ]
