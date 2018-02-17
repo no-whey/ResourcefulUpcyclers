@@ -12,23 +12,37 @@
 	                    <tr>
 	                    <th>Name</th>
 	                    <th>Donor</th>
+						<th>Email</th>
 	                    <th>City</th>
 	                    <th>Description</th>
+						<th>Status</th>
+						{% if user.profile.isOwner %}
+						<th>Interested</th>
+						{% endif %}
 	                    </tr>
 	                </thead>
 	              	<tbody>
 	                  	{% for donation in donations %}
+							{% if not user.profile.isOwner %}
 		                    <tr>
 		                    <td>{{ donation.name }}</td>
 		                    <td>{{ donation.donor }}</td>
+							<td>{{ donation.donor_email }}</td>
 		                    <td>{{ donation.city }}</td>
 		                    <td>{{ donation.text_description }}</td>
-			                {% if user.profile.isOwner %}
-		                        <td>
-		                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Accept</button>
-		                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Decline</button>
-		                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Show Interest</button>
-			                    </td>
+							<td>{{ donation.status }}</td>
+							</tr>
+			                {% else %}
+							<tr>
+		                    <td>{{ donation.name }}</td>
+		                    <td>{{ donation.donor }}</td>
+							<td>{{ donation.donor_email }}</td>
+		                    <td>{{ donation.city }}</td>
+		                    <td>{{ donation.text_description }}</td>
+							<td>{{ donation.status }}</td>
+							<td>{{ donation.owner_interest }} </td>
+							<td> <a href="{% url 'oneDonation' donation.id %}">Edit Donation</a> </td>
+							</tr>
 		                    {% endif %}
 	                    {% endfor %}
 	                </tbody>

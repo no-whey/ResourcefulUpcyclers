@@ -4,8 +4,7 @@ from django.contrib.auth.models import Group, User
 from website.apps.item.models import Donation
 from website.apps.item.models import Inventory
 
-from .forms import DonationForm
-from .forms import OfferForm
+from .forms import DonationForm, UpdateDonationForm, OfferForm
 
 @login_required
 def newDonation(request):
@@ -34,6 +33,7 @@ def newDonation(request):
         form = DonationForm()
     return render(request, 'donations/newDonation.html', {'form': form})
 
+# For Customers to view their submitted Donations, Owners can see all donations
 @login_required
 def allDonations(request):
     if(request.user.profile.isOwner):
@@ -41,8 +41,35 @@ def allDonations(request):
         return render(request, 'donations/allDonations.html', {'donations' : donation_list})
     else:
         donation_list = Donation.get_my_donations(request.user)
-        print(donation_list)
         return render(request, 'donations/allDonations.html', {'donations' : donation_list})
+
+# For Owners to view and edit one specific donation
+@login_required
+def oneDonation(request, slug):
+    if(request.user.profile.isOwner):
+        donation = get_object_or_404(Donation, id=slug)
+        if request.method == 'POST':
+            form = UpdateDonationForm(request.POST)
+            if form.is_valid():
+                donation.refresh_from_db()
+
+                donation.name = form.cleaned_data.get('name')
+                donation.donor_email = form.cleaned_data.get('donor_email')
+                donation.city = form.cleaned_data.get('city')
+                donation.text_description = form.cleaned_data.get('text_description')
+                donation.img_link = form.cleaned_data.get('img_link')
+                donation.status = form.cleaned_data.get('status')
+                donation.owner_interest = form.cleaned_data.get('owner_interest')
+
+                donation.save()
+
+                # Redirect to Home, Maybe a "Thank you" page???
+                return redirect('allDonations')
+        else:
+            form = UpdateDonationForm(instance=donation)
+        return render(request, 'donations/oneDonation.html', {'form' : form, 'donation' : donation})
+    else:
+        return render(request, 'donations/allDonations.html')
 
 @login_required
 def inventory(request):
