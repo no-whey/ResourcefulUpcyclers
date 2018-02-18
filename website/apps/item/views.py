@@ -72,6 +72,18 @@ def oneDonation(request, slug):
         return render(request, 'donations/allDonations.html')
 
 @login_required
+def deleteDonation(request, slug):
+    if(request.user.profile.isOwner):
+        donation = get_object_or_404(Donation, id=slug)
+        if request.method == 'POST':
+            donation.delete(keep_parents=True)
+            return redirect('allDonations')
+        else:
+            return render(request, 'donations/deleteDonation.html', {'donation' : donation})
+    else:
+        return redirect('allDonations')
+
+@login_required
 def inventory(request):
     if(request.user.profile.isOwner):
         inventory_list = Inventory.objects.all()
