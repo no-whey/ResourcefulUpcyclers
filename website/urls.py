@@ -34,6 +34,7 @@ urlpatterns = [
     path('offers/', item_views.viewOffer, name='viewOffer'),
     path('newdonation/', item_views.newDonation, name='newDonation'),
     path('donations/', item_views.allDonations, name='allDonations'),
+    path('donations/interested', item_views.interestedDonations, name='interestedDonations'),
     path('donations/<slug:slug>/', item_views.oneDonation, name='oneDonation'),
     path('donations/delete/<slug:slug>/', item_views.deleteDonation, name='deleteDonation'),
 ]

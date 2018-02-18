@@ -6,6 +6,7 @@ from website.apps.item.models import Inventory
 
 from .forms import DonationForm, UpdateDonationForm, OfferForm
 
+# For customers to create a new donation ticket
 @login_required
 def newDonation(request):
     if request.method == 'POST':
@@ -43,6 +44,19 @@ def allDonations(request):
         donation_list = Donation.get_my_donations(request.user)
         return render(request, 'donations/allDonations.html', {'donations' : donation_list})
 
+# Owners see only their interested Donations, customers get same access as allDonations view
+@login_required
+def interestedDonations(request):
+    if(request.user.profile.isOwner):
+        donation_list = []
+        for donation in Donation.objects.all():
+            if donation.owner_interest:
+                donation_list.append(donation)
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list})
+    else:
+        donation_list = Donation.get_my_donations(request.user)
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list})
+
 # For Owners to view and edit one specific donation
 @login_required
 def oneDonation(request, slug):
@@ -71,6 +85,7 @@ def oneDonation(request, slug):
     else:
         return render(request, 'donations/allDonations.html')
 
+# Owners can delete a donation
 @login_required
 def deleteDonation(request, slug):
     if(request.user.profile.isOwner):
