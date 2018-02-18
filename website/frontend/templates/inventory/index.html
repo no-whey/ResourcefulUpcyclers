@@ -14,6 +14,9 @@
 	                    <th>Price</th>
 	                    <th>Location</th>
 	                    <th>Description</th>
+						{% if user.profile.isOwner %}
+						<th>Private</th>
+						{% endif %}
 	                    </tr>
 	                </thead>
 	              	<tbody>
@@ -24,11 +27,12 @@
 		                    <td>{{ item.location }}</td>
 		                    <td>{{ item.text_description }}</td>
 			                {% if user.profile.isOwner %}
-		                        <td>
-		                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Offer</button>
-		                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Edit</button>
-		                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Delete</button>
-			                    </td>
+							<td>{{ item.private }}</td>
+		                    <td>
+		                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Offer</button>
+		                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Edit</button>
+		                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Delete</button>
+			                </td>
 		                    {% endif %}
 	                    {% endfor %}
 	                </tbody>
@@ -39,6 +43,6 @@
 	</div>
 
     {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
-</body>	
-	
+</body>
+
 {% endblock sb_admin_content %}

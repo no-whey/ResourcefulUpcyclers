@@ -140,9 +140,14 @@ def newOffer(request):
         form = OfferForm()
     return render(request, 'inventory/newOffer.html', {'form': form})
 
-
+# Only shows customer/anonymous the non-private inventory, owners see all inventory
 def viewOffer(request):
-    offers = Inventory.objects.all()
-    # offers = Offer.objects.all().filter(private = false)
-
-    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers})
+    if(request.user.profile.isOwner):
+        offers_list = Inventory.objects.all()
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    else:
+        offers_list = []
+        for offer in Inventory.objects.all():
+            if not offer.private:
+                offers_list.append(offer)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})

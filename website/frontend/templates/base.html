@@ -212,10 +212,6 @@
                         </li>
                     {% endif %}
 
-                    <li {% if nav_active == "requests" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
-                    </li>
-
                     {% if user.profile.isOwner %}
                     <li {% if nav_active == "donate" %}class="active"{% endif %}>
                         <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
@@ -239,6 +235,9 @@
                     </li>
                     {% endif %}
 
+                    <li {% if nav_active == "requests" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+                    </li>
 
                 </ul>
             </div>{% endblock sb_admin_sidebar %}
