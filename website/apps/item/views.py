@@ -98,6 +98,7 @@ def deleteDonation(request, slug):
     else:
         return redirect('allDonations')
 
+# Owners can view their available inventory
 @login_required
 def inventory(request):
     if(request.user.profile.isOwner):
@@ -106,14 +107,12 @@ def inventory(request):
     else:
         return render(request, 'index.html')
 
-
+# Owners can create new offers
 @login_required
 def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
-            # Applies Offer fields
-            #offer = form.save()
             offer = Inventory()
             offer.save()
             offer.refresh_from_db()
@@ -123,15 +122,8 @@ def newOffer(request):
             offer.location = form.cleaned_data.get('location')
             offer.text_description = form.cleaned_data.get('text_description')
 
-
             offer.img_link = form.cleaned_data.get('img_link')
-            #temp_img = form.cleaned_data.get('img_link')
-            #(width, height)  = temp_img.size
-
-            #temp_img.resize( (width/(width/200), height/(width/200)), Image.ANTIALIAS )
-            #offer.img_link = temp_img
-
-
+            
             offer.save()
 
             # Redirect to inventory, new offer created
