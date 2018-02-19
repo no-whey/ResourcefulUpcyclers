@@ -188,40 +188,56 @@
                             <a href="{% url "profile" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
                     {% endif %}
-                    
+
                     {% if user.profile.isOwner %}
-                        <!-- Put owner-specific sidebar buttons here -->
-                        <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                            <a href="{% url "inventory" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
-                        </li>
-                        <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                            <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
+                        <li>
+                            <!-- Put owner-specific sidebar buttons here -->
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-clipboard"></i> Item Management <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo" class="collapse">
+                                <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                                    <a href="{% url "inventory" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
+                                </li>
+                                <li {% if nav_active == "offers" %}class="active"{% endif %}>
+                                    <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Your Offers</a>
+                                </li>
+                                <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                                    <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
+                                </li>
+                            </ul>
                         </li>
                     {% else %}
                         <!-- Put customer-specific sidebar buttons here -->
                         <li {% if nav_active == "offers" %}class="active"{% endif %}>
-                            <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
+                            <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
                         </li>
                     {% endif %}
-                    <li {% if nav_active == "requests" %}class="active"{% endif %}>
-                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
-                    </li>
-                    
+
+                    {% if user.profile.isOwner %}
                     <li {% if nav_active == "donate" %}class="active"{% endif %}>
-                        <a href="{% url "donations" %}"><i class="fa fa-fw fa-gift"></i> Donate</a>
+                        <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
                     </li>
+                    {% elif user.is_authenticated %}
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                        <!-- Put owner-specific sidebar buttons here -->
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-gift"></i> Donations <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
-                            <li>
-                                <a href="#">Dropdown Item</a>
+                            <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+                                <a href="{% url "newDonation" %}"><i class="fa fa-fw fa-plus-circle"></i> New Donation</a>
                             </li>
-                            <li>
-                                <a href="#">Dropdown Item</a>
+                            <li {% if nav_active == "offers" %}class="active"{% endif %}>
+                                <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-archive"></i> All Donations</a>
                             </li>
                         </ul>
                     </li>
+                    {% else %}
+                    <li {% if nav_active == "donate" %}class="active"{% endif %}>
+                        <a href="{% url "signup" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
+                    </li>
+                    {% endif %}
 
+                    <li {% if nav_active == "requests" %}class="active"{% endif %}>
+                        <a href="{% url "home" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+                    </li>
 
                 </ul>
             </div>{% endblock sb_admin_sidebar %}
