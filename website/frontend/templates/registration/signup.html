@@ -30,7 +30,7 @@
 </head>
 
 <body class="bg-dark">
-  <div class="container">
+  <span class="container">
 <div class="row">
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
@@ -43,7 +43,7 @@
 					    {% for field in form %}
 					      <p>
 					        {{ field.label_tag }}<br>
-					        {{ field }}
+					        {{ field }}<br>
 					        {% if field.help_text %}
 					          <small style="color: grey">{{ field.help_text }}</small>
 					        {% endif %}
@@ -58,7 +58,7 @@
             </div>
         </div>
     </div>
-    </div>
+    </span>
   </div>
     <!-- jQuery -->
     <script src="{% static "js/jquery.js"%}"></script>
