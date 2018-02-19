@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sb_admin_content %}
+<body>
+	<div class="card mb-3">
+	    <div class="card-header"><h1><img src="{% static 'images/favicon.ico' %}" width="100" height="100">Your Donation Tickets</h1></div>
+	    <div class="card-body">
+	        <div class="table-responsive">
+	            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	                <thead>
+	                    <tr>
+	                    <th>Name</th>
+	                    <th>Donor (Username, Real Name)</th>
+						<th>Email</th>
+	                    <th>City</th>
+	                    <th>Description</th>
+						<th>Status</th>
+						{% if user.profile.isOwner %}
+						<th><a href="{% url 'interestedDonations' %}">Interested</a></th>
+						{% endif %}
+	                    </tr>
+	                </thead>
+	              	<tbody>
+	                  	{% for donation in donations %}
+							{% if user.is_authenticated %}
+		                    <tr>
+		                    <td>{{ donation.name }}</td>
+							<td>{{ donation.donor.username }}, <br/>
+								{{ donation.donor.first_name }}
+							 	{{ donation.donor.last_name }}</td>
+							<td>{{ donation.donor_email }}</td>
+		                    <td>{{ donation.city }}</td>
+		                    <td>{{ donation.text_description }}</td>
+							<td>{{ donation.status }}</td>
+							{% endif %}
+			                {% if user.profile.isOwner %}
+							<td>{{ donation.owner_interest }} </td>
+							<td><a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button"> Edit Donation</a><br/><br/>
+								<a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button"> Delete Donation</a></td>
+		                    {% endif %}
+							</tr>
+	                    {% endfor %}
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
+	    <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
+	</div>
+
+    {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
+</body>
+
+{% endblock sb_admin_content %}
