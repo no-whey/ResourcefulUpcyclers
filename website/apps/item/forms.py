@@ -89,13 +89,13 @@ class UpdateDonationForm(forms.ModelForm):
 
 class OfferForm(forms.Form):
 
-    name = forms.CharField (max_length=30, required=True, help_text='General Name of Item')
-    quantity = forms.IntegerField (required=True, help_text='Number of items' )
-    price = forms.CharField (max_length=30, required=True, help_text='Asking Price per Item')
-    location = forms.CharField (max_length=60, required=True, help_text='In-House Item Location')
-    text_description = forms.CharField (max_length=500, required=True, help_text='Describe the Item')
-    img_link = forms.URLField (max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
-    private = forms.BooleanField (help_text='Hide object from public view?')
+    name = forms.CharField (label='Item Name', max_length=30, required=True, help_text='General Name of Item')
+    quantity = forms.IntegerField (label='Quantity', required=True, help_text='Number of items' )
+    price = forms.DecimalField (label='Price', required=True, help_text='Asking Price per Item')
+    location = forms.CharField (label='Location', max_length=60, required=True, help_text='In-House Item Location')
+    text_description = forms.CharField (label='Description', max_length=500, required=True, help_text='Describe the Item')
+    img_link = forms.URLField (label='Image Link', max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
+    private = forms.BooleanField (label='Hide Item', required=False, help_text='Hide object from public view?')
     # Be sure to add extra fields here
     class Meta:
         model = Inventory

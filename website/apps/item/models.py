@@ -27,10 +27,10 @@ class Donation(models.Model):
 class Inventory(models.Model):
 
     name = models.TextField(max_length=30, blank=True)
-    price = models.TextField(max_length=30, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
     location = models.TextField(max_length=60, blank=True)
     text_description = models.TextField(max_length=500, blank=True)
     img_link = models.URLField(max_length=200, blank=True)
-    quantity = models.IntegerField(default=0)
+    quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)

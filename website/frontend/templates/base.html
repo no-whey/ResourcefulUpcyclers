@@ -189,7 +189,7 @@
             </li>
           {% endif %}
 
-          {% if user.profile.isOwner %}
+          {% if user.is_authenticated and user.profile.isOwner %}
             <li>
               <!-- Put owner-specific sidebar buttons here -->
               <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-clipboard"></i> Item Management <i class="fa fa-fw fa-caret-down"></i></a>
@@ -212,27 +212,29 @@
             </li>
           {% endif %}
 
-          {% if user.profile.isOwner %}
-          <li {% if nav_active == "donate" %}class="active"{% endif %}>
-            <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
-          </li>
-          {% elif user.is_authenticated %}
-          <li>
-            <!-- Put owner-specific sidebar buttons here -->
-            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-gift"></i> Donations <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="demo" class="collapse">
-              <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                <a href="{% url "newDonation" %}"><i class="fa fa-fw fa-plus-circle"></i> New Donation</a>
-              </li>
-              <li {% if nav_active == "offers" %}class="active"{% endif %}>
-                <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-archive"></i> All Donations</a>
-              </li>
-            </ul>
-          </li>
+          {% if user.is_authenticated %}
+	          {% if user.profile.isOwner %}
+	          <li {% if nav_active == "donate" %}class="active"{% endif %}>
+	            <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
+	          </li>
+	          {% else %}
+	          <li>
+	            <!-- Put owner-specific sidebar buttons here -->
+	            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-gift"></i> Donations <i class="fa fa-fw fa-caret-down"></i></a>
+	            <ul id="demo" class="collapse">
+	              <li {% if nav_active == "inventory" %}class="active"{% endif %}>
+	                <a href="{% url "newDonation" %}"><i class="fa fa-fw fa-plus-circle"></i> New Donation</a>
+	              </li>
+	              <li {% if nav_active == "offers" %}class="active"{% endif %}>
+	                <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-archive"></i> All Donations</a>
+	              </li>
+	            </ul>
+	          </li>
+	          {% endif %}
           {% else %}
-          <li {% if nav_active == "donate" %}class="active"{% endif %}>
-            <a href="{% url "signup" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
-          </li>
+	          <li {% if nav_active == "donate" %}class="active"{% endif %}>
+	            <a href="{% url "signup" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
+	          </li>
           {% endif %}
 
           <li {% if nav_active == "requests" %}class="active"{% endif %}>

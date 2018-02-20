@@ -145,16 +145,12 @@ def newOffer(request):
 
 # Only shows customer/anonymous the non-private inventory, owners see all inventory
 def viewOffer(request):
-    if(request.user.is_authenticated):
-        if(request.user.profile.isOwner):
-            offers_list = Inventory.objects.all()
-            return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
-        else:
-            offers_list = []
-            for offer in Inventory.objects.all():
-                if not offer.private:
-                    offers_list.append(offer)
-            return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    if(request.user.is_authenticated and request.user.profile.isOwner):
+        offers_list = Inventory.objects.all()
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
     else:
-        # this doesnt quite work yet
-        return redirect('registration/signup.html')
+        offers_list = []
+        for offer in Inventory.objects.all():
+            if not offer.private:
+                offers_list.append(offer)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
