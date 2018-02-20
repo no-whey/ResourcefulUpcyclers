@@ -143,3 +143,31 @@ def viewOffer(request):
             if not offer.private:
                 offers_list.append(offer)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+
+# Owners can edit their offers. 
+@login_required
+def editOffer(request):
+    if(request.user.profile.isOwner):
+        if request.method == 'POST':
+            form = OfferForm(request.POST)
+            if form.is_valid():
+                offer = Inventory()
+                offer.save()
+                offer.refresh_from_db()
+
+                offer.name = form.cleaned_data.get('name')
+                offer.price = form.cleaned_data.get('price')
+                offer.location = form.cleaned_data.get('location')
+                offer.text_description = form.cleaned_data.get('text_description')
+
+                offer.img_link = form.cleaned_data.get('img_link')
+                
+                offer.save()
+
+                # Redirect to inventory, new offer created
+                return redirect('inventory')
+        else:
+            form = OfferForm()
+        return render(request, 'inventory/newOffer.html', {'form': form})
+    else:
+        return redirect('login')
