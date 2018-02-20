@@ -51,7 +51,7 @@ class UpdateDonationForm(forms.ModelForm):
             self.fields['name'].initial = kwargs['instance'].name
             self.fields['text_description'].initial = kwargs['instance'].text_description
             self.fields['quantity'].initial = kwargs['instance'].quantity
-            #self.fields['img_link'].initial = kwargs['instance'].img_link
+            self.fields['img_link'].initial = kwargs['instance'].img_link
             self.fields['city'].initial = kwargs['instance'].city
             self.fields['donor_email'].initial = kwargs['instance'].donor_email
             self.fields['needs_pickup'].initial = kwargs['instance'].needs_pickup

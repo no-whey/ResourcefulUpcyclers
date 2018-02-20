@@ -119,8 +119,8 @@ def newOffer(request):
             # Applies Offer fields
             #offer = form.save()
             offer = Inventory()
-            offer.save()
-            offer.refresh_from_db()
+            #offer.save()
+            #offer.refresh_from_db()
 
             offer.name = form.cleaned_data.get('name')
             offer.quantity = form.cleaned_data.get('quantity')
