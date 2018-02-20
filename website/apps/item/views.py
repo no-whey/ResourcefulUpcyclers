@@ -25,7 +25,6 @@ def newDonation(request):
             donation.text_description = form.cleaned_data.get('text_description')
             donation.img_link = form.cleaned_data.get('img_link')
 
-
             donation.save()
 
             # Redirect to Home, Maybe a "Thank you" page???
@@ -122,15 +121,12 @@ def newOffer(request):
             offer.price = form.cleaned_data.get('price')
             offer.location = form.cleaned_data.get('location')
             offer.text_description = form.cleaned_data.get('text_description')
-
-
             offer.img_link = form.cleaned_data.get('img_link')
             #temp_img = form.cleaned_data.get('img_link')
             #(width, height)  = temp_img.size
 
             #temp_img.resize( (width/(width/200), height/(width/200)), Image.ANTIALIAS )
             #offer.img_link = temp_img
-
 
             offer.save()
 

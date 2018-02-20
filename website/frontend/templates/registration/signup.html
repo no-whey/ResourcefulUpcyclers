@@ -2,72 +2,71 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% block sb_admin_description %}{% endblock sb_admin_description %}">
-    <meta name="author" content="{% block sb_admin_author %}{% endblock %}">
-    <title>{% block title %}Resourceful Upcyclers | Sign Up{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block sb_admin_description %}{% endblock sb_admin_description %}">
+  <meta name="author" content="{% block sb_admin_author %}{% endblock %}">
+  <title>{% block title %}Resourceful Upcyclers | Sign Up{% endblock %}</title>
 
-    <!-- Bootstrap Core CSS -->
-    {% block sb_admin_bootstrap_css %}<link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">{% endblock sb_admin_bootstrap_css %}
+  <!-- Bootstrap Core CSS -->
+  {% block sb_admin_bootstrap_css %}<link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">{% endblock sb_admin_bootstrap_css %}
 
-    <!-- Custom CSS -->
-    {% block sb_admin_css %}<link href="{% static "css/sb-admin.css"%}" rel="stylesheet">{% endblock sb_admin_css %}
+  <!-- Custom CSS -->
+  {% block sb_admin_css %}<link href="{% static "css/sb-admin.css"%}" rel="stylesheet">{% endblock sb_admin_css %}
 
-    <!-- Custom Fonts -->
-    {% block sb_admin_fonts_css %}<link href="{% static "font-awesome/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">{% endblock sb_admin_fonts_css %}
+  <!-- Custom Fonts -->
+  {% block sb_admin_fonts_css %}<link href="{% static "font-awesome/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">{% endblock sb_admin_fonts_css %}
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
 
-    {% block sb_admin_custom_css %}{% endblock sb_admin_custom_css %}
+  {% block sb_admin_custom_css %}{% endblock sb_admin_custom_css %}
 
 </head>
 
 <body class="bg-dark">
   <span class="container">
 <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
-                <div class="panel-heading">
-                    <h1>Sign Up for an Account</h1>
-                </div>
-                <div class="panel-body">
-                        <form method="post">
-					    {% csrf_token %}
-					    {% for field in form %}
-					      <p>
-					        {{ field.label_tag }}<br>
-					        {{ field }}<br>
-					        {% if field.help_text %}
-					          <small style="color: grey">{{ field.help_text }}</small>
-					        {% endif %}
-					        {% for error in field.errors %}
-					          <p style="color: red">{{ error }}</p>
-					        {% endfor %}
-					      </p>
-					    {% endfor %}
-					    <button class="btn btn-primary btn-block" type="submit">Sign up</button>
-					  </form>
-                </div>
-            </div>
+    <div class="col-md-4 col-md-offset-4">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h1>Sign Up for an Account</h1>
         </div>
+        <div class="panel-body">
+            <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <p>
+              {{ field.label_tag }}<br>
+              {{ field }}<br>
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+              </p>
+            {% endfor %}
+            <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+            </form>
+        </div>
+      </div>
     </div>
-    </span>
   </div>
-    <!-- jQuery -->
-    <script src="{% static "js/jquery.js"%}"></script>
+  </span>
+  </div>
+  <!-- jQuery -->
+  <script src="{% static "js/jquery.js"%}"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{% static "js/bootstrap.min.js"%}"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="{% static "js/bootstrap.min.js"%}"></script>
 
-    {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
+  {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
 </body>
 
 </html>
-

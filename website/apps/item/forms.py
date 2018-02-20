@@ -11,15 +11,11 @@ class DonationForm(forms.Form):
 
     name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
-
     text_description = forms.CharField ( label='Description of the Item', max_length=500, required=True, \
         help_text='Describe the Item\'s features along with any flaws or impairments', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
-
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }) )
-
     city = forms.CharField ( max_length=30, required=True, help_text='Name of the city the item is coming from' )
-
     donor_email = forms.EmailField ( max_length=255, required=True, help_text='Email or phone number to contact you *Required', \
         widget=forms.TextInput (attrs={ 'size': 60 }) )
 
@@ -57,21 +53,15 @@ class UpdateDonationForm(forms.ModelForm):
     STATUS_OPTIONS = Choices('pending', 'accepted', 'declined')
 
     name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
-         widget=forms.TextInput (attrs={ 'size': 60 }) )
-
+        widget=forms.TextInput (attrs={ 'size': 60 }) )
     text_description = forms.CharField ( label='Description of the Item', max_length=500, required=True, \
         help_text='Describe the Item\'s features along with any flaws or impairments', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
-
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }) )
-
     city = forms.CharField ( max_length=30, required=True, help_text='Name of the city the item is coming from' )
-
     donor_email = forms.EmailField ( max_length=255, required=True, help_text='Email or phone number to contact you *Required', \
         widget=forms.TextInput (attrs={ 'size': 60 }) )
-
     status = StatusField(choices_name='STATUS_OPTIONS')
-
     owner_interest = forms.BooleanField ( label='Show Interest', help_text='Check this if your interested in acquiring the donation' , required=False)
 
     # Be sure to add extra fields here
