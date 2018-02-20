@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
+from django.contrib.auth import authenticate
 from website.apps.item.models import Donation
 from website.apps.item.models import Inventory
 
@@ -23,7 +24,9 @@ def newDonation(request):
             donation.donor_email = form.cleaned_data.get('donor_email')
             donation.city = form.cleaned_data.get('city')
             donation.text_description = form.cleaned_data.get('text_description')
+            donation.quantity = form.cleaned_data.get('quantity')
             donation.img_link = form.cleaned_data.get('img_link')
+            donation.needs_pickup = form.cleaned_data.get('needs_pickup')
 
             donation.save()
 
@@ -70,7 +73,9 @@ def oneDonation(request, slug):
                 donation.donor_email = form.cleaned_data.get('donor_email')
                 donation.city = form.cleaned_data.get('city')
                 donation.text_description = form.cleaned_data.get('text_description')
+                donation.quantity = form.cleaned_data.get('quantity')
                 donation.img_link = form.cleaned_data.get('img_link')
+                donation.needs_pickup = form.cleaned_data.get('needs_pickup')
                 donation.status = form.cleaned_data.get('status')
                 donation.owner_interest = form.cleaned_data.get('owner_interest')
 
@@ -118,10 +123,12 @@ def newOffer(request):
             offer.refresh_from_db()
 
             offer.name = form.cleaned_data.get('name')
+            offer.quantity = form.cleaned_data.get('quantity')
             offer.price = form.cleaned_data.get('price')
             offer.location = form.cleaned_data.get('location')
             offer.text_description = form.cleaned_data.get('text_description')
             offer.img_link = form.cleaned_data.get('img_link')
+            offer.private = form.cleaned_data.get('private')
             #temp_img = form.cleaned_data.get('img_link')
             #(width, height)  = temp_img.size
 
@@ -138,12 +145,16 @@ def newOffer(request):
 
 # Only shows customer/anonymous the non-private inventory, owners see all inventory
 def viewOffer(request):
-    if(request.user.profile.isOwner):
-        offers_list = Inventory.objects.all()
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    if(request.user.is_authenticated):
+        if(request.user.profile.isOwner):
+            offers_list = Inventory.objects.all()
+            return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+        else:
+            offers_list = []
+            for offer in Inventory.objects.all():
+                if not offer.private:
+                    offers_list.append(offer)
+            return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
     else:
-        offers_list = []
-        for offer in Inventory.objects.all():
-            if not offer.private:
-                offers_list.append(offer)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+        # this doesnt quite work yet
+        return redirect('registration/signup.html')

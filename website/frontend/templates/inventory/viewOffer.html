@@ -18,6 +18,7 @@
           <thead>
             <tr>
             <th>Name</th>
+            <th>Quantity</th>
             <th>Price</th>
             <th>Location</th>
             <th>Description</th>
@@ -28,6 +29,7 @@
               {% if off.private == False %}
                 <tr>
                 <td>{{ off.name }}<br><div class= "small text-muted"> Posted {{ off.date }}</div></td>
+                <td>${{ off.quantity }}</td>
                 <td>${{ off.price }}</td>
                 <td>{{ off.location }}</td>
                 <td>{{ off.text_description }}</td>
