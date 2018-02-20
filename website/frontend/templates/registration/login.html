@@ -39,10 +39,17 @@
         </div>
         <div class="panel-body">
           <form method="post">
+            <div class="form-group">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Login</button>
+            </div>
+            <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit">Login</button>
+            </div>
             </form>
+            <div class= "small text-muted text-center">
+              <a href="{% url "signup" %}">Don't have an account? Sign Up</a>
+            </div>
         </div>
       </div>
     </div>
