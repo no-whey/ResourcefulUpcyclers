@@ -33,8 +33,8 @@
 			                    <td>{{ off.text_description }}</td>
 				                {% if user.profile.isOwner %}
 			                        <td>
-			                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Edit</button>
-			                        	 <button class="btn btn-secondary" type="button" data-dismiss="modal">Hide</button>
+			                        	 <a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button">Edit</a>
+			                        	 <a class="btn btn-primary" href="{% url 'showHideOffer' off.id %}" role="button">Hide</a>
 				                    </td>
 			                    {% else %}
 			                        <td>
