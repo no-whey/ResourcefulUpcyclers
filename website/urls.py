@@ -19,7 +19,6 @@ from django.urls import path, include
 from website.apps.core import views as core_views
 from website.apps.profiles import views as profiles_views
 from website.apps.item import views as item_views
-
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
