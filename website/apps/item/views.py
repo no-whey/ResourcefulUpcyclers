@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group, User
 from website.apps.item.models import Donation
 from website.apps.item.models import Inventory
 
-from .forms import DonationForm, UpdateDonationForm, OfferForm
+from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm
 
 # For customers to create a new donation ticket
 @login_required
@@ -146,28 +146,25 @@ def viewOffer(request):
 
 # Owners can edit their offers. 
 @login_required
-def editOffer(request):
+def editOffer(request, slug):
     if(request.user.profile.isOwner):
+        offer = get_object_or_404(Inventory, id=slug)
         if request.method == 'POST':
-            form = OfferForm(request.POST)
+            form = UpdateOfferForm(request.POST)
             if form.is_valid():
-                offer = Inventory()
-                offer.save()
                 offer.refresh_from_db()
 
                 offer.name = form.cleaned_data.get('name')
                 offer.price = form.cleaned_data.get('price')
                 offer.location = form.cleaned_data.get('location')
                 offer.text_description = form.cleaned_data.get('text_description')
-
                 offer.img_link = form.cleaned_data.get('img_link')
-                
+
                 offer.save()
 
-                # Redirect to inventory, new offer created
                 return redirect('inventory')
         else:
-            form = OfferForm()
-        return render(request, 'inventory/newOffer.html', {'form': form})
+            form = UpdateOfferForm(instance=offer)
+        return render(request, 'inventory/newOffer.html', {'form' : form, 'offer' : offer})
     else:
-        return redirect('login')
+        return render(request, 'inventory/index.html')

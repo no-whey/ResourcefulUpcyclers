@@ -108,7 +108,7 @@ class OfferForm(forms.Form):
 class UpdateOfferForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(UpdateDonationForm, self).__init__(*args, **kwargs)
+        super(UpdateOfferForm, self).__init__(*args, **kwargs)
         
         #Prefill form with old info
         if 'instance' in kwargs and kwargs['instance']:

@@ -30,7 +30,7 @@
 							<td>{{ item.private }}</td>
 		                    <td>
 		                        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Offer</a>
-		                        <a class="btn btn-primary" href="{% url 'editOffer' %}" role="button">Edit</a>
+		                        <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button">Edit</a>
 		                        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Delete</a>
 			                </td>
 		                    {% endif %}
