@@ -31,7 +31,7 @@
 		                    <td>
 		                        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Offer</a>
 		                        <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button">Edit</a>
-		                        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Delete</a>
+		                        <a class="btn btn-danger" href="{% url 'deleteOffer' item.id %}" role="button">Delete</a>
 			                </td>
 		                    {% endif %}
 	                    {% endfor %}
