@@ -31,9 +31,13 @@
               {% if user.profile.isOwner %}
               <td>{{ item.private }}</td>
               <td>
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Offer</button>
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Edit</button>
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Delete</button>
+                {% if item.private %}
+                  <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button">Show</a>
+		        {% else %}
+                  <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button">Hide</a>
+                {% endif %}
+                  <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button">Edit</a>
+		          <a class="btn btn-danger" href="{% url 'deleteOffer' item.id %}" role="button">Delete</a>
               </td>
               {% endif %}
             {% endfor %}

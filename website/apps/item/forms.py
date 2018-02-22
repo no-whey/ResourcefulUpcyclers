@@ -96,6 +96,7 @@ class OfferForm(forms.Form):
     text_description = forms.CharField (label='Description', max_length=500, required=True, help_text='Describe the Item')
     img_link = forms.URLField (label='Image Link', max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
     private = forms.BooleanField (label='Hide Item', required=False, help_text='Hide object from public view?')
+
     # Be sure to add extra fields here
     class Meta:
         model = Inventory
@@ -106,4 +107,44 @@ class OfferForm(forms.Form):
                     'text_description',
                     'img_link',
                     'private'
+                    )
+                    
+class UpdateOfferForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateOfferForm, self).__init__(*args, **kwargs)
+        
+        #Prefill form with old info
+        if 'instance' in kwargs and kwargs['instance']:
+            self.fields['name'].initial = kwargs['instance'].name
+            self.fields['price'].initial = kwargs['instance'].price
+            self.fields['location'].initial = kwargs['instance'].location
+            self.fields['text_description'].initial = kwargs['instance'].text_description
+            self.fields['img_link'].initial = kwargs['instance'].img_link
+            
+
+    name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
+         widget=forms.TextInput (attrs={ 'size': 60 }) )
+
+    price = forms.CharField( label='Asking Price of Item', max_length=30, required=True, help_text='Asking Price of Item', \
+         widget=forms.TextInput (attrs={ 'size': 60 }) )
+         
+    location = forms.CharField( label='In-House Item Location', max_length=60, required=True, help_text='In-House Item Location', \
+         widget=forms.TextInput (attrs={ 'size': 60 }) )
+    
+    text_description = forms.CharField ( label='Describe the Item', max_length=500, required=True, \
+        help_text='Describe the Item', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
+
+    img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
+        widget=forms.TextInput (attrs={ 'size':60 }))
+
+    
+    # Be sure to add extra fields here
+    class Meta:
+        model = Inventory
+        fields = (  'name',
+                    'price',
+                    'location',
+                    'text_description',
+                    'img_link',
                     )
