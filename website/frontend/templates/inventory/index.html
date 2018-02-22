@@ -15,7 +15,7 @@
 	                    <th>Location</th>
 	                    <th>Description</th>
 						{% if user.profile.isOwner %}
-						<th>Private</th>
+                            <th>Private</th>
 						{% endif %}
 	                    </tr>
 	                </thead>
@@ -29,8 +29,12 @@
 			                {% if user.profile.isOwner %}
 							<td>{{ item.private }}</td>
 		                    <td>
-		                        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Offer</a>
-		                        <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button">Edit</a>
+                                {% if item.private %}
+                                    <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button">Show</a>
+		                        {% else %}
+                                    <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button">Hide</a>
+                                {% endif %}
+                                <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button">Edit</a>
 		                        <a class="btn btn-danger" href="{% url 'deleteOffer' item.id %}" role="button">Delete</a>
 			                </td>
 		                    {% endif %}

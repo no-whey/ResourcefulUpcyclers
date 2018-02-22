@@ -144,8 +144,6 @@ def viewOffer(request):
                 offers_list.append(offer)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
         
-        
-
 # Owners can edit their offers. 
 @login_required
 def editOffer(request, slug):
@@ -171,7 +169,7 @@ def editOffer(request, slug):
     else:
         return render(request, 'inventory/index.html')
         
-# Owners can delete a donation
+# Owners can delete an offer
 @login_required
 def deleteOffer(request, slug):
     if(request.user.profile.isOwner):
@@ -181,5 +179,23 @@ def deleteOffer(request, slug):
             return redirect('inventory')
         else:
             return render(request, 'inventory/deleteOffer.html', {'offer' : offer})
+    else:
+        return redirect('inventory')
+        
+# Owners can show/hide an offer
+@login_required
+def showHideOffer(request, slug):
+    if(request.user.profile.isOwner):
+        offer = get_object_or_404(Inventory, id=slug)
+        
+        offer.refresh_from_db()
+        
+        #Invert privacy field
+        offer.private = not offer.private
+        
+        offer.save()
+        
+        return redirect('inventory')
+        
     else:
         return redirect('inventory')
