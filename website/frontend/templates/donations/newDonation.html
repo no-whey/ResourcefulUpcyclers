@@ -8,32 +8,32 @@
   Make a Donation!
 </h1>
 <div class="row">
-	<h3>
-		I think there should be an option for the owner to edit a message here to say
-		what kind of donations they take and maybe give information on how donations
-		work along with any addtional information as they see necessary. Maybe we could 
-		add an edit donation page button that will let them fill out a text box with
-		everything. If not we can have a generic message here, like about non-profits
-		and how they need donations and appreciate anything the community can give.
-	</h3>
+  <h3>
+    I think there should be an option for the owner to edit a message here to say
+    what kind of donations they take and maybe give information on how donations
+    work along with any addtional information as they see necessary. Maybe we could 
+    add an edit donation page button that will let them fill out a text box with
+    everything. If not we can have a generic message here, like about non-profits
+    and how they need donations and appreciate anything the community can give.
+  </h3>
 </div>
 <div class="row">
   <form method="post">
-      {% csrf_token %}
-      {% for field in form %}
-        <p>
-          <h4>{{ field.label_tag }}</h4>
-          {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-          {% endif %}<br>
-          {{ field }}
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-          {% endfor %}
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        <h4>{{ field.label_tag }}</h4>
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}<br>
+        {{ field }}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
         </p>
-      {% endfor %}
+        {% endfor %}
       <button class="btn btn-primary btn-block" type="submit" style="width: 200px">Send Donation Ticket</button>
   </form>
- </div>
+</div>
 
 {% endblock sb_admin_content %}
