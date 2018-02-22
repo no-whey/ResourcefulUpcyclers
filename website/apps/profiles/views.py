@@ -24,6 +24,8 @@ def signup(request):
                 # Set their profile as an owner if they have a correct key
                 if real_key == attempted_key:
                     user.profile.isOwner = True
+                else:
+                    raise ValidationError(_('Invalid value'), code='invalid')
             # Either Create and add, or just add that owner to the owners group
             if user.profile.isOwner:
                 try:

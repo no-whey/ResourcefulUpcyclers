@@ -34,7 +34,6 @@ def signup(request):
                     owners_group = Group(name='owners')
                     owners_group.save()
                     user.groups.add(owners_group)
-
             #user.profile.profile_image = form.cleaned_data.get('profile_image')
             user.save()
 
