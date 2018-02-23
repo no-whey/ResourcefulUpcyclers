@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sb_admin_content %}
+<h1 class="page-header">
+  Delete Offer
+</h1>
+<div class="row">
+	<h3>
+		Are you sure you want to PERMANENTLY delete {{ offer.name }}?
+	</h3>
+</div>
+<div class="row">
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">DELETE</button>
+    <a href="{% url 'inventory' %}"><button class="btn btn-primary" type="button">Cancel</button></a>
+  </form>
+
+</div>
+
+
+{% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
+</body>
+{% endblock sb_admin_content %}

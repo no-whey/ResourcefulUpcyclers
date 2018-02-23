@@ -34,15 +34,15 @@
                 <td>{{ off.location }}</td>
                 <td>{{ off.text_description }}</td>
                 {% if user.profile.isOwner %}
-                  <td>
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Edit</button>
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hide</button>
-                    </td>
-                {% else %}
-                  <td>
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Interested</button>
-                  </td>
-                {% endif %}
+			       <td>
+			         <a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button">Edit</a>
+			         <a class="btn btn-primary" href="{% url 'showHideOffer' off.id %}" role="button">Hide</a>
+				   </td>
+			    {% else %}
+			      <td>
+			        <button class="btn btn-secondary" type="button" data-dismiss="modal">Interested</button>
+			      </td>
+			    {% endif %}
               {% endif %}
             {% endfor %}
           </tbody>

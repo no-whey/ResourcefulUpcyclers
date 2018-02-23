@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from website.apps.item.models import Donation
 from website.apps.item.models import Inventory
 
-from .forms import DonationForm, UpdateDonationForm, OfferForm
+from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm
 
 # For customers to create a new donation ticket
 @login_required
@@ -102,6 +102,7 @@ def deleteDonation(request, slug):
     else:
         return redirect('allDonations')
 
+# Owners can view their available inventory
 @login_required
 def inventory(request):
     if(request.user.profile.isOwner):
@@ -110,14 +111,12 @@ def inventory(request):
     else:
         return render(request, 'index.html')
 
-
+# Owners can create new offers
 @login_required
 def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
-            # Applies Offer fields
-            #offer = form.save()
             offer = Inventory()
             #offer.save()
             #offer.refresh_from_db()
@@ -154,3 +153,59 @@ def viewOffer(request):
             if not offer.private:
                 offers_list.append(offer)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+        
+# Owners can edit their offers. 
+@login_required
+def editOffer(request, slug):
+    if(request.user.profile.isOwner):
+        offer = get_object_or_404(Inventory, id=slug)
+        if request.method == 'POST':
+            form = UpdateOfferForm(request.POST)
+            if form.is_valid():
+                offer.refresh_from_db()
+
+                offer.name = form.cleaned_data.get('name')
+                offer.price = form.cleaned_data.get('price')
+                offer.location = form.cleaned_data.get('location')
+                offer.text_description = form.cleaned_data.get('text_description')
+                offer.img_link = form.cleaned_data.get('img_link')
+
+                offer.save()
+
+                return redirect('inventory')
+        else:
+            form = UpdateOfferForm(instance=offer)
+        return render(request, 'inventory/newOffer.html', {'form' : form, 'offer' : offer})
+    else:
+        return render(request, 'inventory/index.html')
+        
+# Owners can delete an offer
+@login_required
+def deleteOffer(request, slug):
+    if(request.user.profile.isOwner):
+        offer = get_object_or_404(Inventory, id=slug)
+        if request.method == 'POST':
+            offer.delete(keep_parents=True)
+            return redirect('inventory')
+        else:
+            return render(request, 'inventory/deleteOffer.html', {'offer' : offer})
+    else:
+        return redirect('inventory')
+        
+# Owners can show/hide an offer
+@login_required
+def showHideOffer(request, slug):
+    if(request.user.profile.isOwner):
+        offer = get_object_or_404(Inventory, id=slug)
+        
+        offer.refresh_from_db()
+        
+        #Invert privacy field
+        offer.private = not offer.private
+        
+        offer.save()
+        
+        return redirect('inventory')
+        
+    else:
+        return redirect('inventory')
