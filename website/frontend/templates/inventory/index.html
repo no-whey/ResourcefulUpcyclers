@@ -33,7 +33,7 @@
               <td>
                 {% if item.private %}
                   <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button">Show</a>
-		        {% else %}
+		            {% else %}
                   <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button">Hide</a>
                 {% endif %}
                   <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button">Edit</a>
