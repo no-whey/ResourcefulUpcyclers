@@ -25,7 +25,11 @@
             {% for donation in donations %}
               {% if user.is_authenticated %}
               <tr>
-              <td>{{ donation.name }}</td>
+              <td>
+                <button class="btn btn-primary nav-link" style="padding:0px; margin:0px" data-toggle="modal" data-target="#{{ donation.id }}">
+                <i class="fa fa-fw fa-image" style="color:white"></i></button>
+                {{ donation.name }}
+              </td>
               <td>{{ donation.donor.username }}, <br/>
                 {{ donation.donor.first_name }}
                 {{ donation.donor.last_name }}</td>
@@ -40,6 +44,20 @@
               	<a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button"> Delete Donation</a></td>
               {% endif %}
               </tr>
+              <!--Image popup code -->
+              <div class="modal fade" id="{{ donation.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Item Pictures</h5>
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body"><img src={{ donation.img_link }} alt=""></div>
+                  </div>
+                </div>
+              </div>
             {% endfor %}
           </tbody>
         </table>

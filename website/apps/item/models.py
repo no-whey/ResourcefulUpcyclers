@@ -34,3 +34,4 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
+    tag_pile = models.TextField(max_length=60, blank=True)
