@@ -39,4 +39,5 @@ urlpatterns = [
     path('donations/interested', item_views.interestedDonations, name='interestedDonations'),
     path('donations/<slug:slug>/', item_views.oneDonation, name='oneDonation'),
     path('donations/delete/<slug:slug>/', item_views.deleteDonation, name='deleteDonation'),
+    path('donations/<slug:slug>/receipt', item_views.receipt, name='donationReceipt'),
 ]

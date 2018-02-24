@@ -4,6 +4,9 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate
 from website.apps.item.models import Donation
 from website.apps.item.models import Inventory
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
 
 from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm
 
@@ -30,7 +33,7 @@ def newDonation(request):
 
             donation.save()
 
-            # Redirect to Home, Maybe a "Thank you" page???
+            # Redirect to all Donations from that user, Maybe a "Thank you" page???
             return redirect('allDonations')
     else:
         form = DonationForm()
@@ -209,3 +212,39 @@ def showHideOffer(request, slug):
         
     else:
         return redirect('inventory')
+
+@login_required
+def receipt(request, slug):
+    donation = get_object_or_404(Donation, id=slug)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="%sReceipt.pdf"' %slug
+
+    p = canvas.Canvas(response, pagesize=letter)
+    p.setLineWidth(.3)
+    p.setFont('Helvetica', 16)
+
+    #Header
+    p.drawString(240, 720, 'Donation Receipt')
+    p.drawString(50, 675, 'Organization Receiving Donation')
+    p.drawString(50, 655, 'Organization\'s Address')
+    p.drawString(50, 635, 'Organization\'S Phone Number')
+
+    p.drawString(50, 595, 'Item/Donation ID: %s' %slug)
+
+    #Content
+    p.drawString(50, 555, 'Charitable Contribution Receipt')
+    p.line(25, 550, 575, 550)
+    p.drawString(50, 510, 'Date of Receipt:   ')
+    p.drawString(50, 470, 'Donor\'s Name:   %s' %donation.donor)
+    p.drawString(50, 430, 'Donation Type:   Item Donation')
+    p.drawString(50, 390, 'Description of Donation:   %s' %donation.text_description)
+    p.drawString(50, 350, 'Amount of Contribution:   %s' %donation.quantity)
+    p.drawString(50, 310, 'Donor\'s Estimated Value of Goods or Services: ')
+    p.drawString(50, 270, 'Signed As Recieved By:   ')
+    p.drawString(50, 190, '**Notice: No Goods Or Services Were Provieded In Return For This Gift')
+
+
+
+    p.showPage()
+    p.save()
+    return response
