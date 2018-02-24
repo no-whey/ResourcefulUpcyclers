@@ -10,7 +10,7 @@ class Donation(models.Model):
 
     name = models.TextField(max_length=30, blank=True)
     text_description = models.TextField(max_length=500, blank=True)
-    quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0, null=True)
     img_link = models.URLField(max_length=200, blank=True)
     city = models.TextField(max_length=30, blank=True)
     donor = models.ForeignKey(User, related_name='donation_creator', on_delete=models.CASCADE)
