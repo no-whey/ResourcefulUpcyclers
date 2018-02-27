@@ -57,3 +57,48 @@ class testDonations(TestCase):
         all_donations = Donation.objects.all()
         for donation in all_donations:
             donation.delete()
+
+#Tests for Offers
+class testOffers(TestCase):
+    
+    def testSetUp(self):
+    
+        NUM_OF_OFFERS = 100
+        
+        isPrivate = False
+        
+        names = ["Chair", "Desk", "Fridge", "Microphone", "The Planet Mars", "Puzzle Box", "Whiteboard",
+                 "Bed", "Cheese"]
+        
+        locations = ["Over there", "Under the thing", "Behind the safe",
+                     "In the ceiling", "Rack 2B Section A"]
+        
+        descriptions = ["A thing", "A cool thing", "A cooler thing", "A less cool thing", "Some stuff"]
+        
+        images = ["https://imgs.xkcd.com/comics/code_golf.png",
+                  "https://imgs.xkcd.com/comics/the_simpsons.png",
+                  "https://imgs.xkcd.com/comics/self_driving_issues.png",
+                  "https://imgs.xkcd.com/comics/2018_cve_list.png",
+                  "https://imgs.xkcd.com/comics/unification.png"]
+        
+        for i in range(NUM_OF_OFFERS):
+            Inventory.objects.create(name = random.choice(names),
+                                 price = i + 0.99,
+                                 location = random.choice(locations),
+                                 text_description = random.choice(descriptions),
+                                 img_link = random.choice(images),
+                                 quantity = i,
+                                 private = isPrivate,
+                                 )
+            isPrivate = not isPrivate
+    
+    def testTearDown(self):
+        all_offers = Inventory.objects.all()
+        for offer in all_offers:
+            offer.delete()
+    
+    
+    
+    
+    
+    
