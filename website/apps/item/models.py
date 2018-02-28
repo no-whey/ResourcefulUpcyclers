@@ -35,3 +35,10 @@ class Inventory(models.Model):
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
     tag_pile = models.TextField(max_length=60, blank=True)
+
+class Category(models.Model):
+
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
+    offers = models.ManyToManyField(Inventory)

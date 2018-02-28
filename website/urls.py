@@ -24,10 +24,14 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.index, name='home'),
+
+    #Login, Signup, Profiles, etc.
     path('profile/', profiles_views.index, name='profile'),
     path('signup/', core_views.signup, name='signup'),
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
+
+    #Viewing and editing Offers/Donations
     path('inventory/', item_views.inventory, name='inventory'),
     path('item/', item_views.newOffer, name='newOffer'),
     path('item/edit/<slug:slug>/', item_views.editOffer, name='editOffer'),
@@ -40,4 +44,7 @@ urlpatterns = [
     path('donations/<slug:slug>/', item_views.oneDonation, name='oneDonation'),
     path('donations/delete/<slug:slug>/', item_views.deleteDonation, name='deleteDonation'),
     path('donations/<slug:slug>/receipt', item_views.receipt, name='donationReceipt'),
+
+    #Categories
+    path('categories/', item_views.allCategories, name='allCategories'),
 ]

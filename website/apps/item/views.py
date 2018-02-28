@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect, render_to_response, get_object_or
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate
-from website.apps.item.models import Donation
-from website.apps.item.models import Inventory
+from website.apps.item.models import *
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
@@ -156,8 +155,8 @@ def viewOffer(request):
             if not offer.private:
                 offers_list.append(offer)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
-        
-# Owners can edit their offers. 
+
+# Owners can edit their offers.
 @login_required
 def editOffer(request, slug):
     if(request.user.profile.isOwner):
@@ -181,7 +180,7 @@ def editOffer(request, slug):
         return render(request, 'inventory/newOffer.html', {'form' : form, 'offer' : offer})
     else:
         return render(request, 'inventory/index.html')
-        
+
 # Owners can delete an offer
 @login_required
 def deleteOffer(request, slug):
@@ -194,22 +193,22 @@ def deleteOffer(request, slug):
             return render(request, 'inventory/deleteOffer.html', {'offer' : offer})
     else:
         return redirect('inventory')
-        
+
 # Owners can show/hide an offer
 @login_required
 def showHideOffer(request, slug):
     if(request.user.profile.isOwner):
         offer = get_object_or_404(Inventory, id=slug)
-        
+
         offer.refresh_from_db()
-        
+
         #Invert privacy field
         offer.private = not offer.private
-        
+
         offer.save()
-        
+
         return redirect('inventory')
-        
+
     else:
         return redirect('inventory')
 
@@ -248,3 +247,8 @@ def receipt(request, slug):
     p.showPage()
     p.save()
     return response
+
+@login_required
+def allCategories(request):
+    category_list = Category.objects.all()
+    return render(request, 'categories/allCategories.html', {'categories' : category_list})
