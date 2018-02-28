@@ -4,6 +4,8 @@ from django.db.models.signals import post_save
 from model_utils.fields import StatusField
 from model_utils import Choices
 
+import tagulous.models
+
 class Donation(models.Model):
 
     STATUS_OPTIONS = Choices('pending', 'accepted', 'declined')
@@ -24,6 +26,15 @@ class Donation(models.Model):
         donation_list = list(user.donation_creator.all())
         return donation_list
 
+#Custom tag model
+#Used to bypass tagulous default model name generation
+class Inventory_Tags(tagulous.models.TagModel):
+    class TagMeta:
+        #Tag options
+        force_lowercase = True
+        #autocomplete_view = 
+
+#Class used to create offers
 class Inventory(models.Model):
 
     name = models.TextField(max_length=30, blank=True)
@@ -34,4 +45,7 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
-    tag_pile = models.TextField(max_length=60, blank=True)
+    #tag_pile = models.TextField(max_length=60, blank=True)
+    
+    #Using tagulous tags
+    tag_pile = tagulous.models.TagField(to=Inventory_Tags)
