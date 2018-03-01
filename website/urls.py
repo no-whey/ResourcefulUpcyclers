@@ -27,7 +27,7 @@ urlpatterns = [
 
     #Login, Signup, Profiles, etc.
     path('profile/', profiles_views.index, name='profile'),
-    path('signup/', core_views.signup, name='signup'),
+    path('signup/', profiles_views.signup, name='signup'),
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
 
