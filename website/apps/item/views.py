@@ -120,17 +120,17 @@ def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
-            offer = Inventory()
+            offer = form.save()
             #offer.save()
             #offer.refresh_from_db()
 
-            offer.name = form.cleaned_data.get('name')
-            offer.quantity = form.cleaned_data.get('quantity')
-            offer.price = form.cleaned_data.get('price')
-            offer.location = form.cleaned_data.get('location')
-            offer.text_description = form.cleaned_data.get('text_description')
-            offer.img_link = form.cleaned_data.get('img_link')
-            offer.private = form.cleaned_data.get('private')
+            #offer.name = form.cleaned_data.get('name')
+            #offer.quantity = form.cleaned_data.get('quantity')
+            #offer.price = form.cleaned_data.get('price')
+            #offer.location = form.cleaned_data.get('location')
+            #offer.text_description = form.cleaned_data.get('text_description')
+            #offer.img_link = form.cleaned_data.get('img_link')
+            #offer.private = form.cleaned_data.get('private')
             #temp_img = form.cleaned_data.get('img_link')
             #(width, height)  = temp_img.size
 
@@ -138,6 +138,8 @@ def newOffer(request):
             #offer.img_link = temp_img
 
             offer.save()
+
+            form.save_m2m()
 
             # Redirect to inventory, new offer created
             return redirect('inventory')
