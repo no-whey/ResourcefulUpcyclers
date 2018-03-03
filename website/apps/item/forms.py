@@ -2,8 +2,7 @@ from django import forms
 from model_utils.fields import StatusField
 from model_utils import Choices
 
-from website.apps.item.models import Donation
-from website.apps.item.models import Inventory
+from website.apps.item.models import *
 
 # Note for future stylizing: if you want to make a text BOX use widget=forms.Textarea, if you just want to make the CharField
 # box longer, use widget=forms.TextIput. We can just use Textarea if that's easier, set rows to 1.
@@ -108,12 +107,12 @@ class OfferForm(forms.Form):
                     'img_link',
                     'private'
                     )
-                    
+
 class UpdateOfferForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UpdateOfferForm, self).__init__(*args, **kwargs)
-        
+
         #Prefill form with old info
         if 'instance' in kwargs and kwargs['instance']:
             self.fields['name'].initial = kwargs['instance'].name
@@ -121,24 +120,24 @@ class UpdateOfferForm(forms.ModelForm):
             self.fields['location'].initial = kwargs['instance'].location
             self.fields['text_description'].initial = kwargs['instance'].text_description
             self.fields['img_link'].initial = kwargs['instance'].img_link
-            
+
 
     name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
 
     price = forms.CharField( label='Asking Price of Item', max_length=30, required=True, help_text='Asking Price of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
-         
+
     location = forms.CharField( label='In-House Item Location', max_length=60, required=True, help_text='In-House Item Location', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
-    
+
     text_description = forms.CharField ( label='Describe the Item', max_length=500, required=True, \
         help_text='Describe the Item', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
 
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }))
 
-    
+
     # Be sure to add extra fields here
     class Meta:
         model = Inventory
@@ -148,3 +147,10 @@ class UpdateOfferForm(forms.ModelForm):
                     'text_description',
                     'img_link',
                     )
+class NewCategoryForm(forms.ModelForm):
+
+    name = forms.CharField (label='Category Name', max_length=30, required=True, help_text='What type of items will be kept in this category?')
+
+    class Meta:
+        model = Category
+        fields = ( 'name', )

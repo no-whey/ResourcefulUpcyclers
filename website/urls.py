@@ -46,5 +46,5 @@ urlpatterns = [
     path('donations/<slug:slug>/receipt', item_views.receipt, name='donationReceipt'),
 
     #Categories
-    path('categories/', item_views.allCategories, name='allCategories'),
+    path('category-management/', item_views.manageCategories, name='manageCategories'),
 ]

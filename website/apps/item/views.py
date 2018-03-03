@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
-from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm
+from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
 @login_required
@@ -249,6 +249,20 @@ def receipt(request, slug):
     return response
 
 @login_required
-def allCategories(request):
-    category_list = Category.objects.all()
-    return render(request, 'categories/allCategories.html', {'categories' : category_list})
+def manageCategories(request):
+    if request.user.profile.isOwner:
+        category_list = Category.objects.all()
+        if request.method == 'POST':
+            form = NewCategoryForm(request.POST)
+            if form.is_valid():
+
+                cat = Category()
+                cat.name = form.cleaned_data.get('name')
+                cat.save()
+
+                # Redirect to all Donations from that user, Maybe a "Thank you" page???
+                return redirect('manageCategories')
+        else:
+            form = NewCategoryForm()
+        return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
+    return redirect('home')

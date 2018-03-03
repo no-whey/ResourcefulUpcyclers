@@ -41,4 +41,4 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField()
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
-    offers = models.ManyToManyField(Inventory)
+    offers = models.ManyToManyField(Inventory, default=None)
