@@ -125,7 +125,7 @@ class UpdateOfferForm(forms.ModelForm):
             self.fields['location'].initial = kwargs['instance'].location
             self.fields['text_description'].initial = kwargs['instance'].text_description
             self.fields['img_link'].initial = kwargs['instance'].img_link
-            self.fields['tag_pile'].ititial = tag_pile
+            self.fields['tag_pile'].ititial = kwargs['instance'].tag_pile
             
 
     name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
@@ -143,7 +143,7 @@ class UpdateOfferForm(forms.ModelForm):
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }))
     
-    tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object', 
+    tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object', \
         tag_options=tagulous.models.TagOptions(force_lowercase=True))
         
     # Be sure to add extra fields here
@@ -154,4 +154,5 @@ class UpdateOfferForm(forms.ModelForm):
                     'location',
                     'text_description',
                     'img_link',
+                    'tag_pile',
                     )

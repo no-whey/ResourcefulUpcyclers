@@ -152,15 +152,20 @@ def editOffer(request, slug):
         if request.method == 'POST':
             form = UpdateOfferForm(request.POST)
             if form.is_valid():
-                offer.refresh_from_db()
-
-                offer.name = form.cleaned_data.get('name')
-                offer.price = form.cleaned_data.get('price')
-                offer.location = form.cleaned_data.get('location')
-                offer.text_description = form.cleaned_data.get('text_description')
-                offer.img_link = form.cleaned_data.get('img_link')
-
+            
+                #Somehow these 3 lines save offer with tags.
+                offer = form.save(commit=False)
                 offer.save()
+                form.save_m2m()
+                # offer.refresh_from_db()
+
+                # offer.name = form.cleaned_data.get('name')
+                # offer.price = form.cleaned_data.get('price')
+                # offer.location = form.cleaned_data.get('location')
+                # offer.text_description = form.cleaned_data.get('text_description')
+                # offer.img_link = form.cleaned_data.get('img_link')
+
+                # offer.save()
 
                 return redirect('inventory')
         else:
