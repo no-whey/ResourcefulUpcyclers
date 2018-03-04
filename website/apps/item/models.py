@@ -18,6 +18,7 @@ class Donation(models.Model):
     status = StatusField(choices_name='STATUS_OPTIONS', default='pending')
     owner_interest = models.BooleanField(default=False)
     needs_pickup = models.BooleanField(default=False)
+    declined_reason = models.TextField(max_length=200, blank=True, default='', null=True)
 
     @staticmethod
     def get_my_donations(user):

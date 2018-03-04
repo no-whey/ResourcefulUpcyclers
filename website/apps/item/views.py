@@ -79,6 +79,7 @@ def oneDonation(request, slug):
                 donation.img_link = form.cleaned_data.get('img_link')
                 donation.needs_pickup = form.cleaned_data.get('needs_pickup')
                 donation.status = form.cleaned_data.get('status')
+                donation.declined_reason = form.cleaned_data.get('declined_reason')
                 donation.owner_interest = form.cleaned_data.get('owner_interest')
 
                 donation.save()

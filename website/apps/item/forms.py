@@ -67,9 +67,11 @@ class UpdateDonationForm(forms.ModelForm):
     city = forms.CharField ( max_length=30, required=True, help_text='Name of the city the item is coming from' )
     donor_email = forms.EmailField ( max_length=255, required=True, help_text='Email or phone number to contact you *Required', \
         widget=forms.TextInput (attrs={ 'size': 60 }) )
-    needs_pickup = forms.BooleanField ( label='Needs Pickup', help_text='Does this item need to be retrieved from your location *Required', required=False)
-    status = StatusField(choices_name='STATUS_OPTIONS')
-    owner_interest = forms.BooleanField ( label='Show Interest', help_text='Check this if your interested in acquiring the donation' , required=False)
+    needs_pickup = forms.BooleanField ( label='Needs Pickup', help_text='Does this item need to be retrieved from your location *Required', required=False )
+    status = StatusField( choices_name='STATUS_OPTIONS' )
+    declined_reason = forms.CharField( label='Reason for declining:', max_length=200, widget=forms.TextInput (attrs={ 'size': 60 }), required=False, \
+        help_text='**Fill this out only if delcining a donation for donor to see.**' )
+    owner_interest = forms.BooleanField ( label='Show Interest', help_text='Check this if your interested in acquiring the donation' , required=False )
 
     # Be sure to add extra fields here
     class Meta:
@@ -82,6 +84,7 @@ class UpdateDonationForm(forms.ModelForm):
                     'donor_email',
                     'needs_pickup',
                     'status',
+                    'declined_reason',
                     'owner_interest',
                     )
 
