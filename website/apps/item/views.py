@@ -121,10 +121,12 @@ def newOffer(request):
         form = OfferForm(request.POST)
         if form.is_valid():
         
-            #Somehow these 3 lines save offer with tags.
-            offer = form.save(commit=False)
-            offer.save()
-            form.save_m2m()
+            #get offer obj
+                offer = form.save(commit=False)
+                #Save all fields except m2m
+                offer.save()
+                #save m2m fields
+                form.save_m2m()
 
             # Redirect to inventory, new offer created
             return redirect('inventory')
@@ -153,20 +155,14 @@ def editOffer(request, slug):
             form = UpdateOfferForm(request.POST)
             if form.is_valid():
             
-                #Somehow these 3 lines save offer with tags.
+                #get offer obj
                 offer = form.save(commit=False)
+                #Save all fields except m2m
                 offer.save()
+                #save m2m fields
                 form.save_m2m()
-                # offer.refresh_from_db()
-
-                # offer.name = form.cleaned_data.get('name')
-                # offer.price = form.cleaned_data.get('price')
-                # offer.location = form.cleaned_data.get('location')
-                # offer.text_description = form.cleaned_data.get('text_description')
-                # offer.img_link = form.cleaned_data.get('img_link')
-
-                # offer.save()
-
+                
+                #Redirect to inventory, offer edited
                 return redirect('inventory')
         else:
             form = UpdateOfferForm(instance=offer)
