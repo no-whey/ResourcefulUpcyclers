@@ -122,11 +122,11 @@ def newOffer(request):
         if form.is_valid():
         
             #get offer obj
-                offer = form.save(commit=False)
-                #Save all fields except m2m
-                offer.save()
-                #save m2m fields
-                form.save_m2m()
+            offer = form.save(commit=False)
+            #Save all fields except m2m
+            offer.save()
+            #save m2m fields
+            form.save_m2m()
 
             # Redirect to inventory, new offer created
             return redirect('inventory')
