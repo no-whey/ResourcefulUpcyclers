@@ -37,11 +37,16 @@
               <td>{{ donation.city }}</td>
               <td>{{ donation.text_description }}</td>
               <td>{{ donation.status }}
-              {% if donation.status == 'accepted' %} <br/>
+              {% if donation.status == 'accepted' %} 
+              	<br/>
                 <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button"> Donation Receipt</a>
+              {% endif %}
+              {% if donation.status == 'declined' %},
+              	<br><br>
+              	{{ donation.declined_reason }}
+              {% endif %}
+              {% endif %}
               </td>
-              {% endif %}
-              {% endif %}
               {% if user.profile.isOwner %}
               <td>{{ donation.owner_interest }} </td>
               <td><a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button"> Edit Donation</a><br/><br/>
@@ -54,11 +59,17 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Item Pictures</h5>
-                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                      </button>
                     </div>
-                    <div class="modal-body"><img src={{ donation.img_link }} alt=""></div>
+                    <div class="modal-body">
+                        <img src={{ donation.img_link }}  id="yourImgId" alt=""/>
+                    </div>
+
+                    <script type="text/javascript">
+                      var yourImg = document.getElementById('yourImgId');
+                      var x = yourImg.width/565;
+                      yourImg.height = yourImg.height/x;
+                      yourImg.width =  yourImg.width/x;
+                    </script>
                   </div>
                 </div>
               </div>

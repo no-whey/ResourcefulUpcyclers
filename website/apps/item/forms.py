@@ -2,9 +2,9 @@ from django import forms
 from model_utils.fields import StatusField
 from model_utils import Choices
 
-from website.apps.item.models import Donation
-from website.apps.item.models import Inventory
+from website.apps.item.models import *
 import tagulous.forms
+
 
 # Note for future stylizing: if you want to make a text BOX use widget=forms.Textarea, if you just want to make the CharField
 # box longer, use widget=forms.TextIput. We can just use Textarea if that's easier, set rows to 1.
@@ -69,9 +69,11 @@ class UpdateDonationForm(forms.ModelForm):
     city = forms.CharField ( max_length=30, required=True, help_text='Name of the city the item is coming from' )
     donor_email = forms.EmailField ( max_length=255, required=True, help_text='Email or phone number to contact you *Required', \
         widget=forms.TextInput (attrs={ 'size': 60 }) )
-    needs_pickup = forms.BooleanField ( label='Needs Pickup', help_text='Does this item need to be retrieved from your location *Required', required=False)
-    status = StatusField(choices_name='STATUS_OPTIONS')
-    owner_interest = forms.BooleanField ( label='Show Interest', help_text='Check this if your interested in acquiring the donation' , required=False)
+    needs_pickup = forms.BooleanField ( label='Needs Pickup', help_text='Does this item need to be retrieved from your location *Required', required=False )
+    status = StatusField( choices_name='STATUS_OPTIONS' )
+    declined_reason = forms.CharField( label='Reason for declining:', max_length=200, widget=forms.TextInput (attrs={ 'size': 60 }), required=False, \
+        help_text='**Fill this out only if delcining a donation for donor to see.**' )
+    owner_interest = forms.BooleanField ( label='Show Interest', help_text='Check this if your interested in acquiring the donation' , required=False )
 
     # Be sure to add extra fields here
     class Meta:
@@ -84,6 +86,7 @@ class UpdateDonationForm(forms.ModelForm):
                     'donor_email',
                     'needs_pickup',
                     'status',
+                    'declined_reason',
                     'owner_interest',
                     )
 
@@ -112,12 +115,12 @@ class OfferForm(forms.ModelForm):
                     'private',
                     'tag_pile'
                     )
-                    
+
 class UpdateOfferForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UpdateOfferForm, self).__init__(*args, **kwargs)
-        
+
         #Prefill form with old info
         if 'instance' in kwargs and kwargs['instance']:
             self.fields['name'].initial = kwargs['instance'].name
@@ -133,16 +136,16 @@ class UpdateOfferForm(forms.ModelForm):
 
     price = forms.CharField( label='Asking Price of Item', max_length=30, required=True, help_text='Asking Price of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
-         
+
     location = forms.CharField( label='In-House Item Location', max_length=60, required=True, help_text='In-House Item Location', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
-    
+
     text_description = forms.CharField ( label='Describe the Item', max_length=500, required=True, \
         help_text='Describe the Item', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
 
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }))
-    
+
     tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object', \
         tag_options=tagulous.models.TagOptions(force_lowercase=True))
         
@@ -156,3 +159,11 @@ class UpdateOfferForm(forms.ModelForm):
                     'img_link',
                     'tag_pile',
                     )
+        
+class NewCategoryForm(forms.ModelForm):
+
+    name = forms.CharField (label='Category Name', max_length=30, required=True, help_text='What type of items will be kept in this category?')
+
+    class Meta:
+        model = Category
+        fields = ( 'name', )

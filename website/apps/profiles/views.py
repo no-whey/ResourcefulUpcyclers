@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect
 from decouple import config
 
-from .forms import SignUpForm
+from website.apps.profiles.forms import SignUpForm
 
 def index(request):
     return render(request, 'profile/index.html')
@@ -15,8 +15,8 @@ def signup(request):
             # Applies Profile fields
             user = form.save()
             user.refresh_from_db()
-            user.profile.birth_date = form.cleaned_data.get('birth_date')
-            user.profile.bio = form.cleaned_data.get('bio')
+            #user.profile.birth_date = form.cleaned_data.get('birth_date')
+            #user.profile.bio = form.cleaned_data.get('bio')
             #Checks if they put in an owner key
             if form.cleaned_data.get('owner_key'):
                 real_key = config('OWNER_KEY')
@@ -47,7 +47,7 @@ def signup(request):
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'profile/signup.html', {'form': form})
+    return render(request, 'registration/signup.html', {'form': form})
 
 def logout_user(request):
     logout(request)

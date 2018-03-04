@@ -1,7 +1,8 @@
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+"""
 class SignUpForm(UserCreationForm):
 
     # Sign Up Form fields, add extra info you'd like the user to put in their profile here
@@ -28,3 +29,4 @@ class SignUpForm(UserCreationForm):
                     'owner_key'
                     #'profileimage',
                     )
+"""

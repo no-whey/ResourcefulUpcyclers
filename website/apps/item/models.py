@@ -20,6 +20,7 @@ class Donation(models.Model):
     status = StatusField(choices_name='STATUS_OPTIONS', default='pending')
     owner_interest = models.BooleanField(default=False)
     needs_pickup = models.BooleanField(default=False)
+    declined_reason = models.TextField(max_length=200, blank=True, default='', null=True)
 
     @staticmethod
     def get_my_donations(user):
@@ -45,7 +46,14 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
-    #tag_pile = models.TextField(max_length=60, blank=True)
     
     #Using tagulous tags
     tag_pile = tagulous.models.TagField(to=Inventory_Tags)
+
+class Category(models.Model):
+
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
+    offers = models.ManyToManyField(Inventory, default=None)
+

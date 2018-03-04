@@ -3,12 +3,12 @@ from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect
 from decouple import config
 
-from .forms import SignUpForm
+#from .forms import SignUpForm
 
 # Create your views here.
 def index(request):
     return render(request, 'core/index.html')
-
+"""
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -48,7 +48,7 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
-
+"""
 def logout_user(request):
     logout(request)
     return render(request, 'profile/logout.html')

@@ -12,14 +12,19 @@
       {% csrf_token %}
       {% for field in form %}
         <p>
+          {% if field != declined_reason %}
           <h4>{{ field.label_tag }}</h4>
           {% if field.help_text %}
             <small style="color: grey">{{ field.help_text }}</small>
-          {% endif %}<br>
+          {% endif %}
+          <br>
           {{ field }}
+          <br>
           {% for error in field.errors %}
             <p style="color: red">{{ error }}</p>
           {% endfor %}
+          {% endif %}
+          <br>
         </p>
       {% endfor %}
       <button class="btn btn-primary btn-block" type="submit" style="width: 200px">Update Donation</button>

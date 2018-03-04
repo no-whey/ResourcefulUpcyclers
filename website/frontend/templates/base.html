@@ -203,6 +203,9 @@
                 <li {% if nav_active == "inventory" %}class="active"{% endif %}>
                   <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
                 </li>
+                <li {% if nav_active == "category-management" %}class="active"{% endif %}>
+                  <a href="{% url "manageCategories" %}"><i class="fa fa-sitemap fa-fw"></i> Manage Categories</a>
+                </li>
               </ul>
             </li>
           {% else %}

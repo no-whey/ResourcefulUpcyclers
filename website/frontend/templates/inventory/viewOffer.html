@@ -58,11 +58,19 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Item Pictures</h5>
-                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                      </button>
                     </div>
-                    <div class="modal-body"><img src={{ off.img_link }} alt=""></div>
+                    
+                    <div class="modal-body">
+                        <img src={{ off.img_link }}  id="yourImgId" alt=""/>
+                    </div>
+
+                    <script type="text/javascript">
+                      var yourImg = document.getElementById('yourImgId');
+                      var x = yourImg.width/565;
+                      yourImg.height = yourImg.height/x;
+                      yourImg.width =  yourImg.width/x;
+                    </script>
+
                   </div>
                 </div>
               </div>
@@ -75,5 +83,6 @@
   </div>
 
   {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
+
 </body>
 {% endblock sb_admin_content %}
