@@ -22,6 +22,7 @@
             <th>Price</th>
             <th>Location</th>
             <th>Description</th>
+            <th>Tags</th>
             </tr>
             </thead>
           <tbody>
@@ -39,6 +40,7 @@
                 <td>${{ off.price }}</td>
                 <td>{{ off.location }}</td>
                 <td>{{ off.text_description }}</td>
+                <td>{{ off.tag_pile }}</td>
                 {% if user.profile.isOwner %}
 			       <td>
 			         <a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button">Edit</a>

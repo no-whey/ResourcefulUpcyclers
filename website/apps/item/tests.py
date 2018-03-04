@@ -81,6 +81,8 @@ class testOffers(TestCase):
                   "https://imgs.xkcd.com/comics/2018_cve_list.png",
                   "https://imgs.xkcd.com/comics/unification.png"]
         
+        tag_list = ["old", "new", "red", "blue", "yellow", "scratched", "like new", "broken"]
+        
         for i in range(NUM_OF_OFFERS):
             Inventory.objects.create(name = random.choice(names),
                                  price = i + 0.99,
@@ -89,6 +91,7 @@ class testOffers(TestCase):
                                  img_link = random.choice(images),
                                  quantity = i,
                                  private = isPrivate,
+                                 tag_pile = random.choice(tag_list),
                                  )
             isPrivate = not isPrivate
     
