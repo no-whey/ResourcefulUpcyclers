@@ -201,6 +201,13 @@ def showHideOffer(request, slug):
     else:
         return redirect('inventory')
 
+# Can search through offers
+def searchOffers(request, search):
+    results = Inventory.objects.filter(tag_pile="test")
+
+    return redirect('inventory')
+
+
 @login_required
 def receipt(request, slug):
     donation = get_object_or_404(Donation, id=slug)
