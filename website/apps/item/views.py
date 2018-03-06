@@ -248,7 +248,7 @@ def receipt(request, slug):
 @login_required
 def manageCategories(request):
     if request.user.profile.isOwner:
-        category_list = Category.objects.all()
+        category_tree = Category.objects.all()
         if request.method == 'POST':
             form = NewCategoryForm(request.POST)
             if form.is_valid():
@@ -263,8 +263,12 @@ def manageCategories(request):
                 return redirect('manageCategories')
         else:
             form = NewCategoryForm()
-        return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
+        return render(request, 'categories/manageCategories.html', {'categories' : category_tree, 'form' : form})
     return redirect('home')
+
+def allCategories(request):
+    category_tree = Category.objects.all()
+    return render(request, 'categories/allCategories.html', {'categories' : category_tree})
 
 def oneCategory(request, slug):
     category = get_object_or_404(Category, id=slug)
