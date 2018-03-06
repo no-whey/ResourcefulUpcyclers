@@ -120,7 +120,7 @@ def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
-        
+
             #get offer obj
             offer = form.save(commit=False)
             #Save all fields except m2m
@@ -154,14 +154,14 @@ def editOffer(request, slug):
         if request.method == 'POST':
             form = UpdateOfferForm(request.POST)
             if form.is_valid():
-            
+
                 #get offer obj
                 offer = form.save(commit=False)
                 #Save all fields except m2m
                 offer.save()
                 #save m2m fields
                 form.save_m2m()
-                
+
                 #Redirect to inventory, offer edited
                 return redirect('inventory')
         else:
@@ -247,6 +247,8 @@ def manageCategories(request):
 
                 cat = Category()
                 cat.name = form.cleaned_data.get('name')
+                if(form.cleaned_data.get('parent')):
+                    cat.parent = form.cleaned_data.get('parent')
                 cat.save()
 
                 # Redirect to all Donations from that user, Maybe a "Thank you" page???
@@ -255,3 +257,11 @@ def manageCategories(request):
             form = NewCategoryForm()
         return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
     return redirect('home')
+
+def oneCategory(request, slug):
+    category = get_object_or_404(Category, id=slug)
+    offers_list = []
+    for offer in Inventory.objects.all():
+        if offer in category.offers.all() and not offer.private:
+            offers_list.append(offer)
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})

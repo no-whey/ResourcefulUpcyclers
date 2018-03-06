@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_sb_admin',
     'tagulous',
+    'mptt',
 ]
 
 MIDDLEWARE = [

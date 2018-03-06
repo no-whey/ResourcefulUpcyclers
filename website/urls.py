@@ -47,4 +47,5 @@ urlpatterns = [
 
     #Categories
     path('category-management/', item_views.manageCategories, name='manageCategories'),
+    path('category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
 ]
