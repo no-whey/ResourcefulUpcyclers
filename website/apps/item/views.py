@@ -7,6 +7,12 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
+import tagulous
+
+
+import operator
+from django.db.models import Q
+
 from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
@@ -109,8 +115,16 @@ def deleteDonation(request, slug):
 @login_required
 def inventory(request):
     if(request.user.profile.isOwner):
-        inventory_list = Inventory.objects.all()
-        return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        if request.method == 'GET':
+            search = request.GET.get('searchform', None)
+            if search is None:
+                inventory_list = Inventory.objects.all()
+            else:
+                inventory_list = Inventory.objects.filter(tag_pile__name__in=search)
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        else :
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
     else:
         return render(request, 'index.html')
 
@@ -262,3 +276,19 @@ def manageCategories(request):
             form = NewCategoryForm()
         return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
     return redirect('home')
+
+
+def get_queryset(self):
+    result = super(BlogSearchListView, self).get_queryset()
+
+    query = self.request.GET.get('q')
+    if query:
+        query_list = query.split()
+        result = result.filter(
+        reduce(operator.and_,
+            (Q(title__icontains=q) for q in query_list)) |
+                reduce(operator.and_,
+                (Q(content__icontains=q) for q in query_list))
+            )
+
+        return result
