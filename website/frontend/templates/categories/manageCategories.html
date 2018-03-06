@@ -58,7 +58,8 @@
                               {% if field.help_text %}
                                 <small style="color: grey">{{ field.help_text }}</small>
                               {% endif %}<br>
-
+                              {{ field }}
+                              <!-- TEST FOR DIFFERENT FORM SELECTION 
                               {% if field == form.parent %}
                                 <select class="form-control">
                                 {% for choice in field %}
@@ -68,7 +69,7 @@
                               {% else %}
                                 {{ field }}
                               {% endif %}
-
+                              -->
                               {% for error in field.errors %}
                                 <p style="color: red">{{ error }}</p>
                               {% endfor %}
