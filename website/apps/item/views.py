@@ -123,8 +123,12 @@ def newOffer(request):
 
             #get offer obj
             offer = form.save(commit=False)
+            if form.cleaned_data.get('category'):
+                category = form.cleaned_data.get('category')
             #Save all fields except m2m
             offer.save()
+            category.offers.add(offer)
+            category.save()
             #save m2m fields
             form.save_m2m()
 
@@ -157,8 +161,12 @@ def editOffer(request, slug):
 
                 #get offer obj
                 offer = form.save(commit=False)
+                if form.cleaned_data.get('category'):
+                    category = form.cleaned_data.get('category')
                 #Save all fields except m2m
                 offer.save()
+                category.offers.add(offer)
+                category.save()
                 #save m2m fields
                 form.save_m2m()
 
