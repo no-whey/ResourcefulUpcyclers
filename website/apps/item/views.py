@@ -7,6 +7,12 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
+import tagulous
+
+
+import operator
+from django.db.models import Q
+
 from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
@@ -109,8 +115,24 @@ def deleteDonation(request, slug):
 @login_required
 def inventory(request):
     if(request.user.profile.isOwner):
-        inventory_list = Inventory.objects.all()
-        return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Loading page
+        if request.method == 'GET':
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Loading page after searching
+        elif request.method == 'POST':
+            search = str(request.POST.get('q', None))
+            #Empty search bar
+            if search == "":
+                inventory_list = Inventory.objects.all()
+            #Non-Empty search bar
+            else:
+                inventory_list = Inventory.objects.filter(tag_pile=search)
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Other methods
+        else:
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
     else:
         return render(request, 'index.html')
 
@@ -141,14 +163,23 @@ def newOffer(request):
 
 # Only shows customer/anonymous the non-private inventory, owners see all inventory
 def viewOffer(request):
-    if(request.user.is_authenticated and request.user.profile.isOwner):
-        offers_list = Inventory.objects.all()
+    #Loading page
+    if request.method == 'GET':
+        offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    #Loading page after searching
+    elif request.method == 'POST':
+        search = str(request.POST.get('q', None))
+        #Empty search bar
+        if search == "":
+            offers_list = Inventory.objects.filter(private=False)
+        #Non-Empty search bar
+        else:
+            offers_list = Inventory.objects.filter(private=False, tag_pile=search)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    #Other methods
     else:
-        offers_list = []
-        for offer in Inventory.objects.all():
-            if not offer.private:
-                offers_list.append(offer)
+        offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
 
 # Owners can edit their offers.
@@ -269,6 +300,7 @@ def manageCategories(request):
         return render(request, 'categories/manageCategories.html', {'categories' : category_tree, 'form' : form})
     return redirect('home')
 
+
 def allCategories(request):
     category_tree = Category.objects.all()
     return render(request, 'categories/allCategories.html', {'categories' : category_tree})
@@ -280,3 +312,4 @@ def oneCategory(request, slug):
         if offer in category.offers.all() and not offer.private:
             offers_list.append(offer)
     return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+
