@@ -116,10 +116,13 @@ def deleteDonation(request, slug):
 def inventory(request):
     if(request.user.profile.isOwner):
         if request.method == 'GET':
-            search = request.GET.get('searchform', None)
+            search = request.GET.get('q', None)
+            print(search)
             if search is None:
+                print("Not Searching")
                 inventory_list = Inventory.objects.all()
             else:
+                print("Searching")
                 inventory_list = Inventory.objects.filter(tag_pile__name__in=search)
             return render(request, 'inventory/index.html', {'inventory' : inventory_list})
         else :
