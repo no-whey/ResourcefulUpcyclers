@@ -158,9 +158,21 @@ def newOffer(request):
 
 # Only shows customer/anonymous the non-private inventory, owners see all inventory
 def viewOffer(request):
-    if(request.user.is_authenticated and request.user.profile.isOwner):
-        offers_list = Inventory.objects.all()
+    #Loading page
+    if request.method == 'GET':
+        offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    #Loading page after searching
+    elif request.method == 'POST':
+        search = str(request.POST.get('q', None))
+        #Empty search bar
+        if search == "":
+            offers_list = Inventory.objects.filter(private=False)
+        #Non-Empty search bar
+        else:
+            offers_list = Inventory.objects.filter(private=False, tag_pile=search)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    #Other methods
     else:
         offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
