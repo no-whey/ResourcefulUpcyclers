@@ -162,10 +162,7 @@ def viewOffer(request):
         offers_list = Inventory.objects.all()
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
     else:
-        offers_list = []
-        for offer in Inventory.objects.all():
-            if not offer.private:
-                offers_list.append(offer)
+        offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
 
 # Owners can edit their offers.
