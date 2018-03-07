@@ -115,17 +115,27 @@ def deleteDonation(request, slug):
 @login_required
 def inventory(request):
     if(request.user.profile.isOwner):
+        #Loading page
         if request.method == 'GET':
-            search = request.GET.get('q', None)
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Loading page after searching
+        elif request.method == 'POST':
+            search = request.POST.get('q', None)
+            search = str(search)
             print(search)
-            if search is None:
+            #Empty search bar
+            if search == "":
                 print("Not Searching")
                 inventory_list = Inventory.objects.all()
+            #Non-Empty search bar
             else:
                 print("Searching")
                 inventory_list = Inventory.objects.filter(tag_pile__name__in=search)
+            print("Rendering")
             return render(request, 'inventory/index.html', {'inventory' : inventory_list})
-        else :
+        #Other methods
+        else:
             inventory_list = Inventory.objects.all()
             return render(request, 'inventory/index.html', {'inventory' : inventory_list})
     else:
