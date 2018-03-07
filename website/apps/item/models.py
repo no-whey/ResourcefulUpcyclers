@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from model_utils.fields import StatusField
 from model_utils import Choices
+from mptt.models import MPTTModel, TreeForeignKey
 
 import tagulous.models
 
@@ -33,7 +34,7 @@ class Inventory_Tags(tagulous.models.TagModel):
     class TagMeta:
         #Tag options
         force_lowercase = True
-        #autocomplete_view = 
+        #autocomplete_view =
 
 #Class used to create offers
 class Inventory(models.Model):
@@ -46,14 +47,17 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
-    
+
     #Using tagulous tags
     tag_pile = tagulous.models.TagField(to=Inventory_Tags)
 
-class Category(models.Model):
+class Category(MPTTModel):
 
     name = models.CharField(max_length=100)
-    slug = models.SlugField()
-    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
-    offers = models.ManyToManyField(Inventory, default=None)
+    #slug = models.SlugField()
+    parent = TreeForeignKey('self', blank=True, null=True, related_name='children',
+                            db_index=True, on_delete=models.SET_NULL)
+    offers = models.ManyToManyField(Inventory, default=None, blank=True)
 
+    class MPTTMeta:
+        order_insertion_by = ['name']

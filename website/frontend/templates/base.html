@@ -210,8 +210,16 @@
             </li>
           {% else %}
             <!-- Put customer-specific sidebar buttons here -->
-            <li {% if nav_active == "offers" %}class="active"{% endif %}>
-              <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Offers</a>
+            <li>
+              <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="fa fa-fw fa-th-list"></i> Offers <i class="fa fa-fw fa-caret-down"></i></a>
+              <ul id="demo2" class="collapse">
+                <li {% if nav_active == "offers" %}class="active"{% endif %}>
+                  <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i>All Offers</a>
+                </li>
+                <li {% if nav_active == "categories" %}class="active"{% endif %}>
+                  <a href="{% url "allCategories" %}"><i class="fa fa-sitemap fa-fw"></i>Categories</a>
+                </li>
+              </ul>
             </li>
           {% endif %}
 

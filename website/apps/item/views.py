@@ -142,9 +142,14 @@ def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
-        
+
             #get offer obj
             offer = form.save(commit=False)
+            if form.cleaned_data.get('category'):
+                category = form.cleaned_data.get('category')
+                category.offers.add(offer)
+                category.save()
+                
             #Save all fields except m2m
             offer.save()
             #save m2m fields
@@ -185,14 +190,20 @@ def editOffer(request, slug):
         if request.method == 'POST':
             form = UpdateOfferForm(request.POST)
             if form.is_valid():
-            
+
                 #get offer obj
                 offer = form.save(commit=False)
+                if form.cleaned_data.get('category'):
+                    category = form.cleaned_data.get('category')
+                    category.offers.add(offer)
+                    category.save()
+                    
                 #Save all fields except m2m
                 offer.save()
+
                 #save m2m fields
                 form.save_m2m()
-                
+
                 #Redirect to inventory, offer edited
                 return redirect('inventory')
         else:
@@ -271,19 +282,34 @@ def receipt(request, slug):
 @login_required
 def manageCategories(request):
     if request.user.profile.isOwner:
-        category_list = Category.objects.all()
+        category_tree = Category.objects.all()
         if request.method == 'POST':
             form = NewCategoryForm(request.POST)
             if form.is_valid():
 
                 cat = Category()
                 cat.name = form.cleaned_data.get('name')
+                if(form.cleaned_data.get('parent')):
+                    cat.parent = form.cleaned_data.get('parent')
                 cat.save()
 
                 # Redirect to all Donations from that user, Maybe a "Thank you" page???
                 return redirect('manageCategories')
         else:
             form = NewCategoryForm()
-        return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
+        return render(request, 'categories/manageCategories.html', {'categories' : category_tree, 'form' : form})
     return redirect('home')
+
+
+def allCategories(request):
+    category_tree = Category.objects.all()
+    return render(request, 'categories/allCategories.html', {'categories' : category_tree})
+
+def oneCategory(request, slug):
+    category = get_object_or_404(Category, id=slug)
+    offers_list = []
+    for offer in Inventory.objects.all():
+        if offer in category.offers.all() and not offer.private:
+            offers_list.append(offer)
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
 
