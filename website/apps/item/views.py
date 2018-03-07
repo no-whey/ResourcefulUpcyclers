@@ -121,8 +121,7 @@ def inventory(request):
             return render(request, 'inventory/index.html', {'inventory' : inventory_list})
         #Loading page after searching
         elif request.method == 'POST':
-            search = request.POST.get('q', None)
-            search = str(search)
+            search = str(request.POST.get('q', None))
             print(search)
             #Empty search bar
             if search == "":
@@ -131,7 +130,7 @@ def inventory(request):
             #Non-Empty search bar
             else:
                 print("Searching")
-                inventory_list = Inventory.objects.filter(tag_pile__name__in=search)
+                inventory_list = Inventory.objects.filter(tag_pile=search)
             print("Rendering")
             return render(request, 'inventory/index.html', {'inventory' : inventory_list})
         #Other methods
