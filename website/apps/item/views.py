@@ -275,18 +275,3 @@ def manageCategories(request):
         return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
     return redirect('home')
 
-
-def get_queryset(self):
-    result = super(BlogSearchListView, self).get_queryset()
-
-    query = self.request.GET.get('q')
-    if query:
-        query_list = query.split()
-        result = result.filter(
-        reduce(operator.and_,
-            (Q(title__icontains=q) for q in query_list)) |
-                reduce(operator.and_,
-                (Q(content__icontains=q) for q in query_list))
-            )
-
-        return result
