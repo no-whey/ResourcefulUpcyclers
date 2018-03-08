@@ -126,15 +126,19 @@ class UpdateOfferForm(forms.ModelForm):
         #Prefill form with old info
         if 'instance' in kwargs and kwargs['instance']:
             self.fields['name'].initial = kwargs['instance'].name
+            self.fields['quantity'].initial = kwargs['instance'].quantity
             self.fields['price'].initial = kwargs['instance'].price
             self.fields['location'].initial = kwargs['instance'].location
             self.fields['text_description'].initial = kwargs['instance'].text_description
             self.fields['img_link'].initial = kwargs['instance'].img_link
+            self.fields['private'].initial = kwargs['instance'].private
             self.fields['tag_pile'].initial = kwargs['instance'].tag_pile
 
 
     name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
+
+    quantity = forms.IntegerField ( label='Quantity', required=True, help_text='Number of items' )
 
     price = forms.CharField( label='Asking Price of Item', max_length=30, required=True, help_text='Asking Price of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
@@ -148,6 +152,8 @@ class UpdateOfferForm(forms.ModelForm):
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }))
 
+    private = forms.BooleanField (label='Hide Item', required=False, help_text='Hide object from public view?')
+
     tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object', \
         tag_options=tagulous.models.TagOptions(force_lowercase=True))
     category = TreeNodeChoiceField(label='Category', queryset=Category.objects.all(), required=False, help_text='Optional. What Category is this a part of?' )
@@ -156,10 +162,12 @@ class UpdateOfferForm(forms.ModelForm):
     class Meta:
         model = Inventory
         fields = (  'name',
+                    'quantity',
                     'price',
                     'location',
                     'text_description',
                     'img_link',
+                    'private',
                     'tag_pile',
                     'category',
                     )
