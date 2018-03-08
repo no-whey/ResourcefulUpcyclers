@@ -7,6 +7,12 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
+import tagulous
+
+
+import operator
+from django.db.models import Q
+
 from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
@@ -109,8 +115,24 @@ def deleteDonation(request, slug):
 @login_required
 def inventory(request):
     if(request.user.profile.isOwner):
-        inventory_list = Inventory.objects.all()
-        return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Loading page
+        if request.method == 'GET':
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Loading page after searching
+        elif request.method == 'POST':
+            search = str(request.POST.get('q', None))
+            #Empty search bar
+            if search == "":
+                inventory_list = Inventory.objects.all()
+            #Non-Empty search bar
+            else:
+                inventory_list = Inventory.objects.filter(tag_pile=search)
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
+        #Other methods
+        else:
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
     else:
         return render(request, 'index.html')
 
@@ -120,13 +142,28 @@ def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
-        
+
             #get offer obj
-            offer = form.save(commit=False)
+            offer = Inventory()
+            offer.name = form.cleaned_data.get('name')
+            offer.price = form.cleaned_data.get('price')
+            offer.location = form.cleaned_data.get('location')
+            offer.text_description = form.cleaned_data.get('text_description')
+            offer.img_link = form.cleaned_data.get('img_link')
+            offer.quantity = form.cleaned_data.get('quantity')
+            offer.private = form.cleaned_data.get('private')
+            offer.tag_pile = form.cleaned_data.get('tag_pile')
+            offer.save()
+
+            if form.cleaned_data.get('category'):
+                category = form.cleaned_data.get('category')
+                category.offers.add(offer)
+                category.save()
+
             #Save all fields except m2m
             offer.save()
             #save m2m fields
-            form.save_m2m()
+            #form.save_m2m()
 
             # Redirect to inventory, new offer created
             return redirect('inventory')
@@ -136,14 +173,23 @@ def newOffer(request):
 
 # Only shows customer/anonymous the non-private inventory, owners see all inventory
 def viewOffer(request):
-    if(request.user.is_authenticated and request.user.profile.isOwner):
-        offers_list = Inventory.objects.all()
+    #Loading page
+    if request.method == 'GET':
+        offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    #Loading page after searching
+    elif request.method == 'POST':
+        search = str(request.POST.get('q', None))
+        #Empty search bar
+        if search == "":
+            offers_list = Inventory.objects.filter(private=False)
+        #Non-Empty search bar
+        else:
+            offers_list = Inventory.objects.filter(private=False, tag_pile=search)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+    #Other methods
     else:
-        offers_list = []
-        for offer in Inventory.objects.all():
-            if not offer.private:
-                offers_list.append(offer)
+        offers_list = Inventory.objects.filter(private=False)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
 
 # Owners can edit their offers.
@@ -154,14 +200,31 @@ def editOffer(request, slug):
         if request.method == 'POST':
             form = UpdateOfferForm(request.POST)
             if form.is_valid():
-            
+                offer.refresh_from_db()
                 #get offer obj
-                offer = form.save(commit=False)
+                #offer = form.save(commit=False)
+
+                offer.name = form.cleaned_data.get('name')
+                offer.price = form.cleaned_data.get('price')
+                offer.location = form.cleaned_data.get('location')
+                offer.text_description = form.cleaned_data.get('text_description')
+                offer.img_link = form.cleaned_data.get('img_link')
+                offer.quantity = form.cleaned_data.get('quantity')
+                offer.private = form.cleaned_data.get('private')
+                offer.tag_pile = form.cleaned_data.get('tag_pile')
+                offer.save()
+
+                if form.cleaned_data.get('category'):
+                    category = form.cleaned_data.get('category')
+                    category.offers.add(offer)
+                    category.save()
+
                 #Save all fields except m2m
                 offer.save()
+
                 #save m2m fields
-                form.save_m2m()
-                
+                #form.save_m2m()
+
                 #Redirect to inventory, offer edited
                 return redirect('inventory')
         else:
@@ -237,21 +300,38 @@ def receipt(request, slug):
     p.save()
     return response
 
+# For Owners to create and view their categories
 @login_required
 def manageCategories(request):
     if request.user.profile.isOwner:
-        category_list = Category.objects.all()
+        category_tree = Category.objects.all()
         if request.method == 'POST':
             form = NewCategoryForm(request.POST)
             if form.is_valid():
 
                 cat = Category()
                 cat.name = form.cleaned_data.get('name')
+                if(form.cleaned_data.get('parent')):
+                    cat.parent = form.cleaned_data.get('parent')
                 cat.save()
 
                 # Redirect to all Donations from that user, Maybe a "Thank you" page???
                 return redirect('manageCategories')
         else:
             form = NewCategoryForm()
-        return render(request, 'categories/manageCategories.html', {'categories' : category_list, 'form' : form})
+        return render(request, 'categories/manageCategories.html', {'categories' : category_tree, 'form' : form})
     return redirect('home')
+
+
+def allCategories(request):
+    category_tree = Category.objects.all()
+    return render(request, 'categories/allCategories.html', {'categories' : category_tree})
+
+# View the NON-PRIVATE offers in a category
+def oneCategory(request, slug):
+    category = get_object_or_404(Category, id=slug)
+    offers_list = []
+    for offer in category.offers.all():
+        if offer is not offer.private:
+            offers_list.append(offer)
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})

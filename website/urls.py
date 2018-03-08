@@ -31,13 +31,15 @@ urlpatterns = [
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
 
-    #Viewing and editing Offers/Donations
+    #Viewing and editing Offers
     path('inventory/', item_views.inventory, name='inventory'),
     path('item/', item_views.newOffer, name='newOffer'),
     path('item/edit/<slug:slug>/', item_views.editOffer, name='editOffer'),
     path('item/delete/<slug:slug>/', item_views.deleteOffer, name='deleteOffer'),
     path('item/showhide/<slug:slug>/', item_views.showHideOffer, name='showHideOffer'),
     path('offers/', item_views.viewOffer, name='viewOffer'),
+    
+    #Viewing and editing Donations
     path('newdonation/', item_views.newDonation, name='newDonation'),
     path('donations/', item_views.allDonations, name='allDonations'),
     path('donations/interested', item_views.interestedDonations, name='interestedDonations'),
@@ -47,4 +49,6 @@ urlpatterns = [
 
     #Categories
     path('category-management/', item_views.manageCategories, name='manageCategories'),
+    path('categories/', item_views.allCategories, name='allCategories'),
+    path('category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
 ]

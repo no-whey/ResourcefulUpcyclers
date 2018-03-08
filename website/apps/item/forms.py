@@ -4,7 +4,7 @@ from model_utils import Choices
 
 from website.apps.item.models import *
 import tagulous.forms
-
+from mptt.forms import *
 
 # Note for future stylizing: if you want to make a text BOX use widget=forms.Textarea, if you just want to make the CharField
 # box longer, use widget=forms.TextIput. We can just use Textarea if that's easier, set rows to 1.
@@ -100,8 +100,9 @@ class OfferForm(forms.ModelForm):
     text_description = forms.CharField (label='Description', max_length=500, required=True, help_text='Describe the Item')
     img_link = forms.URLField (label='Image Link', max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
     private = forms.BooleanField (label='Hide Item', required=False, help_text='Hide object from public view?')
-    tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object', 
+    tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object',
         tag_options=tagulous.models.TagOptions(force_lowercase=True))
+    category = TreeNodeChoiceField(label='Category', queryset=Category.objects.all(), required=False, help_text='Optional. What Category is this a part of?' )
 
     # Be sure to add extra fields here
     class Meta:
@@ -113,7 +114,8 @@ class OfferForm(forms.ModelForm):
                     'text_description',
                     'img_link',
                     'private',
-                    'tag_pile'
+                    'tag_pile',
+                    'category',
                     )
 
 class UpdateOfferForm(forms.ModelForm):
@@ -124,15 +126,19 @@ class UpdateOfferForm(forms.ModelForm):
         #Prefill form with old info
         if 'instance' in kwargs and kwargs['instance']:
             self.fields['name'].initial = kwargs['instance'].name
+            self.fields['quantity'].initial = kwargs['instance'].quantity
             self.fields['price'].initial = kwargs['instance'].price
             self.fields['location'].initial = kwargs['instance'].location
             self.fields['text_description'].initial = kwargs['instance'].text_description
             self.fields['img_link'].initial = kwargs['instance'].img_link
-            self.fields['tag_pile'].ititial = kwargs['instance'].tag_pile
-            
+            self.fields['private'].initial = kwargs['instance'].private
+            self.fields['tag_pile'].initial = kwargs['instance'].tag_pile
+
 
     name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
+
+    quantity = forms.IntegerField ( label='Quantity', required=True, help_text='Number of items' )
 
     price = forms.CharField( label='Asking Price of Item', max_length=30, required=True, help_text='Asking Price of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
@@ -146,24 +152,35 @@ class UpdateOfferForm(forms.ModelForm):
     img_link = forms.URLField ( max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
         widget=forms.TextInput (attrs={ 'size':60 }))
 
+    private = forms.BooleanField (label='Hide Item', required=False, help_text='Hide object from public view?')
+
     tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object', \
         tag_options=tagulous.models.TagOptions(force_lowercase=True))
-        
+    category = TreeNodeChoiceField(label='Category', queryset=Category.objects.all(), required=False, help_text='Optional. What Category is this a part of?' )
+
     # Be sure to add extra fields here
     class Meta:
         model = Inventory
         fields = (  'name',
+                    'quantity',
                     'price',
                     'location',
                     'text_description',
                     'img_link',
+                    'private',
                     'tag_pile',
+                    'category',
                     )
-        
+
 class NewCategoryForm(forms.ModelForm):
 
+    #PARENT_OPTIONS = list(Category.objects.all())
+
     name = forms.CharField (label='Category Name', max_length=30, required=True, help_text='What type of items will be kept in this category?')
+    parent = TreeNodeChoiceField(label='Parent Category', queryset=Category.objects.all(), required=False, help_text='Optional. What is the parent of this category?' )
 
     class Meta:
         model = Category
-        fields = ( 'name', )
+        fields = ( 'name',
+                   'parent',
+                 )
