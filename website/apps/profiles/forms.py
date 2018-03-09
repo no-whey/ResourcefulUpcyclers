@@ -10,7 +10,6 @@ class SignUpForm(UserCreationForm):
     last_name = forms.CharField( max_length=30, required=True, help_text='' )
     email = forms.EmailField( max_length=300, help_text='*Required. Must be valid email address.' )
     password1 = forms.CharField( label='Password', widget=forms.PasswordInput, help_text='Must be at least 8 characters.' )
-    #birth_date = forms.DateField( label='birth_date', help_text='STEBUSNTEOHUSNEOTHU' )
     #bio = forms.CharField( label='bio', help_text='Enter tags here.', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
     owner_key = forms.CharField( max_length=32, required=False, help_text='If you have a upgrade to a Business Profile, enter your key here.') #, validators=[valid_owner_key] )
     #profile_image = forms.ImageField(help_text='Upload a profile image')
@@ -30,9 +29,32 @@ class SignUpForm(UserCreationForm):
                     'email',
                     'password1',
                     'password2',
-                    #'birth_date',
                     #'bio',
                     'owner_key'
                     #'profileimage',
                     )
 
+class UpdateUserForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+
+        #Prefill form with old info
+        if 'instance' in kwargs and kwargs['instance']:
+            self.fields['first_name'].initial = kwargs['instance'].first_name
+            self.fields['last_name'].initial = kwargs['instance'].last_name
+            self.fields['email'].initial = kwargs['instance'].email
+            self.fields['bio'].inital = kwargs['instance'].bio
+
+    first_name = forms.CharField( max_length=30, required=True, )
+    last_name = forms.CharField( max_length=30, required=True, )
+    email = forms.EmailField( max_length=300, help_text='*Required. Must be a vaild email address.' )
+    bio = forms.CharField( label='About Me', widget=forms.Textarea(attrs={'cols':80, 'rows': 4}) )
+
+    class Meta:
+        model = User
+        fields = (  'first_name',
+                    'last_name',
+                    'email',
+                    'bio',
+                    )

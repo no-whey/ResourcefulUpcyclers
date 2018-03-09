@@ -8,7 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # Extra information, Add extra attributes here
-    #bio = models.TextField(max_length=500, blank=True, null=True)
+    bio = models.TextField(max_length=500, blank=True, null=True)
     #birth_date = models.DateField(null=True, blank=True)
     isOwner = models.BooleanField(default=False)
     #profile_image = models.ImageField(upload_to=None)

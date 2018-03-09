@@ -27,6 +27,7 @@ urlpatterns = [
 
     #Login, Signup, Profiles, etc.
     path('profile/', profiles_views.index, name='profile'),
+    path('updateuser/', profiles_views.update_user, name='updateuser'),
     path('signup/', profiles_views.signup, name='signup'),
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),

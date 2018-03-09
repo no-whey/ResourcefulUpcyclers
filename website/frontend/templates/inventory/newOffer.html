@@ -3,27 +3,29 @@
 
 {% block sb_admin_content %}
 
-  <!-- Header-->
-  <h1 class="page-header">
-    <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
-    Create an Offer
-  </h1>
-    <h1>Create a new Offer</h1>
-        <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-          <p>
-          {{ field.label_tag }}<br>
-          {{ field }}
-          {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-          {% endif %}
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-          {% endfor %}
-          </p>
-        {% endfor %}
-        <button class="btn btn-primary btn-block" type="submit">Submit</button>
-        </form>
+<h1 class="page-header">
+  <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
+  Create an Offer
+</h1>
+<h1>Create a new Offer</h1><br>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      <h4>{{ field.label_tag }}</h4>
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}<br>
+      {{ field }}<br><br>
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}<br>
+    </p>
+  {% endfor %}
+  <br>
+  <button class="btn btn-primary btn-block" type="submit">Submit</button>
+  <br>
+  <br>
+</form>
 
 {% endblock sb_admin_content %}

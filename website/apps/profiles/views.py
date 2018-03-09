@@ -1,12 +1,13 @@
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect
 from decouple import config
 
-from website.apps.profiles.forms import SignUpForm
+from website.apps.profiles.forms import SignUpForm, UpdateUserForm
 
 def index(request):
-    return render(request, 'profile/index.html')
+    return render(request, 'profile/profile.html')
 
 def signup(request):
     if request.method == 'POST':
@@ -52,3 +53,21 @@ def signup(request):
 def logout_user(request):
     logout(request)
     return render(request, 'profile/logout.html')
+
+@login_required
+def update_user(request):
+    if request.method == 'POST':
+        form = UpdateUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user.refresh_from_db()
+
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.bio = form.cleaned_data.get('bio')
+            user.save()
+
+            return redirect('profile')
+    else:
+        form = UpdateUserForm(instance=request.user)
+    return render(request, 'profile/updateprofile.html', {'form':form})

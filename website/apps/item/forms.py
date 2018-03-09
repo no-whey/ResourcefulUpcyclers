@@ -59,7 +59,7 @@ class UpdateDonationForm(forms.ModelForm):
 
     STATUS_OPTIONS = Choices('pending', 'accepted', 'declined')
 
-    name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
+    name = forms.CharField ( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
         widget=forms.TextInput (attrs={ 'size': 60 }) )
     text_description = forms.CharField ( label='Description of the Item', max_length=500, required=True, \
         help_text='Describe the Item\'s features along with any flaws or impairments', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
@@ -93,16 +93,19 @@ class UpdateDonationForm(forms.ModelForm):
 
 class OfferForm(forms.ModelForm):
 
-    name = forms.CharField (label='Item Name', max_length=30, required=True, help_text='General Name of Item')
-    quantity = forms.IntegerField (label='Quantity', required=True, help_text='Number of items' )
-    price = forms.DecimalField (label='Price', required=True, help_text='Asking Price per Item')
-    location = forms.CharField (label='Location', max_length=60, required=True, help_text='In-House Item Location')
-    text_description = forms.CharField (label='Description', max_length=500, required=True, help_text='Describe the Item')
-    img_link = forms.URLField (label='Image Link', max_length=200, required=True, help_text='Link to Images of Item (use a different site)')
-    private = forms.BooleanField (label='Hide Item', required=False, help_text='Hide object from public view?')
-    tag_pile = tagulous.forms.TagField(label='Item Tags', required=False, help_text='Add tags to help find your object',
+    name = forms.CharField ( label='Item Name', max_length=30, required=True, help_text='General Name of Item', \
+        widget=forms.TextInput (attrs={ 'size': 60 }) )
+    quantity = forms.IntegerField ( label='Quantity', required=True, help_text='Number of items' )
+    price = forms.DecimalField ( label='Price', required=True, help_text='Asking Price per Item')
+    location = forms.CharField ( label='Location', max_length=60, required=True, help_text='In-House Item Location')
+    text_description = forms.CharField (label='Description', max_length=500, required=True, help_text='Describe the Item', \
+         widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
+    img_link = forms.URLField ( label='Image Link', max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
+        widget=forms.TextInput (attrs={ 'size':60 }) )
+    private = forms.BooleanField ( label='Hide Item', required=False, help_text='Hide object from public view?')
+    tag_pile = tagulous.forms.TagField( label='Item Tags', required=False, help_text='Add tags to help find your object',
         tag_options=tagulous.models.TagOptions(force_lowercase=True))
-    category = TreeNodeChoiceField(label='Category', queryset=Category.objects.all(), required=False, help_text='Optional. What Category is this a part of?' )
+    category = TreeNodeChoiceField( label='Category', queryset=Category.objects.all(), required=False, help_text='Optional. What Category is this a part of?' )
 
     # Be sure to add extra fields here
     class Meta:
