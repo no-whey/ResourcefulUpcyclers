@@ -28,7 +28,8 @@
         <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th style="width: 15%">Name</th>
+            <th style="width: 3%"></th>
+            <th style="width: 13%">Name</th>
             <th style="width: 10%">Quantity</th>
             <th style="width: 10%">Price</th>
             <th style="width: 15%">Location</th>
@@ -40,28 +41,31 @@
             {% for off in offers_list %}
               {% if off.private == False %}
                 <tr>
-                <td data-toggle="modal" data-target="#{{ off.id }}">
-                  {{ off.name.title }}
+                <td><div data-toggle="modal" data-target="#{{ off.id }}"><button class="btn" style="width:100%; height:100%" data-toggle="tooltip" data-placement="bottom" title="Expand">
+					<i class="fa fa-fw fa-expand" style="color:gray; font-size:15px">
+					</i></button></div></td>
+                <td>{{ off.name.title }}
                   <br>
                   <div class= "small text-muted">Posted {{ off.date }}</div>
                 </td>
-                <td data-toggle="modal" data-target="#{{ off.id }}">{{ off.quantity }}</td>
-                <td data-toggle="modal" data-target="#{{ off.id }}">${{ off.price }}</td>
-                <td data-toggle="modal" data-target="#{{ off.id }}">{{ off.location }}</td>
-                <td data-toggle="modal" data-target="#{{ off.id }}">{{ off.text_description }}</td>
+                <td>{{ off.quantity }}</td>
+                <td>${{ off.price }}</td>
+                <td>{{ off.location }}</td>
+                <td>{{ off.text_description }}</td>
                 {% if user.profile.isOwner %}
 			       <td>
 			       	<div class="btn-group">
 			         <a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-			         	<i class="fa fa-fw fa-edit" style="color:white"></i></a>
+			         	<i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
 			         <a class="btn btn-primary" href="{% url 'showHideOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-			         	<i class="fa fa-fw fa-minus-square" style="color:white"></i></a>
+			         	<i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
 			     </div>
 				   </td>
 			    {% else %}
 			      <td>
-			        <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white"></i></button>
+			        <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
 			      </td>
+			  	</a>
 			      </tr>
 			    {% endif %}
               {% endif %}
@@ -104,12 +108,12 @@
                     	{% if user.profile.isOwner %}
                     		<div class="btn-group">
 								<a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-									<i class="fa fa-fw fa-edit" style="color:white"></i></a>
+									<i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
 			         			<a class="btn btn-primary" href="{% url 'showHideOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-			         				<i class="fa fa-fw fa-minus-square" style="color:white"></i></a>
+			         				<i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
 			         		</div>
 			    		{% else %}
-			        		<button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white"></i></button>
+			        		<button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
 			    		{% endif %}
 					</div>
                   </div>

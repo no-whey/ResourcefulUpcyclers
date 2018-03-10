@@ -22,13 +22,14 @@
       	<table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
 	      <thead>
             <tr>
+            <th style="width: 3%"></th>
             <th style="width: 10%">Name</th>
             <th style="width: 10%">Quantity</th>
             <th style="width: 10%">Price</th>
             <th style="width: 15%">Location</th>
-            <th style="width: 30%">Description</th>
+            <th style="width: 32%">Description</th>
             {% if user.profile.isOwner %}
-            <th style="width: 10%">Private</th>
+            <th style="width: 7%">Private</th>
             {% endif %}
             <th style="width: 15%"></th>
             </tr>
@@ -36,28 +37,31 @@
           <tbody>
             {% for item in inventory %}
               <tr>
-                <td data-toggle="modal" data-target="#{{ item.id }}">
+                <td><div data-toggle="modal" data-target="#{{ item.id }}"><button class="btn" style="width:100%; height:100%" data-toggle="tooltip" data-placement="bottom" title="Expand">
+                <i class="fa fa-fw fa-search-plus" style="color:gray; font-size:15px">
+                </i></button></div></td>
+                <td>
                   {{ item.name.title }}
                 </td>
-                <td data-toggle="modal" data-target="#{{ item.id }}">{{ item.quantity }}</td>
-                <td data-toggle="modal" data-target="#{{ item.id }}">${{ item.price }}</td>
-                <td data-toggle="modal" data-target="#{{ item.id }}">{{ item.location }}</td>
-                <td data-toggle="modal" data-target="#{{ item.id }}">{{ item.text_description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+                <td>{{ item.location }}</td>
+                <td>{{ item.text_description }}</td>
                 {% if user.profile.isOwner %}
-                <td data-toggle="modal" data-target="#{{ item.id }}">{{ item.private }}</td>
+                <td>{{ item.private }}</td>
                 <td>
                   <div class="btn-group">
                     <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                  <i class="fa fa-fw fa-edit" style="color:white"></i></a>
+                  <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
                   {% if item.private %}
                     <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Show in Offers">
-                      <i class="fa fa-fw fa-plus-square" style="color:white"></i></a>
+                      <i class="fa fa-fw fa-plus-square" style="color:white; font-size:15px"></i></a>
   		            {% else %}
                     <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-                      <i class="fa fa-fw fa-minus-square" style="color:white"></i></a>
+                      <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
                   {% endif %}
   		              <a class="btn btn-danger" href="{% url 'deleteOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                      <i class="fa fa-fw fa-times" style="color:white"></i></a>
+                      <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a>
                   </div>
                 </td>
               </tr>
@@ -101,16 +105,16 @@
                       {% if user.profile.isOwner %}
                         <div class="btn-group">
                           <a class="btn btn-primary" href="{% url 'editOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <i class="fa fa-fw fa-edit" style="color:white"></i></a>
+                        <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
                         {% if item.private %}
                           <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Show in Offers">
-                            <i class="fa fa-fw fa-plus-square" style="color:white"></i></a>
+                            <i class="fa fa-fw fa-plus-square" style="color:white; font-size:15px"></i></a>
                         {% else %}
                           <a class="btn btn-primary" href="{% url 'showHideOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-                            <i class="fa fa-fw fa-minus-square" style="color:white"></i></a>
+                            <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
                         {% endif %}
                           <a class="btn btn-danger" href="{% url 'deleteOffer' item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                            <i class="fa fa-fw fa-times" style="color:white"></i></a>
+                            <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a>
                         </div>
                       {% endif %}
                     </div>
