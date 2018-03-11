@@ -97,9 +97,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'dev-database',
+            'NAME': 'upcyclers',
             'USER': 'upcyclersadmin',
-            'PASSWORD': 'dev-password',
+            'PASSWORD': 'djang0becrazy',
             'HOST': 'localhost',
             'PORT': '5432',
         }
