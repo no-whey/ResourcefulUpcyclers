@@ -57,17 +57,17 @@ def logout_user(request):
 @login_required
 def update_user(request):
     if request.method == 'POST':
-        form = UpdateUserForm(request.POST, instance=request.user)
+        form = UpdateUserForm(request.POST, instance=request.user.profile)
         if form.is_valid():
             user.refresh_from_db()
 
             user.first_name = form.cleaned_data.get('first_name')
             user.last_name = form.cleaned_data.get('last_name')
             user.email = form.cleaned_data.get('email')
-            user.bio = form.cleaned_data.get('bio')
+            user.profile.bio = form.cleaned_data.get('bio')
             user.save()
 
             return redirect('profile')
     else:
-        form = UpdateUserForm(instance=request.user)
+        form = UpdateUserForm(instance=request.user.profile)
     return render(request, 'profile/updateprofile.html', {'form':form})
