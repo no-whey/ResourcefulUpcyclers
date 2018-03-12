@@ -10,14 +10,18 @@
         <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>Name</th>
-            <th>Donor (Name, Account)</th>
-            <th>Email</th>
-            <th>City</th>
-            <th>Description</th>
-            <th>Status</th>
+            <th style="width: 3%"></th>
+            <th style="width: 7%">Name</th>
+            <th style="width: 8%">Donor (Name, Account)</th>
+            <th style="width: 8%">Email</th>
+            <th style="width: 12%">City</th>
+            <th style="width: 21%">Description</th>
+            <th style="width: 20%">Status</th>
             {% if user.profile.isOwner %}
-            <th><a href="{% url 'interestedDonations' %}">Interested</a></th>
+              <th style="width: 5%"><a href="{% url 'interestedDonations' %}">Interested</a></th>
+              <th></th>
+            {% else %}
+              <th>Receipts</th>
             {% endif %}
             </tr>
           </thead>
@@ -25,9 +29,10 @@
             {% for donation in donations %}
               {% if user.is_authenticated %}
               <tr>
+              <td><div data-toggle="modal" data-target="#{{ donation.id }}"><button class="btn" style="width:100%; height:100%" data-toggle="tooltip" data-placement="bottom" title="Expand">
+                <i class="fa fa-fw fa-search-plus" style="color:gray; font-size:15px">
+              </i></button></div></td>
               <td>
-                <button class="btn btn-primary nav-link" style="padding:0px; margin:0px" data-toggle="modal" data-target="#{{ donation.id }}">
-                <i class="fa fa-fw fa-image" style="color:white"></i></button>
                 {{ donation.name.title }}
               </td>
               <td>{{ donation.donor.first_name.title }}
@@ -35,23 +40,43 @@
                 <br>
                 @{{ donation.donor.username }}</td>
               <td>{{ donation.donor_email }}</td>
-              <td>{{ donation.city }}</td>
+              <td>{{ donation.city.title }}</td>
               <td>{{ donation.text_description }}</td>
-              <td>{{ donation.status }}
-              {% if donation.status == 'accepted' %} 
-              	<br/>
-                <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button"> Donation Receipt</a>
-              {% endif %}
-              {% if donation.status == 'declined' %},
-              	<br><br>
+              <td>
+              {% if donation.status == 'accepted' %}
+                  <div style="color:green">{{ donation.status.title }}</div>
+              {% elif donation.status == 'declined' %}
+                <div style="color:red">{{ donation.status.title }}:</div>
               	{{ donation.declined_reason }}
+              {% else %}
+                {{ donation.status.title }}
               {% endif %}
               {% endif %}
               </td>
               {% if user.profile.isOwner %}
-              <td>{{ donation.owner_interest }} </td>
-              <td><a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button"> Edit Donation</a><br/><br/>
-              	<a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button"> Delete Donation</a></td>
+                {% if donation.owner_interest %}
+                  <td> <i class="fa fa-fw fa-check-circle" style="color:green; font-size:32px"></i></td>
+                {% else %}
+                  <td><i class="fa fa-fw fa-ellipsis-h" style="color:black; font-size:32px"></i></td>
+                {% endif %} 
+              <td>
+                <div class="btn-group">
+                {% if donation.status == 'accepted' %}
+                  <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
+                    <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i></a>
+                  {% endif %}
+                <a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                  <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
+              	<a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                      <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a></td>
+                </div>
+              {% elif donation.status == 'accepted' %}
+                <td>
+                  <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
+                    <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i></a>
+                </td>
+              {% else %}
+                <td><i class="fa fa-fw fa-ellipsis-h" style="color:black; font-size:32px"></i></td>
               {% endif %}
               </tr>
               <!--Image popup code -->
@@ -59,15 +84,53 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h3 class="modal-title" id="exampleModalLabel">{{ donation.name.title }}</h3  >
+                      <h3 class="modal-title" id="exampleModalLabel">{{ donation.name.title }}</h3>
                     </div>
                     <div class="modal-body">
                         <img class ="img-rounded" style="width: 100%" src={{ donation.img_link }} alt=""/>
+
+                        <hr>
+
+                        <div class="row"> 
+                          <div class="col-sm-4">
+                            <b>From:</b><br>
+                            {{  donation.donor.first_name.title }} {{ donation.donor.last_name.title }}<br>
+                            @{{ donation.donor.username }}<br>
+                            {{ donation.donor_email }}
+                          </div>
+                          <div class="col-sm-4">
+                            <b>City: </b><br>{{ donation.city.title }} 
+                          </div>
+                           <div class="col-sm-4">
+                            <b>Status: </b><br>
+                              {% if donation.status == 'accepted' %}
+                                <div style="color:green">{{ donation.status.title }}</div>
+                              {% elif donation.status == 'declined' %}
+                                <div style="color:red">{{ donation.status.title }}:</div>
+                                {{ donation.declined_reason }}
+                              {% else %}
+                                {{ donation.status.title }}
+                              {% endif %}                          
+                          </div>
+                        </div>
+                        
+                        <hr>
+
+                        <b>Description: </b><br>
+                        {{donation.text_description}}
                     </div>
                     {% if user.profile.isOwner %}
                       <div class="modal-footer">
-                        <a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button"> Edit Donation</a>
-                        <a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button"> Delete Donation</a>
+                        <div class="btn-group">
+                          {% if donation.status == 'accepted' %}
+                            <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
+                              <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i></a>
+                          {% endif %}
+                          <a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                            <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
+                          <a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a>
+                           </div>
                       </div>
                     {% endif %}
                 </div>
