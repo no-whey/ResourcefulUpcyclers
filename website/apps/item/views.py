@@ -335,3 +335,8 @@ def oneCategory(request, slug):
         if offer is not offer.private:
             offers_list.append(offer)
     return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
+
+@login_required
+def oneRequest(request):
+    return render(request, 'requests/request.html')
+

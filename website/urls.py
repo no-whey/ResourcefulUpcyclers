@@ -52,4 +52,7 @@ urlpatterns = [
     path('category-management/', item_views.manageCategories, name='manageCategories'),
     path('categories/', item_views.allCategories, name='allCategories'),
     path('category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
+
+    #Requests (coming soon)
+    path('request/', item_views.oneRequest, name="request" )
 ]
