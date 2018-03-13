@@ -7,7 +7,7 @@ from decouple import config
 from website.apps.profiles.forms import SignUpForm, UpdateUserForm
 
 def index(request):
-    return render(request, 'profile/profile.html')
+    return render(request, 'profile/index.html')
 
 def signup(request):
     if request.method == 'POST':
