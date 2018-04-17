@@ -5,4 +5,7 @@ from django.contrib.auth import authenticate
 from website.apps.alert.models import *
 from django.http import HttpResponse
 
-
+@login_required
+def getAlerts():
+    alert_list = Alert.objects.all()
+    return {'alerts' : alert_list}
