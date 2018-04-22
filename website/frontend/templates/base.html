@@ -57,29 +57,15 @@
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
               <ul class="dropdown-menu alert-dropdown">
-                <li>
-                  <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                </li>
-                <li>
-                  <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                </li>
-                <li>
-                  <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                </li>
-                <li>
-                  <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                </li>
-                <li>
-                  <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                </li>
-                <li>
-                  <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                </li>
-                {% for alert in user.alert_set.all %}
-                  <li>
-                    <a href="#">{{alert.message}} <span class="label label-warning">Alert Badge</span></a>
-                  </li>
-                {% endfor %}
+                {% if not user.alert_set.all %}
+                  <span class="label label-primary" >No alerts</span>
+                {% else %}
+                  {% for alert in user.alert_set.all %}
+                    <li>
+                      <a href="#">{{alert.message}} <span class="label label-warning">Alert Badge</span></a>
+                    </li>
+                  {% endfor %}
+                {% endif %}
               </ul>
             </li>
           {% endif %}
