@@ -6,10 +6,9 @@ from website.apps.item.models import *
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
+from website.apps.alert.models import Alert
 
 import tagulous
-
-
 import operator
 from django.db.models import Q
 
@@ -89,7 +88,12 @@ def oneDonation(request, slug):
                 donation.owner_interest = form.cleaned_data.get('owner_interest')
 
                 donation.save()
-
+                
+                #Notify Donor
+                Alert.create("Donation updated!",
+                             "Your donation of \'" + donation.name + "\' has been updated.",
+                             donation.donor)
+                
                 # Redirect to Home, Maybe a "Thank you" page???
                 return redirect('allDonations')
         else:
