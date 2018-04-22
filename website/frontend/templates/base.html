@@ -75,9 +75,9 @@
                 <li>
                   <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
                 </li>
-                {% for al in alerts %}
+                {% for alert in user.alert_set.all %}
                   <li>
-                    <a href="#">{{al.message}} <span class="label label-warning">Alert Badge</span></a>
+                    <a href="#">{{alert.message}} <span class="label label-warning">Alert Badge</span></a>
                   </li>
                 {% endfor %}
               </ul>
