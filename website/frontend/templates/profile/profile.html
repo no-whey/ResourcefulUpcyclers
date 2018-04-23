@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sb_admin_content %}
+
+<h1 class="page-header">
+  <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
+  {{ user.username|title }}'s Profile
+</h1>
+<div class="panel-body">
+  <p style="font-size:24px;">
+  <b>Name:</b> {{ user.get_full_name }}<br>
+  <b>Email:</b> {{ user.email }}<br>
+  <b>User Status:</b>	
+    {% if user.profile.isOwner %}
+      Owner
+    {% else %}
+      Customer
+    {% endif %}<br>
+  </p>
+</div>
+
+{% endblock sb_admin_content %}

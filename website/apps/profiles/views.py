@@ -6,8 +6,12 @@ from decouple import config
 
 from website.apps.profiles.forms import SignUpForm, UpdateUserForm
 
+@login_required
 def index(request):
-    return render(request, 'profile/index.html')
+    if(request.user.profile.isOwner):
+        return render(request, 'profile/businessprofile.html')
+    else:
+        return render(request, 'profile/profile.html')
 
 def signup(request):
     if request.method == 'POST':
