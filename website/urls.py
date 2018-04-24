@@ -28,7 +28,9 @@ urlpatterns = [
     #Login, Signup, Profiles, etc.
     path('profile/', profiles_views.index, name='profile'),
     path('updateuser/', profiles_views.update_user, name='updateuser'),
-    path('signup/', profiles_views.signup, name='signup'),
+    path('signup-customer/', profiles_views.signup_customer, name='signup_customer'),
+    path('signup-owner/', profiles_views.signup_owner, name='signup_owner'),
+    path('create-business/', core_views.create_business, name='create_business'),
     path('logout/', auth_views.logout, name='logout'),
     path('login/', auth_views.login, name='login'),
 
@@ -39,7 +41,7 @@ urlpatterns = [
     path('item/delete/<slug:slug>/', item_views.deleteOffer, name='deleteOffer'),
     path('item/showhide/<slug:slug>/', item_views.showHideOffer, name='showHideOffer'),
     path('offers/', item_views.viewOffer, name='viewOffer'),
-    
+
     #Viewing and editing Donations
     path('newdonation/', item_views.newDonation, name='newDonation'),
     path('donations/', item_views.allDonations, name='allDonations'),
@@ -54,6 +56,6 @@ urlpatterns = [
     path('category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
 
     #Requests (coming soon)
-    path('request/', item_views.oneRequest, name="request" )
-    
+    path('request/', item_views.oneRequest, name="request" ),
+    path('business/<slug:slug>/', core_views.viewBusiness, name='viewBusiness'),
 ]

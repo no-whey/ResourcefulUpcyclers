@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'website.apps.core',
     'website.apps.alert',
     'website.apps.profiles',
     'website.apps.item',
@@ -132,6 +133,8 @@ STATICFILES_DIRS = (
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+MEDIA_ROOT = '/frontend/static/images'
 
 #Use tagulous serialization modules
 SERIALIZATION_MODULES = {

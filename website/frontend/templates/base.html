@@ -105,10 +105,13 @@
           </li>
           {% if not user.is_authenticated  %}
             <li {% if nav_active == "login" %}class="active"{% endif %}>
-              <a href="{% url "login" %}"><i class="fa fa-fw fa-user"></i> Log In</a>
+              <a href="{% url "login" %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a>
             </li>
             <li {% if nav_active == "signup" %}class="active"{% endif %}>
-              <a href="{% url "signup" %}"><i class="fa fa-fw fa-user"></i> Sign Up</a>
+              <a href="{% url "signup_customer" %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a>
+            </li>
+            <li {% if nav_active == "signup" %}class="active"{% endif %}>
+              <a href="{% url "signup_owner" %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
             </li>
           {% else %}
             <li {% if nav_active == "profile" %}class="active"{% endif %}>

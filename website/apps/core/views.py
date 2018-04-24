@@ -1,54 +1,51 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group, User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
+from website.apps.core.models import Business
+from website.apps.core.forms import CreateBusinessForm
 from decouple import config
 
 #from .forms import SignUpForm
 
 # Create your views here.
 def index(request):
-    return render(request, 'core/index.html')
-"""
-def signup(request):
+    business_list = Business.objects.all()
+    return render(request, 'core/index.html', {'businesses' : business_list})
+
+def viewBusiness(request, slug):
+    business = get_object_or_404(Business, id=slug)
+    return render(request, 'profile/businessprofile.html', {'business' : business})
+
+def create_business(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = CreateBusinessForm(request.POST)
         if form.is_valid():
-            # Applies Profile fields
-            user = form.save()
-            user.refresh_from_db()
-            user.profile.birth_date = form.cleaned_data.get('birth_date')
-            user.profile.bio = form.cleaned_data.get('bio')
-            #Checks if they put in an owner key
-            if form.cleaned_data.get('owner_key'):
-                real_key = config('OWNER_KEY')
-                attempted_key = form.cleaned_data.get('owner_key')
-                # Set their profile as an owner if they have a correct key
-                if real_key == attempted_key:
-                    user.profile.isOwner = True
-            # Either Create and add, or just add that owner to the owners group
-            if user.profile.isOwner:
-                try:
-                    owners_group = Group.objects.get(name='owners')
-                    user.groups.add(owners_group)
-                except Group.DoesNotExist:
-                    owners_group = Group(name='owners')
-                    owners_group.save()
-                    user.groups.add(owners_group)
-            #user.profile.profile_image = form.cleaned_data.get('profile_image')
-            user.save()
+            business = Business()
+            business.name = form.cleaned_data.get('name')
+            business.bio = form.cleaned_data.get('bio')
+            business.address = form.cleaned_data.get('address')
+            if form.cleaned_data.get('icon'):
+                business.icon = form.cleaned_data.get('icon')
+            o_group = Group(name=business.name)
+            o_group.save()
+            business.owner_group = Group.objects.get(id=o_group.id)
+            #business.owner_group.save()
 
-            # User requirements
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password')
-            #user = authenticate(username=username, password=raw_password)
+            # I STILL NEED TO RANDOM GENERATE AN OWNER KEY BELOW
+            #alph_nums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            business.save()
+            request.user.groups.add(business.owner_group)
+            request.user.profile.isOwner = True
+            request.user.profile.business = Business.objects.get(id=business.id)
+            request.user.profile.save()
 
-            # Redirect home, new User is logged in
-            login(request, user)
-            return redirect('home')
+            return render(request, 'profile/businessprofile.html', {'business' : business})
+
     else:
-        form = SignUpForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        form = CreateBusinessForm()
+    return render(request, 'registration/create_business.html', {'form': form})
 """
 def logout_user(request):
     logout(request)
     return render(request, 'profile/logout.html')
+"""

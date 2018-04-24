@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from website.apps.core.models import Business
 from model_utils.fields import StatusField
 from model_utils import Choices
 from mptt.models import MPTTModel, TreeForeignKey
@@ -22,6 +23,7 @@ class Donation(models.Model):
     owner_interest = models.BooleanField(default=False)
     needs_pickup = models.BooleanField(default=False)
     declined_reason = models.TextField(max_length=200, blank=True, default='', null=True)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
     @staticmethod
     def get_my_donations(user):
@@ -47,6 +49,7 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
     #Using tagulous tags
     tag_pile = tagulous.models.TagField(to=Inventory_Tags)

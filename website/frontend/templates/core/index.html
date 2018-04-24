@@ -31,5 +31,8 @@
       They can then take the savings and put them towards their cause.</p>
 
     {% easy_map "United States, California, Santa Cruz" 400 400 %}
+    {% for business in businesses %}
+        <a href="{% url 'viewBusiness' slug=business.id %}">{{ business.name }}</a>
+    {% endfor %}
   </div>
 {% endblock sb_admin_content %}
