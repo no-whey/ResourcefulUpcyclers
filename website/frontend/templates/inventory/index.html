@@ -113,7 +113,7 @@
                           <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
                             <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
                         {% endif %}
-                          <a class="btn btn-danger" href="{% url 'deleteOffer' bid=business.id item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                          <a class="btn btn-danger" href="{% url 'deleteOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
                             <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a>
                         </div>
                       {% endif %}
