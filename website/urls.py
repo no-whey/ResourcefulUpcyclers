@@ -35,27 +35,29 @@ urlpatterns = [
     path('login/', auth_views.login, name='login'),
 
     #Viewing and editing Offers
-    path('inventory/', item_views.inventory, name='inventory'),
-    path('item/', item_views.newOffer, name='newOffer'),
-    path('item/edit/<slug:slug>/', item_views.editOffer, name='editOffer'),
-    path('item/delete/<slug:slug>/', item_views.deleteOffer, name='deleteOffer'),
-    path('item/showhide/<slug:slug>/', item_views.showHideOffer, name='showHideOffer'),
-    path('offers/', item_views.viewOffer, name='viewOffer'),
+    path('business/<int:bid>/inventory/', item_views.inventory, name='inventory'),
+    path('business/<int:bid>/item/', item_views.newOffer, name='newOffer'),
+    path('business/<int:bid>/item/edit/<slug:slug>/', item_views.editOffer, name='editOffer'),
+    path('business/<int:bid>/item/delete/<slug:slug>/', item_views.deleteOffer, name='deleteOffer'),
+    path('business/<int:bid>/item/showhide/<slug:slug>/', item_views.showHideOffer, name='showHideOffer'),
+    path('business/<int:bid>/offers/', item_views.viewOffer, name='viewOffer'),
 
     #Viewing and editing Donations
-    path('newdonation/', item_views.newDonation, name='newDonation'),
-    path('donations/', item_views.allDonations, name='allDonations'),
-    path('donations/interested', item_views.interestedDonations, name='interestedDonations'),
-    path('donations/<slug:slug>/', item_views.oneDonation, name='oneDonation'),
-    path('donations/delete/<slug:slug>/', item_views.deleteDonation, name='deleteDonation'),
-    path('donations/<slug:slug>/receipt', item_views.receipt, name='donationReceipt'),
+    path('business/<int:bid>/newdonation/', item_views.newDonation, name='newDonation'),
+    path('business/<int:bid>/donations/', item_views.allDonations, name='allDonations'),
+    path('business/<int:bid>/donations/interested', item_views.interestedDonations, name='interestedDonations'),
+    path('business/<int:bid>/donations/<slug:slug>/', item_views.oneDonation, name='oneDonation'),
+    path('business/<int:bid>/donations/delete/<slug:slug>/', item_views.deleteDonation, name='deleteDonation'),
+    path('business/<int:bid>/donations/<slug:slug>/receipt', item_views.receipt, name='donationReceipt'),
 
     #Categories
-    path('category-management/', item_views.manageCategories, name='manageCategories'),
-    path('categories/', item_views.allCategories, name='allCategories'),
-    path('category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
+    path('business/<int:bid>/category-management/', item_views.manageCategories, name='manageCategories'),
+    path('business/<int:bid>/categories/', item_views.allCategories, name='allCategories'),
+    path('business/<int:bid>/category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
 
     #Requests (coming soon)
     path('request/', item_views.oneRequest, name="request" ),
-    path('business/<slug:slug>/', core_views.viewBusiness, name='viewBusiness'),
+
+    #View one specific business
+    path('business/<int:bid>/', core_views.viewBusiness, name='viewBusiness'),
 ]

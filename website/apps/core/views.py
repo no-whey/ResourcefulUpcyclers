@@ -12,9 +12,10 @@ def index(request):
     business_list = Business.objects.all()
     return render(request, 'core/index.html', {'businesses' : business_list})
 
-def viewBusiness(request, slug):
-    business = get_object_or_404(Business, id=slug)
-    return render(request, 'profile/businessprofile.html', {'business' : business})
+def viewBusiness(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
+    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group})
 
 def create_business(request):
     if request.method == 'POST':

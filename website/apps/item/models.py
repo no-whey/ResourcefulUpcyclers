@@ -61,6 +61,7 @@ class Category(MPTTModel):
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children',
                             db_index=True, on_delete=models.SET_NULL)
     offers = models.ManyToManyField(Inventory, default=None, blank=True)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
     class MPTTMeta:
         order_insertion_by = ['name']
