@@ -49,7 +49,7 @@ def newDonation(request, bid):
 @login_required
 def allDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         donation_list = Donation.get_all_business_donations(request.user, business)
         return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
     else:
@@ -60,7 +60,7 @@ def allDonations(request, bid):
 @login_required
 def interestedDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         donation_list = []
         business_donations = Donation.get_all_business_donations(request.user, business)
         for donation in business_donations:
@@ -75,7 +75,7 @@ def interestedDonations(request, bid):
 @login_required
 def oneDonation(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         donation = get_object_or_404(Donation, id=slug)
         if request.method == 'POST':
             form = UpdateDonationForm(request.POST)
@@ -112,7 +112,7 @@ def oneDonation(request, bid, slug):
 @login_required
 def deleteDonation(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         donation = get_object_or_404(Donation, id=slug)
         if request.method == 'POST':
             donation.delete(keep_parents=True)
@@ -126,7 +126,7 @@ def deleteDonation(request, bid, slug):
 @login_required
 def inventory(request, bid):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         #Loading page
         if request.method == 'GET':
             inventory_list = Inventory.get_all_business_inventory(request.user, business)
@@ -139,7 +139,7 @@ def inventory(request, bid):
                 inventory_list = Inventory.get_all_business_inventory(request.user, business)
             #Non-Empty search bar
             else:
-                inventory_list = Inventory.objects.filter(tag_pile=search)
+                inventory_list = Inventory.objects.filter(tag_pile=search, business=business)
             return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
         #Other methods
         else:
@@ -190,7 +190,7 @@ def viewOffer(request, bid):
     #Loading page
     business = get_object_or_404(Business, id=bid)
     if request.method == 'GET':
-        offers_list = Inventory.objects.filter(private=False).filter(business = business)
+        offers_list = Inventory.objects.filter(private=False, business=business)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
     #Loading page after searching
     elif request.method == 'POST':
@@ -211,7 +211,7 @@ def viewOffer(request, bid):
 @login_required
 def editOffer(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         offer = get_object_or_404(Inventory, id=slug)
         if request.method == 'POST':
             form = UpdateOfferForm(request.POST)
@@ -253,7 +253,7 @@ def editOffer(request, bid, slug):
 @login_required
 def deleteOffer(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         offer = get_object_or_404(Inventory, id=slug)
         if request.method == 'POST':
             offer.delete(keep_parents=True)
@@ -267,7 +267,7 @@ def deleteOffer(request, bid, slug):
 @login_required
 def showHideOffer(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner):
+    if(request.user.profile.isOwner and request.user.profile.business==business):
         offer = get_object_or_404(Inventory, id=slug)
 
         offer.refresh_from_db()
@@ -323,7 +323,7 @@ def receipt(request, bid, slug):
 @login_required
 def manageCategories(request, bid):
     business = get_object_or_404(Business, id=bid)
-    if request.user.profile.isOwner:
+    if (request.user.profile.isOwner and request.user.profile.business==business):
         category_tree = Category.objects.filter(business=business)
         if request.method == 'POST':
             form = NewCategoryForm(request.POST)
@@ -346,7 +346,7 @@ def manageCategories(request, bid):
 
 def allCategories(request, bid):
     business = get_object_or_404(Business, id=bid)
-    category_tree = Category.objects.all()
+    category_tree = Category.objects.filter(business = business)
     return render(request, 'categories/allCategories.html', {'categories' : category_tree, 'business' : business})
 
 # View the NON-PRIVATE offers in a category
