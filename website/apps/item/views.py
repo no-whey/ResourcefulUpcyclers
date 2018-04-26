@@ -50,7 +50,7 @@ def newDonation(request, bid):
 def allDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
     if(request.user.profile.isOwner):
-        donation_list = Donation.objects.all()
+        donation_list = Donation.get_all_business_donations(request.user, business)
         return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
     else:
         donation_list = Donation.get_my_donations(request.user)
@@ -62,7 +62,8 @@ def interestedDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
     if(request.user.profile.isOwner):
         donation_list = []
-        for donation in Donation.objects.all():
+        business_donations = Donation.get_all_business_donations(request.user, business)
+        for donation in business_donations:
             if donation.owner_interest:
                 donation_list.append(donation)
         return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
@@ -128,21 +129,21 @@ def inventory(request, bid):
     if(request.user.profile.isOwner):
         #Loading page
         if request.method == 'GET':
-            inventory_list = Inventory.objects.all()
+            inventory_list = Inventory.get_all_business_inventory(request.user, business)
             return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
         #Loading page after searching
         elif request.method == 'POST':
             search = str(request.POST.get('q', None))
             #Empty search bar
             if search == "":
-                inventory_list = Inventory.objects.all()
+                inventory_list = Inventory.get_all_business_inventory(request.user, business)
             #Non-Empty search bar
             else:
                 inventory_list = Inventory.objects.filter(tag_pile=search)
             return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
         #Other methods
         else:
-            inventory_list = Inventory.objects.all()
+            inventory_list = Inventory.get_all_business_inventory(request.user, business)
             return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
     else:
         return render(request, 'index.html')
@@ -189,21 +190,21 @@ def viewOffer(request, bid):
     #Loading page
     business = get_object_or_404(Business, id=bid)
     if request.method == 'GET':
-        offers_list = Inventory.objects.filter(private=False)
+        offers_list = Inventory.objects.filter(private=False).filter(business = business)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
     #Loading page after searching
     elif request.method == 'POST':
         search = str(request.POST.get('q', None))
         #Empty search bar
         if search == "":
-            offers_list = Inventory.objects.filter(private=False)
+            offers_list = Inventory.objects.filter(private=False, business=business)
         #Non-Empty search bar
         else:
-            offers_list = Inventory.objects.filter(private=False, tag_pile=search)
+            offers_list = Inventory.objects.filter(private=False, tag_pile=search, business=business)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
     #Other methods
     else:
-        offers_list = Inventory.objects.filter(private=False)
+        offers_list = Inventory.objects.filter(private=False, business=business)
         return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
 
 # Owners can edit their offers.
@@ -323,7 +324,7 @@ def receipt(request, bid, slug):
 def manageCategories(request, bid):
     business = get_object_or_404(Business, id=bid)
     if request.user.profile.isOwner:
-        category_tree = Category.objects.all()
+        category_tree = Category.objects.filter(business=business)
         if request.method == 'POST':
             form = NewCategoryForm(request.POST)
             if form.is_valid():

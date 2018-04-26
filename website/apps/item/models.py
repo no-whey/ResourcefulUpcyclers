@@ -30,6 +30,11 @@ class Donation(models.Model):
         donation_list = list(user.donation_creator.all())
         return donation_list
 
+    @staticmethod
+    def get_all_business_donations(user, business_in):
+        donation_list = list(Donation.objects.filter(business = business_in))
+        return donation_list
+
 #Custom tag model
 #Used to bypass tagulous default model name generation
 class Inventory_Tags(tagulous.models.TagModel):
@@ -53,6 +58,11 @@ class Inventory(models.Model):
 
     #Using tagulous tags
     tag_pile = tagulous.models.TagField(to=Inventory_Tags)
+
+    @staticmethod
+    def get_all_business_inventory(user, business_in):
+        inventory_list = list(Inventory.objects.filter(business = business_in))
+        return inventory_list
 
 class Category(MPTTModel):
 
