@@ -5,7 +5,21 @@ from website.apps.core.models import Business
 from website.apps.core.forms import CreateBusinessForm
 from decouple import config
 
-#from .forms import SignUpForm
+import string
+import random
+
+#==============================
+# Helper Fcns
+#==============================
+def unique_owner_key(key):
+    all_businesses = Business.objects.all()
+    for business in all_businesses:
+        if key == business.owner_key:
+            return False
+    return True
+#==============================
+
+
 
 # Create your views here.
 def index(request):
@@ -23,7 +37,7 @@ def create_business(request):
         if form.is_valid():
             business = Business()
             business.name = form.cleaned_data.get('name')
-            business.bio = form.cleaned_data.get('bio')
+            business.description = form.cleaned_data.get('description')
             business.address = form.cleaned_data.get('address')
             if form.cleaned_data.get('icon'):
                 business.icon = form.cleaned_data.get('icon')
@@ -33,7 +47,11 @@ def create_business(request):
             #business.owner_group.save()
 
             # I STILL NEED TO RANDOM GENERATE AN OWNER KEY BELOW
-            #alph_nums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            alph_nums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            key = ''.join(random.choice(alph_nums) for _ in range(32))
+            while(not unique_owner_key(key)):
+                key = ''.join(random.choice(alph_nums) for _ in range(32))
+            business.owner_key = key
             business.save()
             request.user.groups.add(business.owner_group)
             request.user.profile.isOwner = True

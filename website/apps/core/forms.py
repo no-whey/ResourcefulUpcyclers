@@ -7,8 +7,8 @@ class CreateBusinessForm(forms.Form):
 
     name = forms.CharField(max_length=30, required=True,
         help_text='Name of your Organization')
-    bio = forms.CharField(max_length=500, required=True,
-        help_text='Write a short bio about your Organization')
+    description = forms.CharField(max_length=500, required=True,
+        help_text='Write a short description about your Organization')
     address = forms.CharField(max_length=200, required=True,
         help_text="Format: 123 Qwerty Ave #456, City, ST 99999")
     icon = forms.ImageField(max_length=100, required=False,
@@ -17,7 +17,7 @@ class CreateBusinessForm(forms.Form):
     class Meta:
         model = Business
         fields = (  'name',
-                    'bio',
+                    'description',
                     'address',
                     'icon',
                     )
