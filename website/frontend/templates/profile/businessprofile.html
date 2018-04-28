@@ -4,25 +4,27 @@
 {% block sb_admin_content %}
 
 <h1 class="page-header">
-  {{ user.username|title }} or Business name (if field is there)
+  {{ business.name }}
 </h1>
 
 <div class="row">
-  <h3> Put business bio here </h3>
+  <h3> {{ business.description }} </h3>
 
   <h2 class="page-header"> Offers:</h2>
 
 
   <h2 class="page-header"> Make a Donation!
-    <a href="{% url "newDonation" %}" style="color:#999; font-size: 24px;" >
+    <a href="{% url "newDonation" bid=business.id %}" style="color:#999; font-size: 24px;" >
       <i class="fa fa-fw fa-gift"></i>
       Donate Now!
     </a>
   </h2>
 
   <h2 class="page-header"> Contact Us:</h2>
-  <b>Name:</b> {{ user.get_full_name }}<br>
-  <b>Email:</b> {{ user.email }}<br>
+  {% for owner in owner_group %}
+    <b>Name:</b> {{ owner.get_full_name }}<br>
+    <b>Email:</b> {{ owner.email }}<br><br>
+  {% endfor %}
   other forms of contact like phone number, address etc.
 
   <br>
