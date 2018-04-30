@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sb_admin_content %}
+
+<h1 class="page-header">
+  {{ business.name }}
+</h1>
+
+<div class="row">
+  <h3> {{ business.description }} </h3>
+
+  <h2 class="page-header"> Offers:</h2>
+
+
+  <h2 class="page-header"> Make a Donation!
+    <a href="{% url "newDonation" bid=business.id %}" style="color:#999; font-size: 24px;" >
+      <i class="fa fa-fw fa-gift"></i>
+      Donate Now!
+    </a>
+  </h2>
+
+  <h2 class="page-header"> Contact Us:</h2>
+  {% for owner in owner_group %}
+    <b>Name:</b> {{ owner.get_full_name }}<br>
+    <b>Email:</b> {{ owner.email }}<br><br>
+  {% endfor %}
+  other forms of contact like phone number, address etc.
+
+  <br>
+  <br><br><br>
+
+  <a href="{% url "home" %}" style="color:#999; font-size: 14px;" >
+    <img src="{% static 'images/ru_logo_background.png' %}" width="50" height="50">
+    Back to Resourceful Upcyclers
+  </a>
+</div>
+
+{% endblock sb_admin_content %}

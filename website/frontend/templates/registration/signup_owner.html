@@ -1,4 +1,5 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -30,47 +31,46 @@
 </head>
 
 <body class="bg-dark">
-  <div class="container">
+
+<span class="container">
 <div class="row">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-md-5 col-md-offset-4">
       <div class="login-panel panel panel-default">
         <div class="panel-heading">
-          <h1>
-            <img src="{% static 'images/favicon.ico' %}" width="75" height="75">
-            Log In</h1>
+          <h1><img src="{% static 'images/favicon.ico' %}" width="75" height="75">
+            Sign Up for a Business Owner Account
+          </h1>
         </div>
         <div class="panel-body">
-          <form method="post">
+            <form method="post">
+              <div class="form-group">
+                {% csrf_token %}
+                {% for field in form %}
+                  <p style="font-size: 18px;">
+                  {{ field.label_tag }}<br>
+                  {{ field }}<br>
+                  {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+                  </p>
+                {% endfor %}
+              </div>
             <div class="form-group">
-            {% csrf_token %}
-            {{ form.as_p }}
+              <button class="btn btn-primary btn-block" type="submit">Sign up</button>
             </div>
-            <div class="form-group">
-            <button class="btn btn-primary btn-block" type="submit">Login</button>
-            </div>
-            </form>
-            <div class= "small text-muted text-center">
-              Don't have an account?
-            </div>
-            <div class= "small text-muted text-center">
-              <a href="{% url "signup_customer" %}">Sign Up as a Customer</a>
-            </div>
-            <div class= "small text-muted text-center">
-              <a href="{% url "signup_owner" %}">Sign Up as a Business Owner</a>
-            </div>
+          </form>
+          <div class= "small text-muted text-center">
+            <a href="{% url "login" %}">Already have an account? Log in</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  </span>
   </div>
-  </div>
-  <!-- jQuery -->
-  <script src="{% static "js/jquery.js"%}"></script>
-
-  <!-- Bootstrap Core JavaScript -->
-  <script src="{% static "js/bootstrap.min.js"%}"></script>
-
-  {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
 </body>
 
 </html>

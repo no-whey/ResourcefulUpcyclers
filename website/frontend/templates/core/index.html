@@ -1,26 +1,36 @@
-{% extends "base.html" %}
+
 {% load static %}
+{% load easy_maps_tags %}
 
 {% block sb_admin_content %}
   <!-- Header-->
+  <h1>REPLACE WITH NEW CORE SPLASHPAGE</h1>
+  <h2>TEMPORARY LIST OF BUSINESSES</h2>
+  {% for business in businesses %}
+      <a href="{% url 'viewBusiness' bid=business.id %}">{{ business.name }}</a>
+  {% endfor %}
   <h1 class="page-header">
     <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
     Welcome to Resourceful Upcyclers
   </h1>
 
+  <h2>TEMP LOGIN/SIGNUP</h2>
+  <a href="{% url "login" %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
+  <a href="{% url "signup_customer" %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
+  <a href="{% url "signup_owner" %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a><br>
   <!-- Content -->
   <div class="row">
 
     <h2 class="page-header">Who are we?</h2>
     <h3>We give surplus stores an online presence.</h3>
-    <p>Often surplus stores don't have the IT infrastructure to support their own website. 
+    <p>Often surplus stores don't have the IT infrastructure to support their own website.
       Our service gives these stores an online precence, which can often increase business on it's own. </p>
-	
+
     <h3>We connect potential customers with business owners.</h3>
-    <p>Trying to make a trip to the surplus office but can't find time in your busy schedule? 
+    <p>Trying to make a trip to the surplus office but can't find time in your busy schedule?
       Taking time off can be difficult, and if there aren't any useful products, that time can be wasted.
       Instead, we give customers the option to browse invontory online.</p>
-		
+
     <h3>We make business a conversation.</h3>
     <p>Did you miss the deal on that perfect office chair? Put in a request to the surplus office and be automatically notified of new arrivals.</p>
     <p>Are your closets overflowing with office supplies? Offer to donate to a store. Even arrange for pickup.</p>
@@ -28,6 +38,8 @@
     <h3>We give Non-Profits an option to lower their administrative costs.</h3>
     <p>Local non-profits can use our service to find surplused office supplies and significantly cut down on their supply costs.
       They can then take the savings and put them towards their cause.</p>
+
+    {% easy_map "United States, California, Santa Cruz" 400 400 %}
 
   </div>
 {% endblock sb_admin_content %}

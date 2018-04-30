@@ -14,7 +14,7 @@
   <form method="post">
     {% csrf_token %}
     <button class="btn btn-danger" type="submit">DELETE</button>
-    <a href="{% url 'allDonations' %}"><button class="btn btn-primary" type="button">Cancel</button></a>
+    <a href="{% url 'allDonations' bid=business.id %}"><button class="btn btn-primary" type="button">Cancel</button></a>
   </form>
 
 </div>
