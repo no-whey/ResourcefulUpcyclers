@@ -1,39 +1,133 @@
-{% extends "base.html" %}
 {% load static %}
+{% load easy_maps_tags %}
 
-{% block sb_admin_content %}
+  <head>
 
-<h1 class="page-header">
-  {{ business.name }}
-</h1>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<div class="row">
-  <h3> {{ business.description }} </h3>
+    <title>Resourceful Upcyclers</title>
 
-  <h2 class="page-header"> Offers:</h2>
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
 
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/small-business.css' %}" rel="stylesheet">
 
-  <h2 class="page-header"> Make a Donation!
-    <a href="{% url "newDonation" bid=business.id %}" style="color:#999; font-size: 24px;" >
-      <i class="fa fa-fw fa-gift"></i>
-      Donate Now!
-    </a>
-  </h2>
+  </head>
 
-  <h2 class="page-header"> Contact Us:</h2>
-  {% for owner in owner_group %}
-    <b>Name:</b> {{ owner.get_full_name }}<br>
-    <b>Email:</b> {{ owner.email }}<br><br>
-  {% endfor %}
-  other forms of contact like phone number, address etc.
+  <body>
 
-  <br>
-  <br><br><br>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}>Resourceful Upcyclers</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'viewBusiness' bid = business.id %}">{{ business.name }}
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'viewOffer' bid = business.id %}">Offers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'newDonation' bid = business.id %}">Donate</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-  <a href="{% url "home" %}" style="color:#999; font-size: 14px;" >
-    <img src="{% static 'images/ru_logo_background.png' %}" width="50" height="50">
-    Back to Resourceful Upcyclers
-  </a>
-</div>
+    <!-- Page Content -->
+    <div class="container">
 
-{% endblock sb_admin_content %}
+      <!-- Heading Row -->
+      <div class="row my-4">
+        <div class="col-lg-7">
+          <img class="img-fluid rounded" src="{{ business.icon }}" alt="">
+        </div>
+        <!-- /.col-lg-8 -->
+        <div class="col-lg-5">
+          {% for owner in owner_group %}
+            <b>Name:</b> {{ owner.get_full_name }}<br>
+            <b>Email:</b> {{ owner.email }}<br><br>
+          {% endfor %}
+          <h1>{{ business.name }  }</h1>
+          <p>{{ business.description }}</p>
+          <hr>
+          <p>Phone: 1-800-123-456</p>
+          {% for owner in owner_group %}
+            <b>Email:</b> {{ owner.email }}<br><br>
+          {% endfor %}
+          <p>Email: business@biz.com</p>
+          <p>{{ business.address }}</p>
+        </div>
+        <!-- /.col-md-4 -->
+      </div>
+      <!-- /.row -->
+
+      <!-- Content Row -->
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h2 class="card-title">Search for Items</h2>
+              <p class="card-text">Our online showcase. Lorem ipsum.</p>
+            </div>
+            <div class="card-footer">
+              <a href="{% url "newDonation" bid = business.id %}" class="btn btn-primary">Search</a>
+            </div>
+          </div>
+        </div>
+        <!-- /.col-md-4 -->
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h2 class="card-title">Donate</h2>
+              <p class="card-text">Here is our donation page. Send us a message detailing what you want 
+              to donate, and we'll get back to you as soon as possible.</p>
+            </div>
+            <div class="card-footer">
+              <a href=""{% url "newDonation" bid=business.id %}"" class="btn btn-primary">Donations</a>
+            </div>
+          </div>
+        </div>
+        <!-- /.col-md-4 -->
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h2 class="card-title">Our Location</h2>
+              <p class="card-text">  {% easy_map "United States, California, Santa Cruz" 400 400 %} </p>
+            </div>
+          </div>
+        </div>
+        <!-- /.col-md-4 -->
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Resourceful Upcyclers 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+  </body>
+
+</html>
