@@ -32,15 +32,15 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'viewBusiness' bid = business.id %}">{{ business.name }}
+              <a class="nav-link" href="{% url 'viewBusiness' bid=business.id %}">{{ business.name }}
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'viewOffer' bid = business.id %}">Offers</a>
+              <a class="nav-link" href="{% url 'viewOffer' bid=business.id %}">Offers</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'newDonation' bid = business.id %}">Donate</a>
+              <a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donate</a>
             </li>
           </ul>
         </div>
@@ -84,7 +84,7 @@
               <p class="card-text">Our online showcase. Lorem ipsum.</p>
             </div>
             <div class="card-footer">
-              <a href="{% url "newDonation" bid = business.id %}" class="btn btn-primary">Search</a>
+              <a href="{% url 'newDonation' bid=business.id %}" class="btn btn-primary">Search</a>
             </div>
           </div>
         </div>
