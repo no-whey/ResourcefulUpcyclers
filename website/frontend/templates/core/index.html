@@ -25,13 +25,18 @@
   <body style="background-color: #343a40">
 
     <!-- Masthead -->
-    <header class="masthead text-white text-center" style="height: 130px">
+    <header class="masthead text-white" style="height: 130px">
       <div class="overlay"></div>
+      <a href="{% url "home" %}">
+      	<img src="{% static 'images/ru_logo-white.png' %}" width="65" height="65" style="position: fixed;">
+  	  </a>
       <div class="container">
         <div class="row">
-          <div class="col-xl-9 mx-auto">
-            <h1 class="mb-5">Resourceful Upcyclers</h1>
+          <div class="col-xl-2 mx-auto"></div>
+          <div class="col-xl-8 mx-auto text-center">
+		        <h1 class="mb-5">Resourceful Upcyclers</h1>
           </div>
+          <div class="col-xl-2 mx-auto"></div>
         </div>
       </div>
     </header>
