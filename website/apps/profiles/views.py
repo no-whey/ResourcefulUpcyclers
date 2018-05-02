@@ -9,10 +9,13 @@ from website.apps.profiles.forms import SignUpOwnerForm, SignUpCustomerForm, Upd
 
 @login_required
 def index(request):
+    return render(request, 'profile/profile.html')
+    """
     if(request.user.profile.isOwner):
         return render(request, 'profile/businessprofile.html')
     else:
         return render(request, 'profile/profile.html')
+    """
 
 def signup_owner(request):
     if request.method == 'POST':
