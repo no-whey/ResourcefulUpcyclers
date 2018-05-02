@@ -11,21 +11,25 @@
   <h3> {{ business.description }} </h3>
 
   <h2 class="page-header"> Offers:</h2>
+   {% for item in offers_list %}
+  	<b>Name:</b> {{ item.name.title }}<br>
+  {% endfor %}	
 
-
+	<!--<a href=""><img src="" /></a>-->
   <h2 class="page-header"> Make a Donation!
     <a href="{% url "newDonation" bid=business.id %}" style="color:#999; font-size: 24px;" >
       <i class="fa fa-fw fa-gift"></i>
       Donate Now!
     </a>
   </h2>
+  Have items to donate? Send a ticket in to get in touch with us.
 
   <h2 class="page-header"> Contact Us:</h2>
   {% for owner in owner_group %}
     <b>Name:</b> {{ owner.get_full_name }}<br>
     <b>Email:</b> {{ owner.email }}<br><br>
   {% endfor %}
-  other forms of contact like phone number, address etc.
+    <b>Address:</b> {{ business.address }}<br>
 
   <br>
   <br><br><br>

@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from website.apps.core.models import Business
+from website.apps.item.models import Inventory
 from website.apps.core.forms import CreateBusinessForm
 from decouple import config
 
@@ -29,7 +30,8 @@ def index(request):
 def viewBusiness(request, bid):
     business = get_object_or_404(Business, id=bid)
     owner_group = User.objects.filter(groups__name=business.name)
-    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group})
+    offers_list = Inventory.objects.filter(private=False, business=business)
+    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list })
 
 def create_business(request):
     if request.method == 'POST':
