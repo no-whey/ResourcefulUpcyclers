@@ -36,7 +36,16 @@
           <div class="col-xl-8 mx-auto text-center">
 		        <h1 class="mb-5">Resourceful Upcyclers</h1>
           </div>
-          <div class="col-xl-2 mx-auto"></div>
+          <div class="col-xl-2 mx-auto text-lg-right" style="position: relative;">
+          	{% if user.is_authenticated %}
+             	<a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+              	<a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i> Log Out</a><br>
+            {% else %}
+				<a href="{% url 'login' %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
+				<a href="{% url 'signup_customer' %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
+				<a href="{% url 'signup_owner' %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </header>
@@ -116,9 +125,16 @@
 
 	<div id="tab3" class="tabcontent bg-light">
 		<div class="text-center">
-			<a href="{% url 'login' %}" class="btn btn-primary"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a>
-			<a href="{% url 'signup_customer' %}" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a>
-			<a href="{% url 'signup_owner' %}" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+			{% if user.is_authenticated %}
+             	<a href="profile" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+             	<a href="#" class="btn btn-primary"><i class="fa fa-fw fa-envelope"></i> Inbox</a><br>
+             	<a href="#" class="btn btn-primary"><i class="fa fa-fw fa-gear"></i> Settings</a><br>
+              	<a href="{% url "logout" %}" class="btn btn-primary"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+            {% else %}
+				<a href="{% url 'login' %}" class="btn btn-primary"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
+				<a href="{% url 'signup_customer' %}" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
+				<a href="{% url 'signup_owner' %}" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+            {% endif %}
 		</div>
 	</div>
 	    
