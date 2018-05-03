@@ -38,9 +38,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'viewOffer' bid=business.id %}">Offers</a>
-                {% for item in offers_list %}
-  				  <b>Name:</b> {{ item.name.title }}<br>
-  				{% endfor %}
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donate</a>
@@ -79,7 +76,11 @@
           <div class="card h-100">
             <div class="card-body">
               <h2 class="card-title">Search for Items</h2>
-              <p class="card-text">Our online showcase. Lorem ipsum.</p>
+              <p class="card-text">
+              	{% for item in offers_list %}
+  				  <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}<br>
+  				{% endfor %}
+              </p>
             </div>
             <div class="card-footer">
               <a href="{% url 'newDonation' bid=business.id %}" class="btn btn-primary">Search</a>
