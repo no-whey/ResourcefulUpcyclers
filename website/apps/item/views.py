@@ -239,8 +239,11 @@ def editOffer(request, bid, slug):
                 #Save all fields except m2m
                 offer.save()
 
-                #save m2m fields
-                #form.save_m2m()
+                #Notify owners
+                for owner in business.profile_set.all():
+                    Alert.create("Offer updated!",
+                                 "Your offer \'" + offer.name + "\' has been updated.",
+                                 owner.user)
 
                 #Redirect to inventory, offer edited
                 return redirect('inventory', bid=bid)

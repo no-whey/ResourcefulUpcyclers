@@ -66,10 +66,11 @@
                         <a href="{% url 'alerts' 1 %}"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
                       </li>
                     {% endif %}
-                    <li>
-                      <a href="{% url 'alerts' 1 %}">View all alerts</a>
-                    </li>
+                    
                   {% endfor %}
+                  <li>
+                    <a href="{% url 'alerts' 1 %}">View all alerts</a>
+                  </li>
                 {% endif %}
               </ul>
             </li>
