@@ -65,4 +65,5 @@ urlpatterns = [
     
     #Viewing alerts:
     path('business/<int:bid>/alerts/', alert_views.view_alerts, name='alerts' ),
+    path('business/<int:bid>/alerts/<slug:slug>/', alert_views.delete_alert, name='delete_alert' ),
 ]
