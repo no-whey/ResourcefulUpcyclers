@@ -62,7 +62,7 @@
                 {% else %}
                   {% for alert in user.alert_set.all %}
                     <li>
-                      <a href="#"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
+                      <a href="{% url "alerts" 1 %}"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
                     </li>
                   {% endfor %}
                 {% endif %}
