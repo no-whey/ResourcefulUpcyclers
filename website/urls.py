@@ -41,6 +41,7 @@ urlpatterns = [
     path('business/<int:bid>/item/delete/<slug:slug>/', item_views.deleteOffer, name='deleteOffer'),
     path('business/<int:bid>/item/showhide/<slug:slug>/', item_views.showHideOffer, name='showHideOffer'),
     path('business/<int:bid>/offers/', item_views.viewOffer, name='viewOffer'),
+    path('business/<int:bid>/exportCSV', item_views.exportCSV, name='exportInventory'),
 
     #Viewing and editing Donations
     path('business/<int:bid>/newdonation/', item_views.newDonation, name='newDonation'),
