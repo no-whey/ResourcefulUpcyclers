@@ -77,9 +77,14 @@
             <div class="card-body">
               <h2 class="card-title">Search for Items</h2>
               <p class="card-text">
-              	{% for item in offers_list %}
-  				  <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}<br>
-  				{% endfor %}
+                {% if user in owner_group %}
+                  <a class="btn btn-primary" href="{% url 'exportInventory' bid=business.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Export Inventory to CSV">
+                  <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i>Export Inventory to CSV</a>
+                {% else %}
+                  {% for item in offers_list %}
+                    <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}<br>
+                  {% endfor %}
+                {% endif %}
               </p>
             </div>
             <div class="card-footer">

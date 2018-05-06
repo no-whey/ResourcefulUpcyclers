@@ -31,7 +31,7 @@ def viewBusiness(request, bid):
     business = get_object_or_404(Business, id=bid)
     owner_group = User.objects.filter(groups__name=business.name)
     offers_list = Inventory.objects.filter(private=False, business=business)
-    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list })
+    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
 
 def create_business(request):
     if request.method == 'POST':

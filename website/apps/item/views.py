@@ -10,6 +10,7 @@ from website.apps.alert.models import Alert
 
 import tagulous
 import operator
+import csv
 from django.db.models import Q
 
 from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
@@ -362,3 +363,18 @@ def oneCategory(request, bid, slug):
 @login_required
 def oneRequest(request):
     return render(request, 'requests/request.html')
+
+@login_required
+def exportCSV(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    if request.method == 'GET':
+        offers_list = Inventory.objects.filter(private=False, business=business)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Business%s_Inventory.csv'%bid
+
+    writer = csv.writer(response)
+    writer.writerow(['Item Name', 'Quantity', 'Price', 'In-House Location', 'Description', 'Image Link',])
+    for item in offers_list:
+        writer.writerow([item.name, item.quantity, item.price, item.location, item.text_description, item.img_link,])
+
+    return response
