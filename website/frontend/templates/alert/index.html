@@ -25,7 +25,10 @@
               <tr>
                 <td>
                   <div class="btn-group">
-                    <a class="btn btn-danger" href="{% url 'delete_alert' bid=business.id slug=alert.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">Delete</a>
+                    <a class="btn btn-danger" href="{% url 'delete_alert' bid=business.id slug=alert.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                      <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
+                    <a class="btn btn-primary" href="{% url 'read_alert' bid=business.id slug=alert.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Mark read/unread">
+                      <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
                     </div>
                 </td>
                 <td>{{ alert.title }}</td>
