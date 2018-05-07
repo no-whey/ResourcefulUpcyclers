@@ -63,12 +63,16 @@
 				   </td>
 			    {% else %}
 			      <td>
-			        <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
+			        <a class="btn btn-primary" href="{% url 'interestedOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Show interest">
+                <i class="fa fa-fw fa-check" style="color:white; font-size:15px"></i>
+              </a>
 			      </td>
 			  	</a>
 			      </tr>
 			    {% endif %}
               {% endif %}
+            
+            
             <!--Image popup code -->
               <div class="modal fade" id="{{ off.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
