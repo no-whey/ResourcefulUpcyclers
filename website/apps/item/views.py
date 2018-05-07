@@ -39,6 +39,12 @@ def newDonation(request, bid):
             donation.needs_pickup = form.cleaned_data.get('needs_pickup')
 
             donation.save()
+            
+            #Notify owners
+            for owner in business.profile_set.all():
+                Alert.create("New Donation!",
+                             "A user has offered to donate \'" + donation.name + "\'",
+                             owner.user)
 
             # Redirect to all Donations from that user, Maybe a "Thank you" page???
             return redirect('allDonations', bid=bid)
