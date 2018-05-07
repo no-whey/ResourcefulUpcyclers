@@ -292,6 +292,24 @@ def showHideOffer(request, bid, slug):
     else:
         return redirect('inventory', bid=bid)
 
+# Customers can show interest in an item and contact info is exchanged
+@login_required
+def interestedOffer(request, bid, slug):
+    business = get_object_or_404(Business, id=bid)
+    offer = get_object_or_404(Inventory, id=slug)
+    user = request.user
+    
+    #Notify owners
+    for owner in business.profile_set.all():
+        Alert.create("Interest in offer!",
+                     user.username + " (" + user.email + \
+                        ") has shown interest in your offer of \'" + offer.name + "\'",
+                     owner.user)
+    
+    return redirect('viewOffer', bid=bid)
+    
+    
+
 @login_required
 def receipt(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
