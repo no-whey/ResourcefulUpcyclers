@@ -4,28 +4,60 @@
 {% block sb_admin_content %}
 
 <h1 class="page-header">
-  <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
-  Create an Offer
+    <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
+    Create an Offer
 </h1>
-<h1>Create a new Offer</h1><br>
-<form method="post">
-  {% csrf_token %}
-  {% for field in form %}
-    <p>
-      <h4>{{ field.label_tag }}</h4>
-      {% if field.help_text %}
-        <small style="color: grey">{{ field.help_text }}</small>
-      {% endif %}<br>
-      {{ field }}<br><br>
-      {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-      {% endfor %}<br>
-    </p>
-  {% endfor %}
-  <br>
-  <button class="btn btn-primary btn-block" type="submit">Submit</button>
-  <br>
-  <br>
-</form>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Send a donation ticket to {{ business.name }}! You can your donation tickets later in the "All Donations" tab.
+    </div>
+    <div class="panel-body">
+        <form role="form" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Name</label><br>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label>Quantity</label><br>
+                {{ form.quantity }}
+            </div>
+            <div class="form-group">
+                <label>Price</label><br>
+                {{ form.price }}
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <p class="help-block">In-house location of item (Only visible to Owners)</p>
+                {{ form.location }}
+            </div>
+            <div class="form-group">
+                <label>Description</label><br>
+                {{ form.text_description }}
+            </div>
+            <div class="form-group">
+                <label>Image Link</label>
+                <p class="help-block">Link to Images of Item (use a different site)</p>
+                {{ form.img_link }}
+            </div>
+            <div class="form-group">
+                <label>Keep Private</label>
+                <p class="help-block">Hide Item from public listing</p>
+                {{ form.private }}
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <p class="help-block">Put searchable tags on the item</p>
+                {{ form.tag_pile }}
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <p class="help-block">Put the item into a Category to see other items of similar types</p>
+                {{ form.category }}
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 
 {% endblock sb_admin_content %}
