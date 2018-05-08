@@ -1,6 +1,6 @@
 {% load static %}
 
-{% block sb_admin_content %}
+
 
 <head>
 
@@ -18,6 +18,13 @@
     <link type="text/css" href="{% static 'css/landing-page.css' %}" rel="stylesheet">
 
     <link type="text/css" href="{% static 'css/splash.css' %}" rel="stylesheet">
+
+    <!-- Bootstrap Core CSS -->
+    {% block sb_admin_bootstrap_css %}<link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">{% endblock sb_admin_bootstrap_css %}
+
+
+
+
 
 </head>
 
@@ -47,30 +54,25 @@
         </div>
     </header>
 
-
+{% block sb_admin_content %}
     <body class="bg-dark">
-        <div class="container text-left bg-light">
-            <div class="row" style="padding-bottom: 15px">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="login-panel panel panel-default">
-
-                        <h1 class="page-header">
-                            {{ user.username|title }}'s Profile
-                        </h1>
-                        <div class="panel-body">
-                            <ul>
-                              <li><b>Name:</b> {{ user.get_full_name }}<br></li>
-                              <li><b>Email:</b> {{ user.email }}<br></li>
-                              <li><b>User Status:</b>
-                              {% if user.profile.isOwner %}
-                                Owner</li>
-                                <li><b>Owner Key:</b> {{user.profile.business.owner_key}}</li>
-                              {% else %}
-                                Customer</li>
-                              {% endif %}<br>
-                            </ul>
-                        </div>
-                    </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{ user.username|title }}'s Profile
+            </div>
+            <div class="panel-body">
+                <div class="panel-body">
+                    <ul>
+                      <li><b>Name:</b> {{ user.get_full_name }}<br></li>
+                      <li><b>Email:</b> {{ user.email }}<br></li>
+                      <li><b>User Status:</b>
+                      {% if user.profile.isOwner %}
+                        Owner</li>
+                        <li><b>Owner Key:</b> {{user.profile.business.owner_key}}</li>
+                      {% else %}
+                        Customer</li>
+                      {% endif %}<br>
+                    </ul>
                 </div>
             </div>
         </div>
