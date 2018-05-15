@@ -31,7 +31,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+            <li class="nav-item">  
               <a class="nav-link" href="{% url 'viewBusiness' bid=business.id %}">{{ business.name }}
                 <span class="sr-only">(current)</span>
               </a>
@@ -78,13 +78,24 @@
               <h2 class="card-title">Search for Items</h2>
               <p class="card-text">
                 {% if user in owner_group %}
-                  <a class="btn btn-primary" href="{% url 'exportInventory' bid=business.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Export Inventory to CSV">
-                  <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i>Export Inventory to CSV</a>
+
+            	    <form action="{% url 'viewBusiness' bid=business.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+            	    	<label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+					           <input type="file" name="csv_file" />
+					           <input class="btn btn-secondary" type="submit" value="Upload" />
+
+					         </form>
+
+                	<a class="btn btn-primary" href="{% url 'exportInventory' bid=business.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Export Inventory to CSV">
+	                <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i>Export Inventory to CSV</a>
                 {% else %}
+
                   {% for item in offers_list %}
                     <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}<br>
                   {% endfor %}
                 {% endif %}
+
               </p>
             </div>
             <div class="card-footer">
