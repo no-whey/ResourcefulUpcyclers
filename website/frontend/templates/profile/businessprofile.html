@@ -160,14 +160,14 @@
           <div class="card h-100">
             <div class="card-body">
               <h2 class="card-title">Search for Items</h2>
+              		<p class="card-text">Recently added items:</p>
               <p class="card-text">
                   {% for item in offers_list %}
+
                     <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}<br>
                   {% endfor %}
               </p>
-            </div>
-            <div class="card-footer">
-              <a href="{% url 'viewOffer' bid=business.id %}" class="btn btn-primary">Search</a>
+              <a href="{% url 'viewOffer' bid=business.id %}" class="btn btn-primary" style="width: 100%">Search</a>
             </div>
           </div>
         </div>
@@ -178,9 +178,13 @@
               <h2 class="card-title">Donate</h2>
               <p class="card-text">Here is our donation page. Send us a message detailing what you want 
               to donate, and we'll get back to you as soon as possible.</p>
-            </div>
-            <div class="card-footer">
-              <a href="{% url 'newDonation' bid=business.id %}" class="btn btn-primary">Donations</a>
+              <a href="{% url 'newDonation' bid=business.id %}" class="btn btn-primary" style="width: 100%">Donate</a>
+              <hr>
+              <h2 class="card-title">Make a Request</h2>
+              <p class="card-text">Don't see something here that you would like? Let us know! Send us a request message using the link below.
+              We'll let you know when it, or something similar, becomes available.</p>
+              <a href="" class="btn btn-primary" style="width: 100%">Request</a>
+
             </div>
           </div>
         </div>

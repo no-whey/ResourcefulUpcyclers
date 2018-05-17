@@ -31,7 +31,7 @@ def index(request):
 def viewBusiness(request, bid):
     business = get_object_or_404(Business, id=bid)
     owner_group = User.objects.filter(groups__name=business.name)
-    offers_list = Inventory.objects.filter(private=False, business=business)
+    offers_list = Inventory.objects.filter(private=False, business=business)[::-1][:3]
     route = render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
 
     if request.POST and request.FILES:
@@ -74,7 +74,7 @@ def viewBusiness(request, bid):
             logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
             messages.error(request,"Unable to upload file. "+repr(e))
 
-    offers_list = Inventory.objects.filter(private=False, business=business)
+    offers_list = Inventory.objects.filter(private=False, business=business)[::-1][:3]
     return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
 
 def create_business(request):
