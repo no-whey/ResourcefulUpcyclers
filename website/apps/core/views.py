@@ -8,6 +8,7 @@ from decouple import config
 
 import string
 import random
+import datetime
 
 #==============================
 # Helper Fcns
@@ -30,7 +31,50 @@ def index(request):
 def viewBusiness(request, bid):
     business = get_object_or_404(Business, id=bid)
     owner_group = User.objects.filter(groups__name=business.name)
-    offers_list = Inventory.objects.filter(private=False, business=business)
+    offers_list = Inventory.objects.filter(private=False, business=business)[::-1][:3]
+    route = render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
+
+    if request.POST and request.FILES:
+        try:
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                messages.error(request,'File is not CSV type')
+                return HttpResponseRedirect(route)
+            #if file is too large, return
+            if csv_file.multiple_chunks():
+                messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+                return HttpResponseRedirect(route);
+     
+            file_data = csv_file.read().decode("utf-8")        
+     
+            lines = file_data.split("\r\n")
+
+            Inventory.objects.filter(private=False, business=business).delete()
+            #loop over the lines and save them in db. If error , store as string and then display
+            first_line = True
+            for line in lines:
+            	if first_line:
+            		first_line = False
+            	else:                        
+	                fields = line.split(",")
+	                if len(fields) == 6:
+		                item = Inventory()
+		                item.name = fields[0]
+		                item.quantity = fields[1]
+		                item.price = fields[2]
+		                item.location = fields[3]
+		                item.text_description = fields[4]
+		                item.img_link = fields[5]
+		                item.date = datetime.date.today	
+		                item.private = False
+		                item.business = business
+		                item.save()
+ 
+        except Exception as e:
+            logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
+            messages.error(request,"Unable to upload file. "+repr(e))
+
+    offers_list = Inventory.objects.filter(private=False, business=business)[::-1][:3]
     return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
 
 def create_business(request):
