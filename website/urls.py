@@ -19,6 +19,7 @@ from django.urls import path, include
 from website.apps.core import views as core_views
 from website.apps.profiles import views as profiles_views
 from website.apps.item import views as item_views
+from website.apps.alert import views as alert_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -42,7 +43,8 @@ urlpatterns = [
     path('business/<int:bid>/item/showhide/<slug:slug>/', item_views.showHideOffer, name='showHideOffer'),
     path('business/<int:bid>/offers/', item_views.viewOffer, name='viewOffer'),
     path('business/<int:bid>/exportCSV', item_views.exportCSV, name='exportInventory'),
-
+    path('business/<int:bid>/item/<slug:slug>/interest', item_views.interestedOffer, name='interestedOffer'),
+    
     #Viewing and editing Donations
     path('business/<int:bid>/newdonation/', item_views.newDonation, name='newDonation'),
     path('business/<int:bid>/donations/', item_views.allDonations, name='allDonations'),
@@ -61,4 +63,9 @@ urlpatterns = [
 
     #View one specific business
     path('business/<int:bid>/', core_views.viewBusiness, name='viewBusiness'),
+    
+    #Viewing alerts:
+    path('business/<int:bid>/alerts/', alert_views.view_alerts, name='alerts' ),
+    path('business/<int:bid>/alerts/<slug:slug>/delete', alert_views.delete_alert, name='delete_alert' ),
+    path('business/<int:bid>/alerts/<slug:slug>/read', alert_views.read_alert, name='read_alert' ),
 ]

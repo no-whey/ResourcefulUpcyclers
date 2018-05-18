@@ -39,6 +39,12 @@ def newDonation(request, bid):
             donation.needs_pickup = form.cleaned_data.get('needs_pickup')
 
             donation.save()
+            
+            #Notify owners
+            for owner in business.profile_set.all():
+                Alert.create("New Donation!",
+                             "A user has offered to donate \'" + donation.name + "\'",
+                             owner.user)
 
             # Redirect to all Donations from that user, Maybe a "Thank you" page???
             return redirect('allDonations', bid=bid)
@@ -239,8 +245,11 @@ def editOffer(request, bid, slug):
                 #Save all fields except m2m
                 offer.save()
 
-                #save m2m fields
-                #form.save_m2m()
+                #Notify owners
+                for owner in business.profile_set.all():
+                    Alert.create("Offer updated!",
+                                 "Your offer \'" + offer.name + "\' has been updated.",
+                                 owner.user)
 
                 #Redirect to inventory, offer edited
                 return redirect('inventory', bid=bid)
@@ -282,6 +291,24 @@ def showHideOffer(request, bid, slug):
 
     else:
         return redirect('inventory', bid=bid)
+
+# Customers can show interest in an item and contact info is exchanged
+@login_required
+def interestedOffer(request, bid, slug):
+    business = get_object_or_404(Business, id=bid)
+    offer = get_object_or_404(Inventory, id=slug)
+    user = request.user
+    
+    #Notify owners
+    for owner in business.profile_set.all():
+        Alert.create("Interest in offer!",
+                     user.username + " (" + user.email + \
+                        ") has shown interest in your offer of \'" + offer.name + "\'",
+                     owner.user)
+    
+    return redirect('viewOffer', bid=bid)
+    
+    
 
 @login_required
 def receipt(request, bid, slug):

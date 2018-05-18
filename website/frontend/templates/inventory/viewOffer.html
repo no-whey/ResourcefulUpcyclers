@@ -60,13 +60,14 @@
                  	  <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
                     <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
                     <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
-                    </div>
-                    </td>
+                  </div>
+                  </td>
                   {% else %}
                     <td>
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
-                    </td>
+                    <a class="btn btn-primary" href="{% url 'interestedOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Show interest">
+                    <i class="fa fa-fw fa-check" style="color:white; font-size:15px"></i>
                     </a>
+                    </td>
                     </tr>
                   {% endif %}
                 {% endif %}
