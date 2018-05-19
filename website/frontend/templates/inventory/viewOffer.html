@@ -130,7 +130,8 @@
     <div class="row">
       {% for off in offers_list %}
       <div class="col-lg-3 col-sm-6 col-xs-12">
-        <a data-toggle="modal" data-target="#{{ off.id }}"><img src={{ off.img_link }} style="width:130px; height:145px" title={{ off.name.title }}></a>  {{ off.name.title }}  -  ${{ off.price }}
+        <a data-toggle="modal" data-target="#{{ off.id }}"><img src={{ off.img_link }} style="width:130px; height:145px" title={{ off.name.title }}></a><br>
+        {{ off.name.title }}  -  ${{ off.price }}
       </div>
       {% if forloop.counter|divisibleby:4 %}
     </div>
