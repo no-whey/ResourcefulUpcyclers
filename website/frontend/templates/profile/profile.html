@@ -1,0 +1,81 @@
+{% load static %}
+
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Resourceful Upcyclers</title>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link type="text/css" href="{% static 'css/landing-page.css' %}" rel="stylesheet">
+
+    <link type="text/css" href="{% static 'css/splash.css' %}" rel="stylesheet">
+
+    <!-- Bootstrap Core CSS -->
+    {% block sb_admin_bootstrap_css %}<link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">{% endblock sb_admin_bootstrap_css %}
+
+
+
+
+
+</head>
+
+<body style="background-color: #343a40">
+    <header class="masthead text-white" style="height: 130px">
+        <div class="overlay"></div>
+        <a href="{% url "home" %}">
+            <img src="{% static 'images/ru_logo-white.png' %}" width="75" height="75" style="position: fixed;">
+        </a>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-2 mx-auto"></div>
+                <div class="col-xl-8 mx-auto text-center">
+                    <h1 class="mb-5">Resourceful Upcyclers</h1>
+                </div>
+                <div class="col-xl-2 mx-auto text-lg-right" >
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+                    <a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i> Log Out</a><br>
+                    {% else %}
+                    <a href="{% url 'login' %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
+                    <a href="{% url 'signup_customer' %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
+                    <a href="{% url 'signup_owner' %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% block sb_admin_content %}
+    <body class="bg-dark">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{ user.username|title }}'s Profile
+            </div>
+            <div class="panel-body">
+                <div class="panel-body">
+                    <ul>
+                      <li><b>Name:</b> {{ user.get_full_name }}<br></li>
+                      <li><b>Email:</b> {{ user.email }}<br></li>
+                      <li><b>User Status:</b>
+                      {% if user.profile.isOwner %}
+                        Owner</li>
+                        <li><b>Owner Key:</b> {{user.profile.business.owner_key}}</li>
+                      {% else %}
+                        Customer</li>
+                      {% endif %}<br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</body>
+{% endblock sb_admin_content %}

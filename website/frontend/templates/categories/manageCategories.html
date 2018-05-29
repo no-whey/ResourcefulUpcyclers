@@ -35,7 +35,7 @@
                       <ul>
                         {% recursetree categories %}
                           <li>
-                            <a href="{% url 'oneCategory' node.id %}">{{ node.name }}</a>
+                            <a href="{% url 'oneCategory' bid=business.id slug=node.id %}">{{ node.name }}</a>
                             {% if not node.is_leaf_node %}
                               <ul class="children">
                                 {{ children }}
@@ -59,7 +59,7 @@
                                 <small style="color: grey">{{ field.help_text }}</small>
                               {% endif %}<br>
                               {{ field }}
-                              <!-- TEST FOR DIFFERENT FORM SELECTION 
+                              <!-- TEST FOR DIFFERENT FORM SELECTION
                               {% if field == form.parent %}
                                 <select class="form-control">
                                 {% for choice in field %}

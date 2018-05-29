@@ -1,33 +1,222 @@
-{% extends "base.html" %}
 {% load static %}
+{% load easy_maps_tags %}
 
 {% block sb_admin_content %}
-  <!-- Header-->
-  <h1 class="page-header">
-    <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
-    Welcome to Resourceful Upcyclers
-  </h1>
 
-  <!-- Content -->
-  <div class="row">
 
-    <h2 class="page-header">Who are we?</h2>
-    <h3>We give surplus stores an online presence.</h3>
-    <p>Often surplus stores don't have the IT infrastructure to support their own website. 
-      Our service gives these stores an online precence, which can often increase business on it's own. </p>
-	
-    <h3>We connect potential customers with business owners.</h3>
-    <p>Trying to make a trip to the surplus office but can't find time in your busy schedule? 
-      Taking time off can be difficult, and if there aren't any useful products, that time can be wasted.
-      Instead, we give customers the option to browse invontory online.</p>
-		
-    <h3>We make business a conversation.</h3>
-    <p>Did you miss the deal on that perfect office chair? Put in a request to the surplus office and be automatically notified of new arrivals.</p>
-    <p>Are your closets overflowing with office supplies? Offer to donate to a store. Even arrange for pickup.</p>
+  <head>
 
-    <h3>We give Non-Profits an option to lower their administrative costs.</h3>
-    <p>Local non-profits can use our service to find surplused office supplies and significantly cut down on their supply costs.
-      They can then take the savings and put them towards their cause.</p>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  </div>
+    <title>Resourceful Upcyclers</title>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link type="text/css" href="{% static 'css/landing-page.css' %}" rel="stylesheet">
+
+    <link type="text/css" href="{% static 'css/splash.css' %}" rel="stylesheet">
+  </head>
+
+  <body style="background-color: #343a40">
+
+    <!-- Masthead -->
+    <header class="masthead text-white" style="height: 130px">
+      <div class="overlay"></div>
+      <a href="{% url "home" %}">
+      	<img src="{% static 'images/ru_logo-white.png' %}" width="75" height="75" style="position: fixed;">
+  	  </a>
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-2 mx-auto"></div>
+          <div class="col-xl-8 mx-auto text-center">
+		        <h1 class="mb-5">Resourceful Upcyclers</h1>
+          </div>
+          <div class="col-xl-2 mx-auto text-lg-right" style="position: relative;">
+          	{% if user.is_authenticated %}
+             	<a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+              	<a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i> Log Out</a><br>
+            {% else %}
+				<a href="{% url 'login' %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
+				<a href="{% url 'signup_customer' %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
+				<a href="{% url 'signup_owner' %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </header>
+
+  	<div class="tab">
+	  <button class="tablinks" onclick="openTab(event, 'tab1')" id="defaultOpen">Businesses</button>
+	  <button class="tablinks" style="width:34%" onclick="openTab(event, 'tab2')">About Us</button>
+	  <button class="tablinks" onclick="openTab(event, 'tab3')">Account</button>
+	</div>
+
+
+    <!-- Businesses -->
+    <div id="tab1" class="tabcontent bg-light" style="padding-top: 10px; padding-bottom: 10px">
+      <div class="container text-center bg-light">
+      	<div class="row" style="padding-bottom: 15px">
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" style="border-radius: 5px 0 0 5px">Dropdown Example
+			  <span class="caret"></span></button>
+			  <ul class="dropdown-menu">
+			    <li><a href="#">HTML</a></li>
+			    <li><a href="#">CSS</a></li>
+			    <li><a href="#">JavaScript</a></li>
+			  </ul>
+			</div>
+     		<input type="text" class="form-control" placeholder="Search.." style="border-radius: 0 5px 5px 0; width: 200px">
+      	</div>
+        <div class="row">
+
+        {% for business in businesses %} 
+          <div class="col-lg-3">
+            <div class="testimonial-item mx-auto mb-0 mb-lg-0">
+	           	<a href="{% url 'viewBusiness' bid=business.id %}">
+              		<img class="img-fluid rounded-circle mb-3" src="https://pre00.deviantart.net/b738/th/pre/i/2012/175/8/1/business_logo___logos_for_sale_by_aeldesign-d54nfx6.png" style="border: 1px solid lightgray; width: 220px" alt="">
+              	</a>
+	            <h5><a href="{% url 'viewBusiness' bid=business.id %}">{{ business.name }}</a></h5>
+	              <p class="font-weight-light mb-0"></p>
+	        </div>
+          </div>
+        {% endfor %} 
+		</div>
+	  </div>
+	</div>
+
+		    <!-- Image Showcases -->
+
+	<div id="tab2" class="tabcontent bg-light">
+	    <div class="container-fluid p-0 showcase">
+		    <div class="row no-gutters">
+	          <div class="col-lg-6 order-lg-2 text-white showcase-img">
+	          	<img src="{% static 'images/about-open.jpg' %}" width="100%">
+	          </div>
+	          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+	            <h2>Fully Responsive Design</h2>
+	            <p class="lead mb-0">When you use a theme created by Start Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
+	         </div>
+	        </div>
+	        <div class="row no-gutters">
+		          <div class="col-lg-6 text-white showcase-img">
+		          	<img src="{% static 'images/about-support.jpg' %}" width="100%">
+		          </div>
+		          <div class="col-lg-6 my-auto showcase-text">
+		            <h2>Updated For Bootstrap 4</h2>
+		            <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 4 is leading the way in mobile responsive web development! All of the themes on Start Bootstrap are now using Bootstrap 4!</p>
+		          </div>
+		        </div>
+		        <div class="row no-gutters">
+		          <div class="col-lg-6 order-lg-2 text-white showcase-img">{% easy_map "United States, California, Santa Cruz" 760 500 %}</div>
+		          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+		            <h2>Easy to Use &amp; Customize</h2>
+		            <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		</div>
+	</div>
+
+	<div id="tab3" class="tabcontent bg-light">
+		<div class="text-center">
+			{% if user.is_authenticated %}
+             	<a href="profile" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+             	<a href="#" class="btn btn-primary"><i class="fa fa-fw fa-envelope"></i> Inbox</a><br>
+             	<a href="#" class="btn btn-primary"><i class="fa fa-fw fa-gear"></i> Settings</a><br>
+              	<a href="{% url "logout" %}" class="btn btn-primary"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+            {% else %}
+				<a href="{% url 'login' %}" class="btn btn-primary"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
+				<a href="{% url 'signup_customer' %}" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
+				<a href="{% url 'signup_owner' %}" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+            {% endif %}
+		</div>
+	</div>
+	    
+	    <!--<div class="panel-group" id="accordion">
+		  	<div class="panel panel-default">
+			  <div class="panel-heading">
+			     <h4 class="panel-title">
+				     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+			        Collapsible Group 1</a>
+			      </h4>
+			   </div>
+			   <div id="collapse1" class="panel-collapse collapse in">
+			      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+			      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+			      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+			      commodo consequat.</div>
+			   </div>
+			</div>
+			  <div class="panel panel-default">
+			    <div class="panel-heading">
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+			        Collapsible Group 2</a>
+			      </h4>
+			    </div>
+			    <div id="collapse2" class="panel-collapse collapse">
+			      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+			      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+			      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+			      commodo consequat.</div>
+			    </div>
+			  </div>
+			  <div class="panel panel-default">
+			    <div class="panel-heading">
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+			        Collapsible Group 3</a>
+			      </h4>
+			    </div>
+			    <div id="collapse3" class="panel-collapse collapse">
+			      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+			      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+			      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+			      commodo consequat.</div>
+			    </div>
+			  </div>
+			</div>
+		</div> -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 h-8 text-center text-lg-left my-auto">
+            <ul class="list-inline mb-2">
+              <li class="list-inline-item">
+                <a href="#">About</a>
+              </li>
+              <li class="list-inline-item">&sdot;</li>
+              <li class="list-inline-item">
+                <a href="#">Contact</a>
+              </li>
+              <li class="list-inline-item">&sdot;</li>
+              <li class="list-inline-item">
+                <a href="#">Terms of Use</a>
+              </li>
+              <li class="list-inline-item">&sdot;</li>
+              <li class="list-inline-item">
+                <a href="#">Privacy Policy</a>
+              </li>
+            </ul>
+            <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2018. All Rights Reserved.</p>
+          </div>
+        </div>
+    </div>
+    </footer>
+
+    <script src="{% static 'js/splashtab.js' %}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+  </body>
+
 {% endblock sb_admin_content %}

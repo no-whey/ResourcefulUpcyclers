@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sb_admin_content %}
+
+<h1 class="page-header">
+  <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
+  Update Profile
+</h1>
+<h1>{{ user.username|title }}'s Profile</h1><br>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      <h4>{{ field.label_tag }}</h4>
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}<br>
+      {{ field }}<br><br>
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}<br>
+    </p>
+  {% endfor %}
+  <br>
+  <button class="btn btn-primary btn-block" type="submit">Save</button>
+  <br>
+  <br>
+</form>
+
+{% endblock sb_admin_content %}
