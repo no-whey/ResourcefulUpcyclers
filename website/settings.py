@@ -29,11 +29,13 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
 INSTALLED_APPS = [
+    'website.apps.core',
+    'website.apps.alert',
     'website.apps.profiles',
     'website.apps.item',
     'django.contrib.admin',
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'django_sb_admin',
     'tagulous',
     'mptt',
+    'easy_maps'
 ]
 
 MIDDLEWARE = [
@@ -82,28 +85,11 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'upcyclers',
-            'USER': 'upcyclersadmin',
-            'PASSWORD': 'djang0becrazy',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -140,14 +126,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = '/static/'
+STATIC_URL = '/frontend/static/'
 STATICFILES_DIRS = (
     PROJECT_DIR.child('frontend').child('static'),
 )
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+MEDIA_ROOT = '/frontend/static/images'
 
 #Use tagulous serialization modules
 SERIALIZATION_MODULES = {
@@ -156,3 +143,6 @@ SERIALIZATION_MODULES = {
     'python': 'tagulous.serializers.python',
     'yaml':   'tagulous.serializers.pyyaml',
 }
+
+EASY_MAPS_GOOGLE_MAPS_API_KEY = 'AIzaSyBx0M9B_DdhIiHSH42weL_yiug9CnNZ77I'
+EASY_MAPS_CENTER = (36.962421, -122.023301)
