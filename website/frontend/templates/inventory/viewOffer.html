@@ -12,7 +12,7 @@
       Available Offers
     {% endif %}
     </h1></div>
-
+    
     <!-- Search bar -->
     <form id="searchform" action="." method="post" accept-charset="utf-8">
       {% csrf_token %}
@@ -22,173 +22,108 @@
       <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Search Tags">
     </form>
     <br>
-
-    {% if user.profile.isOwner %}
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-              <th style="width: 3%"></th>
-              <th style="width: 13%">Name</th>
-              <th style="width: 10%">Quantity</th>
-              <th style="width: 10%">Price</th>
-              <th style="width: 15%">Location</th>
-              <th style="width: 40%">Description</th>
-              <th style="width: 15%"></th>
-              </tr>
-              </thead>
-            <tbody>
-              {% for off in offers_list %}
-                {% if off.private == False %}
-                  <tr>
-                  <td><div data-toggle="modal" data-target="#{{ off.id }}"><button class="btn" style="width:100%; height:100%" data-toggle="tooltip" data-placement="bottom" title="Expand">
-                  <i class="fa fa-fw fa-expand" style="color:gray; font-size:15px">
-                  </i></button></div></td>
-                  <td>{{ off.name.title }}
-                    <br>
-                    <div class= "small text-muted">Posted {{ off.date }}</div>
-                  </td>
-                  <td>{{ off.quantity }}</td>
-                  <td>${{ off.price }}</td>
-                  <td>{{ off.location }}</td>
-                  <td>{{ off.text_description }}</td>
-                  {% if user.profile.isOwner %}
-                  <td>
-                  <div class="btn-group">
-                    <a class="btn btn-primary" href="{% url 'editOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 	  <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
-                    <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-                    <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
-                  </div>
-                  </td>
-                  {% else %}
-                    <td>
-                    <a class="btn btn-primary" href="{% url 'interestedOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Show interest">
-                    <i class="fa fa-fw fa-check" style="color:white; font-size:15px"></i>
-                    </a>
-                    </td>
-                    </tr>
-                  {% endif %}
-                {% endif %}
-              <!--Image popup code -->
-                <div class="modal fade" id="{{ off.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel"><b>{{ off.name.title }}</b></h3>
-                      </div>
-                      <div class="modal-body">
-                          <img class ="img-rounded" style="width: 100%" src={{ off.img_link }} alt=""/>
-                        	<div class="media">
-                            <div class="media-left">
-                            	<h6><b> Tags: </b></h6>
-                            </div>
-                            <div class="media-body">
-                            	{% for tag in off.tag_pile.all %}
-                                <button class="btn btn-sm" type="button" data-dismiss="modal">{{ tag }}</button>
-                            	{% endfor %}
-                            </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="media">
-                            <div class="media-body" style="width: 75%">
-                            	<b>Description: </b>
-                        			{{ off.text_description }}
-                            </div>
-                            <div class="media-right" style="width: 25%">
-                            	<b>Price: </b>${{ off.price }}
-                            	<br><br>
-                            	<b>Quantity: </b>{{ off.quantity }}
-                            </div>
-                        </div>
-                      </div>
-
-                      <div class="modal-footer">
-                        {% if user.profile.isOwner %}
-                          <div class="btn-group">
-                          <a class="btn btn-primary" href="{% url 'editOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                          <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
-                          <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-                          <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
-                          </div>
-  	                    {% else %}
-                          <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
-                        {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    {% else %}
-    <div class="row">
-      {% for off in offers_list %}
-      <div class="col-lg-3 col-sm-6 col-xs-12">
-        <a data-toggle="modal" data-target="#{{ off.id }}"><img src={{ off.img_link }} style="width:130px; height:145px" title={{ off.name.title }}></a><br>
-        {{ off.name.title }}  -  ${{ off.price }}
-      </div>
-      {% if forloop.counter|divisibleby:4 %}
-    </div>
-    <div class="row">
-      {% endif %}
-        <div class="modal fade" id="{{ off.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel"><b>{{ off.name.title }}</b></h3>
-              </div>
-              <div class="modal-body">
-                  <img class ="img-rounded" style="width: 100%" src={{ off.img_link }} alt=""/>
-                  <div class="media">
-                    <div class="media-left">
-                      <h6><b> Tags: </b></h6>
-                    </div>
-                    <div class="media-body">
-                      {% for tag in off.tag_pile.all %}
-                        <button class="btn btn-sm" type="button" data-dismiss="modal">{{ tag }}</button>
-                      {% endfor %}
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="media">
-                    <div class="media-body" style="width: 75%">
-                      <b>Description: </b>
-                      {{ off.text_description }}
-                    </div>
-                    <div class="media-right" style="width: 25%">
-                      <b>Price: </b>${{ off.price }}
-                      <br><br>
-                      <b>Quantity: </b>{{ off.quantity }}
-                    </div>
-                </div>
-              </div>
-
-              <div class="modal-footer">
+    
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+            <th style="width: 3%"></th>
+            <th style="width: 13%">Name</th>
+            <th style="width: 10%">Quantity</th>
+            <th style="width: 10%">Price</th>
+            <th style="width: 15%">Location</th>
+            <th style="width: 40%">Description</th>
+            <th style="width: 15%"></th>
+            </tr>
+            </thead>
+          <tbody>
+            {% for off in offers_list %}
+              {% if off.private == False %}
+                <tr>
+                <td><div data-toggle="modal" data-target="#{{ off.id }}"><button class="btn" style="width:100%; height:100%" data-toggle="tooltip" data-placement="bottom" title="Expand">
+					<i class="fa fa-fw fa-expand" style="color:gray; font-size:15px">
+					</i></button></div></td>
+                <td>{{ off.name.title }}
+                  <br>
+                  <div class= "small text-muted">Posted {{ off.date }}</div>
+                </td>
+                <td>{{ off.quantity }}</td>
+                <td>${{ off.price }}</td>
+                <td>{{ off.location }}</td>
+                <td>{{ off.text_description }}</td>
                 {% if user.profile.isOwner %}
-                  <div class="btn-group">
-                  <a class="btn btn-primary" href="{% url 'editOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                  <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
-                  <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
-                  <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
+			       <td>
+			       	<div class="btn-group">
+			         <a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+			         	<i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
+			         <a class="btn btn-primary" href="{% url 'showHideOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
+			         	<i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
+			     </div>
+				   </td>
+			    {% else %}
+			      <td>
+			        <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
+			      </td>
+			  	</a>
+			      </tr>
+			    {% endif %}
+              {% endif %}
+            <!--Image popup code -->
+              <div class="modal fade" id="{{ off.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel"><b>{{ off.name.title }}</b></h3>
+                    </div>
+                    <div class="modal-body">
+                        <img class ="img-rounded" style="width: 100%" src={{ off.img_link }} alt=""/>
+                      	<div class="media">
+                          <div class="media-left">
+                          	<h6><b> Tags: </b></h6>
+                          </div>
+                          <div class="media-body">
+                          	{% for tag in off.tag_pile.all %}
+                              <button class="btn btn-sm" type="button" data-dismiss="modal">{{ tag }}</button>
+                          	{% endfor %}
+                          </div>
+                      </div>
+
+                      <hr>
+
+                      <div class="media">
+                          <div class="media-body" style="width: 75%">
+                          	<b>Description: </b>
+                      			{{ off.text_description }}
+                          </div>
+                          <div class="media-right" style="width: 25%">
+                          	<b>Price: </b>${{ off.price }}
+                          	<br><br>
+                          	<b>Quantity: </b>{{ off.quantity }}
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                    	{% if user.profile.isOwner %}
+                    		<div class="btn-group">
+								<a class="btn btn-primary" href="{% url 'editOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+									<i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
+			         			<a class="btn btn-primary" href="{% url 'showHideOffer' off.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
+			         				<i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
+			         		</div>
+			    		{% else %}
+			        		<button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
+			    		{% endif %}
+					</div>
                   </div>
-                {% else %}
-                  <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fa fa-fw fa-check-square" style="color:white; font-size:15px"></i></button>
-                {% endif %}
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-    {% endif %}
     <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
   </div>
 
@@ -196,7 +131,7 @@
 
 <script>
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();   
 });
 </script>
 

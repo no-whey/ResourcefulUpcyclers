@@ -53,35 +53,7 @@
       {% endblock sb_admin_navbar_left %}
 
       {% block sb_admin_navbar_right %}<ul class="nav navbar-right top-nav">
-         {% if user.is_authenticated %}
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-bell"></i>
-                {% if user.alert_set.all %}
-                  <i class="fa fa-circle"></i>
-                {% endif %}
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu alert-dropdown">
-                {% if not user.alert_set.all %}
-                  <span class="label label-primary" >No alerts</span>
-                {% else %}
-                  {% for alert in user.alert_set.all %}
-                    {% if not alert.read %}
-                      <li>
-                        <a href="{% url 'alerts' 1 %}"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
-                      </li>
-                    {% endif %}
-                    
-                  {% endfor %}
-                  <li>
-                    <a href="{% url 'alerts' 1 %}">View all alerts</a>
-                  </li>
-                {% endif %}
-              </ul>
-            </li>
-          {% endif %}
-          <li class="dropdown">
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if user.username %}{{ user.username }}{% else %}Guest{% endif %} <b class="caret"></b></a>
           <ul class="dropdown-menu">
             {% if user.is_authenticated %}
@@ -117,13 +89,10 @@
           </li>
           {% if not user.is_authenticated  %}
             <li {% if nav_active == "login" %}class="active"{% endif %}>
-              <a href="{% url "login" %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a>
+              <a href="{% url "login" %}"><i class="fa fa-fw fa-user"></i> Log In</a>
             </li>
             <li {% if nav_active == "signup" %}class="active"{% endif %}>
-              <a href="{% url "signup_customer" %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a>
-            </li>
-            <li {% if nav_active == "signup" %}class="active"{% endif %}>
-              <a href="{% url "signup_owner" %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+              <a href="{% url "signup" %}"><i class="fa fa-fw fa-user"></i> Sign Up</a>
             </li>
           {% else %}
             <li {% if nav_active == "profile" %}class="active"{% endif %}>
@@ -137,16 +106,16 @@
               <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-clipboard"></i> Item Management <i class="fa fa-fw fa-caret-down"></i></a>
               <ul id="demo" class="collapse">
                 <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                  <a href="{% url "inventory" bid=business.id %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
+                  <a href="{% url "inventory" %}"><i class="fa fa-fw fa-archive"></i> Inventory</a>
                 </li>
                 <li {% if nav_active == "offers" %}class="active"{% endif %}>
-                  <a href="{% url "viewOffer" bid=business.id %}"><i class="fa fa-fw fa-arrow-up"></i> Your Offers</a>
+                  <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i> Your Offers</a>
                 </li>
                 <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-                  <a href="{% url "newOffer" bid=business.id %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
+                  <a href="{% url "newOffer" %}"><i class="fa fa-fw fa-plus-circle"></i> New Offer</a>
                 </li>
                 <li {% if nav_active == "category-management" %}class="active"{% endif %}>
-                  <a href="{% url "manageCategories" bid=business.id %}"><i class="fa fa-sitemap fa-fw"></i> Manage Categories</a>
+                  <a href="{% url "manageCategories" %}"><i class="fa fa-sitemap fa-fw"></i> Manage Categories</a>
                 </li>
               </ul>
             </li>
@@ -156,10 +125,10 @@
               <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="fa fa-fw fa-th-list"></i> Offers <i class="fa fa-fw fa-caret-down"></i></a>
               <ul id="demo2" class="collapse">
                 <li {% if nav_active == "offers" %}class="active"{% endif %}>
-                  <a href="{% url "viewOffer" bid=business.id %}"><i class="fa fa-fw fa-arrow-up"></i>All Offers</a>
+                  <a href="{% url "viewOffer" %}"><i class="fa fa-fw fa-arrow-up"></i>All Offers</a>
                 </li>
                 <li {% if nav_active == "categories" %}class="active"{% endif %}>
-                  <a href="{% url "allCategories" bid=business.id %}"><i class="fa fa-sitemap fa-fw"></i>Categories</a>
+                  <a href="{% url "allCategories" %}"><i class="fa fa-sitemap fa-fw"></i>Categories</a>
                 </li>
               </ul>
             </li>
@@ -168,7 +137,7 @@
           {% if user.is_authenticated %}
 	          {% if user.profile.isOwner %}
 	          <li {% if nav_active == "donate" %}class="active"{% endif %}>
-	            <a href="{% url "allDonations" bid=business.id %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
+	            <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-gift"></i> Donations</a>
 	          </li>
 	          {% else %}
 	          <li>
@@ -176,10 +145,10 @@
 	            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-gift"></i> Donations <i class="fa fa-fw fa-caret-down"></i></a>
 	            <ul id="demo" class="collapse">
 	              <li {% if nav_active == "inventory" %}class="active"{% endif %}>
-	                <a href="{% url "newDonation" bid=business.id %}"><i class="fa fa-fw fa-plus-circle"></i> New Donation</a>
+	                <a href="{% url "newDonation" %}"><i class="fa fa-fw fa-plus-circle"></i> New Donation</a>
 	              </li>
 	              <li {% if nav_active == "offers" %}class="active"{% endif %}>
-	                <a href="{% url "allDonations" bid=business.id %}"><i class="fa fa-fw fa-archive"></i> All Donations</a>
+	                <a href="{% url "allDonations" %}"><i class="fa fa-fw fa-archive"></i> All Donations</a>
 	              </li>
 	            </ul>
 	          </li>

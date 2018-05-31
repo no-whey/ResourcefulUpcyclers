@@ -34,8 +34,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'website.apps.core',
-    'website.apps.alert',
     'website.apps.profiles',
     'website.apps.item',
     'django.contrib.admin',
@@ -47,7 +45,6 @@ INSTALLED_APPS = [
     'django_sb_admin',
     'tagulous',
     'mptt',
-    'easy_maps'
 ]
 
 MIDDLEWARE = [
@@ -152,8 +149,6 @@ STATICFILES_DIRS = (
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-MEDIA_ROOT = '/frontend/static/images'
-
 #Use tagulous serialization modules
 SERIALIZATION_MODULES = {
     'xml':    'tagulous.serializers.xml_serializer',
@@ -161,6 +156,3 @@ SERIALIZATION_MODULES = {
     'python': 'tagulous.serializers.python',
     'yaml':   'tagulous.serializers.pyyaml',
 }
-
-EASY_MAPS_GOOGLE_MAPS_API_KEY = 'AIzaSyBx0M9B_DdhIiHSH42weL_yiug9CnNZ77I'
-EASY_MAPS_CENTER = (36.962421, -122.023301)

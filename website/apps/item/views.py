@@ -6,20 +6,18 @@ from website.apps.item.models import *
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
-from website.apps.alert.models import Alert
 
 import tagulous
+
+
 import operator
-import csv
-import datetime
 from django.db.models import Q
 
 from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
 @login_required
-def newDonation(request, bid):
-    business = get_object_or_404(Business, id=bid)
+def newDonation(request):
     if request.method == 'POST':
         form = DonationForm(request.POST)
         if form.is_valid():
@@ -27,7 +25,6 @@ def newDonation(request, bid):
             #offer = form.save()
             donation = Donation()
             donation.donor = request.user
-            donation.business = business
             donation.save()
             donation.refresh_from_db()
 
@@ -40,50 +37,40 @@ def newDonation(request, bid):
             donation.needs_pickup = form.cleaned_data.get('needs_pickup')
 
             donation.save()
-            
-            #Notify owners
-            for owner in business.profile_set.all():
-                Alert.create("New Donation!",
-                             "A user has offered to donate \'" + donation.name + "\'",
-                             owner.user)
 
             # Redirect to all Donations from that user, Maybe a "Thank you" page???
-            return redirect('allDonations', bid=bid)
+            return redirect('allDonations')
     else:
         form = DonationForm()
-    return render(request, 'donations/newDonation.html', {'form': form, 'business' : business})
+    return render(request, 'donations/newDonation.html', {'form': form})
 
 # For Customers to view their submitted Donations, Owners can see all donations
 @login_required
-def allDonations(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
-        donation_list = Donation.get_all_business_donations(request.user, business)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+def allDonations(request):
+    if(request.user.profile.isOwner):
+        donation_list = Donation.objects.all()
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list})
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list})
 
 # Owners see only their interested Donations, customers get same access as allDonations view
 @login_required
-def interestedDonations(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def interestedDonations(request):
+    if(request.user.profile.isOwner):
         donation_list = []
-        business_donations = Donation.get_all_business_donations(request.user, business)
-        for donation in business_donations:
+        for donation in Donation.objects.all():
             if donation.owner_interest:
                 donation_list.append(donation)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list})
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list})
 
 # For Owners to view and edit one specific donation
 @login_required
-def oneDonation(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def oneDonation(request, slug):
+    if(request.user.profile.isOwner):
         donation = get_object_or_404(Donation, id=slug)
         if request.method == 'POST':
             form = UpdateDonationForm(request.POST)
@@ -103,70 +90,61 @@ def oneDonation(request, bid, slug):
 
                 donation.save()
 
-                #Notify Donor
-                Alert.create("Donation updated!",
-                             "Your donation of \'" + donation.name + "\' has been updated.",
-                             donation.donor)
-
                 # Redirect to Home, Maybe a "Thank you" page???
-                return redirect('allDonations', bid=bid)
+                return redirect('allDonations')
         else:
             form = UpdateDonationForm(instance=donation)
-        return render(request, 'donations/oneDonation.html', {'form' : form, 'donation' : donation, 'business' : business})
+        return render(request, 'donations/oneDonation.html', {'form' : form, 'donation' : donation})
     else:
-        return render(request, 'donations/allDonations.html', {'business' : business})
+        return render(request, 'donations/allDonations.html')
 
 # Owners can delete a donation
 @login_required
-def deleteDonation(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def deleteDonation(request, slug):
+    if(request.user.profile.isOwner):
         donation = get_object_or_404(Donation, id=slug)
         if request.method == 'POST':
             donation.delete(keep_parents=True)
-            return redirect('allDonations', bid=bid)
+            return redirect('allDonations')
         else:
-            return render(request, 'donations/deleteDonation.html', {'donation' : donation, 'business' : business})
+            return render(request, 'donations/deleteDonation.html', {'donation' : donation})
     else:
-        return redirect('allDonations', bid=bid)
+        return redirect('allDonations')
 
 # Owners can view their available inventory
 @login_required
-def inventory(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def inventory(request):
+    if(request.user.profile.isOwner):
         #Loading page
         if request.method == 'GET':
-            inventory_list = Inventory.get_all_business_inventory(request.user, business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
         #Loading page after searching
         elif request.method == 'POST':
             search = str(request.POST.get('q', None))
             #Empty search bar
             if search == "":
-                inventory_list = Inventory.get_all_business_inventory(request.user, business)
+                inventory_list = Inventory.objects.all()
             #Non-Empty search bar
             else:
-                inventory_list = Inventory.objects.filter(tag_pile=search, business=business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+                inventory_list = Inventory.objects.filter(tag_pile=search)
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
         #Other methods
         else:
-            inventory_list = Inventory.get_all_business_inventory(request.user, business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            inventory_list = Inventory.objects.all()
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list})
     else:
         return render(request, 'index.html')
 
 # Owners can create new offers
 @login_required
-def newOffer(request, bid):
-    business = get_object_or_404(Business, id=bid)
+def newOffer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
         if form.is_valid():
 
             #get offer obj
             offer = Inventory()
-            offer.business = business
             offer.name = form.cleaned_data.get('name')
             offer.price = form.cleaned_data.get('price')
             offer.location = form.cleaned_data.get('location')
@@ -188,38 +166,36 @@ def newOffer(request, bid):
             #form.save_m2m()
 
             # Redirect to inventory, new offer created
-            return redirect('inventory', bid=bid)
+            return redirect('inventory')
     else:
         form = OfferForm()
-    return render(request, 'inventory/newOffer.html', {'form': form, 'business' : business})
+    return render(request, 'inventory/newOffer.html', {'form': form})
 
 # Only shows customer/anonymous the non-private inventory, owners see all inventory
-def viewOffer(request, bid):
+def viewOffer(request):
     #Loading page
-    business = get_object_or_404(Business, id=bid)
     if request.method == 'GET':
-        offers_list = Inventory.objects.filter(private=False, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        offers_list = Inventory.objects.filter(private=False)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
     #Loading page after searching
     elif request.method == 'POST':
         search = str(request.POST.get('q', None))
         #Empty search bar
         if search == "":
-            offers_list = Inventory.objects.filter(private=False, business=business)
+            offers_list = Inventory.objects.filter(private=False)
         #Non-Empty search bar
         else:
-            offers_list = Inventory.objects.filter(private=False, tag_pile=search, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+            offers_list = Inventory.objects.filter(private=False, tag_pile=search)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
     #Other methods
     else:
-        offers_list = Inventory.objects.filter(private=False, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        offers_list = Inventory.objects.filter(private=False)
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
 
 # Owners can edit their offers.
 @login_required
-def editOffer(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def editOffer(request, slug):
+    if(request.user.profile.isOwner):
         offer = get_object_or_404(Inventory, id=slug)
         if request.method == 'POST':
             form = UpdateOfferForm(request.POST)
@@ -246,39 +222,34 @@ def editOffer(request, bid, slug):
                 #Save all fields except m2m
                 offer.save()
 
-                #Notify owners
-                for owner in business.profile_set.all():
-                    Alert.create("Offer updated!",
-                                 "Your offer \'" + offer.name + "\' has been updated.",
-                                 owner.user)
+                #save m2m fields
+                #form.save_m2m()
 
                 #Redirect to inventory, offer edited
-                return redirect('inventory', bid=bid)
+                return redirect('inventory')
         else:
             form = UpdateOfferForm(instance=offer)
-        return render(request, 'inventory/newOffer.html', {'form' : form, 'offer' : offer, 'business' : business})
+        return render(request, 'inventory/newOffer.html', {'form' : form, 'offer' : offer})
     else:
-        return render(request, 'inventory/index.html', {'business' : business,})
+        return render(request, 'inventory/index.html')
 
 # Owners can delete an offer
 @login_required
-def deleteOffer(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def deleteOffer(request, slug):
+    if(request.user.profile.isOwner):
         offer = get_object_or_404(Inventory, id=slug)
         if request.method == 'POST':
             offer.delete(keep_parents=True)
-            return redirect('inventory', bid=bid)
+            return redirect('inventory')
         else:
-            return render(request, 'inventory/deleteOffer.html', {'offer' : offer, 'business' : business})
+            return render(request, 'inventory/deleteOffer.html', {'offer' : offer})
     else:
-        return redirect('inventory', bid=bid)
+        return redirect('inventory')
 
 # Owners can show/hide an offer
 @login_required
-def showHideOffer(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
+def showHideOffer(request, slug):
+    if(request.user.profile.isOwner):
         offer = get_object_or_404(Inventory, id=slug)
 
         offer.refresh_from_db()
@@ -288,32 +259,13 @@ def showHideOffer(request, bid, slug):
 
         offer.save()
 
-        return redirect('inventory', bid=bid)
+        return redirect('inventory')
 
     else:
-        return redirect('inventory', bid=bid)
-
-# Customers can show interest in an item and contact info is exchanged
-@login_required
-def interestedOffer(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
-    offer = get_object_or_404(Inventory, id=slug)
-    user = request.user
-    
-    #Notify owners
-    for owner in business.profile_set.all():
-        Alert.create("Interest in offer!",
-                     user.username + " (" + user.email + \
-                        ") has shown interest in your offer of \'" + offer.name + "\'",
-                     owner.user)
-    
-    return redirect('viewOffer', bid=bid)
-    
-    
+        return redirect('inventory')
 
 @login_required
-def receipt(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
+def receipt(request, slug):
     donation = get_object_or_404(Donation, id=slug)
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="%sReceipt.pdf"' %slug
@@ -350,59 +302,41 @@ def receipt(request, bid, slug):
 
 # For Owners to create and view their categories
 @login_required
-def manageCategories(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if (request.user.profile.isOwner and request.user.profile.business==business):
-        category_tree = Category.objects.filter(business=business)
+def manageCategories(request):
+    if request.user.profile.isOwner:
+        category_tree = Category.objects.all()
         if request.method == 'POST':
             form = NewCategoryForm(request.POST)
             if form.is_valid():
 
                 cat = Category()
                 cat.name = form.cleaned_data.get('name')
-                cat.business = business
                 if(form.cleaned_data.get('parent')):
                     cat.parent = form.cleaned_data.get('parent')
                 cat.save()
 
                 # Redirect to all Donations from that user, Maybe a "Thank you" page???
-                return redirect('manageCategories', bid=bid)
+                return redirect('manageCategories')
         else:
             form = NewCategoryForm()
-        return render(request, 'categories/manageCategories.html', {'categories' : category_tree, 'form' : form, 'business' : business})
+        return render(request, 'categories/manageCategories.html', {'categories' : category_tree, 'form' : form})
     return redirect('home')
 
 
-def allCategories(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    category_tree = Category.objects.filter(business = business)
-    return render(request, 'categories/allCategories.html', {'categories' : category_tree, 'business' : business})
+def allCategories(request):
+    category_tree = Category.objects.all()
+    return render(request, 'categories/allCategories.html', {'categories' : category_tree})
 
 # View the NON-PRIVATE offers in a category
-def oneCategory(request, bid, slug):
-    business = get_object_or_404(Business, id=bid)
+def oneCategory(request, slug):
     category = get_object_or_404(Category, id=slug)
     offers_list = []
     for offer in category.offers.all():
         if offer is not offer.private:
             offers_list.append(offer)
-    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list})
 
 @login_required
 def oneRequest(request):
     return render(request, 'requests/request.html')
 
-@login_required
-def exportCSV(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if request.method == 'GET':
-        offers_list = Inventory.objects.filter(private=False, business=business)
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=Business%s_Inventory.csv'%bid
-
-    writer = csv.writer(response)
-    writer.writerow(['Item Name', 'Quantity', 'Price', 'In-House Location', 'Description', 'Image Link',])
-    for item in offers_list:
-        writer.writerow([item.name, item.quantity, item.price, item.location, item.text_description, item.img_link,])
-
-    return response

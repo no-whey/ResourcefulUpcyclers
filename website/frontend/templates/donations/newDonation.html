@@ -7,53 +7,11 @@
   <img src="{% static 'images/favicon.ico' %}" width="100" height="100">
   Make a Donation!
 </h1>
-<div class="panel panel-green">
-    <div class="panel-heading">
-        Send a donation ticket to {{ business.name }}! You can your donation tickets later in the "All Donations" tab.
-    </div>
-    <div class="panel-body">
-        <form role="form" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label>Name</label><br>
-                {{ form.name }}
-            </div>
-            <div class="form-group">
-                <label>Description</label><br>
-                {{ form.text_description }}
-            </div>
-            <div class="form-group">
-                <label>Quantity</label>
-                <p class="help-block">Number of Items</p>
-                {{ form.quantity }}
-            </div>
-            <div class="form-group">
-                <label>Link Images</label>
-                <p class="help-block">Link to Images of Item (use a different site)</p>
-                {{ form.img_link }}
-            </div>
-            <div class="form-group">
-                <label>City</label>
-                <p class="help-block">What city is this item located in?</p>
-                {{ form.city }}
-            </div>
-            <div class="form-group">
-                <label>Contact Email</label>
-                <p class="help-block">How can this business contact you?</p>
-                {{ form.donor_email }}
-            </div>
-            <div class="form-group">
-                <label>Needs Pickup</label>
-                <p class="help-block">Does this business need to pickup the item?</p>
-                {{ form.needs_pickup }}
-            </div>
-
-            <button class="btn btn-primary btn-block" type="submit" style="width: 200px">Send Donation Ticket</button>
-        </form>
-    </div>
+<div class="row">
+  <h3>
+    Send a donation ticket to a business! You can your donation tickets later in the "All Donations" tab.
+  </h3>
 </div>
-
-<!--
 <form method="post">
   {% csrf_token %}
   {% for field in form %}
@@ -73,5 +31,5 @@
   <br>
   <br>
 </form>
--->
+
 {% endblock sb_admin_content %}

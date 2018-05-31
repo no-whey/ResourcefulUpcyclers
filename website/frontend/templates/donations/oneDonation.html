@@ -3,69 +3,32 @@
 
 {% block sb_admin_content %}
   <!-- Example Social Card-->
-<h1 class="page-header">
-  <img class ="img-rounded" style="width: 50%" src={{ donation.img_link }} alt=""/>
-</h1>
+  <h1 class="page-header">
+      <img src="{{ donation.img_link }}">
+  </h1>
 
-<div class="panel panel-green">
-  <div class="panel-heading">
-      Edit Donation Information
-  </div>
-  <div class="panel-body">
-      <form role="form" method="post">
-          {% csrf_token %}
-          <div class="form-group">
-              <label>Name</label><br>
-              {{ form.name }}
-          </div>
-          <div class="form-group">
-              <label>Description</label><br>
-              {{ form.text_description }}
-          </div>
-          <div class="form-group">
-              <label>Quantity</label>
-              <p class="help-block">Number of Items</p>
-              {{ form.quantity }}
-          </div>
-          <div class="form-group">
-              <label>Link Images</label>
-              <p class="help-block">Link to Images of Item (use a different site)</p>
-              {{ form.img_link }}
-          </div>
-          <div class="form-group">
-              <label>City</label>
-              <p class="help-block">What city is this item located in?</p>
-              {{ form.city }}
-          </div>
-          <div class="form-group">
-              <label>Contact Email</label>
-              <p class="help-block">How can this business contact you?</p>
-              {{ form.donor_email }}
-          </div>
-          <div class="form-group">
-              <label>Needs Pickup</label>
-              <p class="help-block">Does this business need to pickup the item?</p>
-              {{ form.needs_pickup }}
-          </div>
-          <div class="form-group">
-              <label>Status</label>
-              <p class="help-block">What's happening to the item right now?</p>
-              {{ form.status }}
-          </div>
-          <div class="form-group">
-              <label>Declining Reason</label>
-              <p class="help-block">NOTE: Only fill out if it is declined</p>
-              {{ form.declined_reason }}
-          </div>
-          <div class="form-group">
-              <label>Owner Interest</label>
-              <p class="help-block">Check to show interest in this item</p>
-              {{ form.owner_interest }}
-          </div>
-
-          <button class="btn btn-primary btn-block" type="submit" style="width: 200px">Update Donation</button>
-      </form>
-  </div>
-</div>
+  <div class="row">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <p>
+          {% if field != declined_reason %}
+          <h4>{{ field.label_tag }}</h4>
+          {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          <br>
+          {{ field }}
+          <br>
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+          {% endif %}
+          <br>
+        </p>
+      {% endfor %}
+      <button class="btn btn-primary btn-block" type="submit" style="width: 200px">Update Donation</button>
+    </form>
+   </div>
 
 {% endblock sb_admin_content %}

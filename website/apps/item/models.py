@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from website.apps.core.models import Business
 from model_utils.fields import StatusField
 from model_utils import Choices
 from mptt.models import MPTTModel, TreeForeignKey
@@ -23,16 +22,10 @@ class Donation(models.Model):
     owner_interest = models.BooleanField(default=False)
     needs_pickup = models.BooleanField(default=False)
     declined_reason = models.TextField(max_length=200, blank=True, default='', null=True)
-    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
     @staticmethod
     def get_my_donations(user):
         donation_list = list(user.donation_creator.all())
-        return donation_list
-
-    @staticmethod
-    def get_all_business_donations(user, business_in):
-        donation_list = list(Donation.objects.filter(business = business_in))
         return donation_list
 
 #Custom tag model
@@ -54,15 +47,9 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     date = models.DateField(auto_now=True)
     private = models.BooleanField(default=False)
-    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
     #Using tagulous tags
     tag_pile = tagulous.models.TagField(to=Inventory_Tags)
-
-    @staticmethod
-    def get_all_business_inventory(user, business_in):
-        inventory_list = list(Inventory.objects.filter(business = business_in))
-        return inventory_list
 
 class Category(MPTTModel):
 
@@ -71,7 +58,6 @@ class Category(MPTTModel):
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children',
                             db_index=True, on_delete=models.SET_NULL)
     offers = models.ManyToManyField(Inventory, default=None, blank=True)
-    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
     class MPTTMeta:
         order_insertion_by = ['name']

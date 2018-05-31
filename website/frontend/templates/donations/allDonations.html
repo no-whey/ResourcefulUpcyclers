@@ -18,7 +18,7 @@
             <th style="width: 21%">Description</th>
             <th style="width: 20%">Status</th>
             {% if user.profile.isOwner %}
-              <th style="width: 5%"><a href="{% url 'interestedDonations' bid=business.id %}">Interested</a></th>
+              <th style="width: 5%"><a href="{% url 'interestedDonations' %}">Interested</a></th>
               <th></th>
             {% else %}
               <th>Receipts</th>
@@ -58,21 +58,21 @@
                   <td> <i class="fa fa-fw fa-check-circle" style="color:green; font-size:32px"></i></td>
                 {% else %}
                   <td><i class="fa fa-fw fa-ellipsis-h" style="color:black; font-size:32px"></i></td>
-                {% endif %}
+                {% endif %} 
               <td>
                 <div class="btn-group">
                 {% if donation.status == 'accepted' %}
-                  <a class="btn btn-primary" href="{% url 'donationReceipt'  bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
+                  <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
                     <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i></a>
                   {% endif %}
-                <a class="btn btn-primary" href="{% url 'oneDonation' bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                <a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
                   <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
-              	<a class="btn btn-danger" href="{% url 'deleteDonation' bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+              	<a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
                       <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a></td>
                 </div>
               {% elif donation.status == 'accepted' %}
                 <td>
-                  <a class="btn btn-primary" href="{% url 'donationReceipt' bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
+                  <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
                     <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i></a>
                 </td>
               {% else %}
@@ -91,7 +91,7 @@
 
                         <hr>
 
-                        <div class="row">
+                        <div class="row"> 
                           <div class="col-sm-4">
                             <b>From:</b><br>
                             {{  donation.donor.first_name.title }} {{ donation.donor.last_name.title }}<br>
@@ -99,7 +99,7 @@
                             {{ donation.donor_email }}
                           </div>
                           <div class="col-sm-4">
-                            <b>City: </b><br>{{ donation.city.title }}
+                            <b>City: </b><br>{{ donation.city.title }} 
                           </div>
                            <div class="col-sm-4">
                             <b>Status: </b><br>
@@ -110,10 +110,10 @@
                                 {{ donation.declined_reason }}
                               {% else %}
                                 {{ donation.status.title }}
-                              {% endif %}
+                              {% endif %}                          
                           </div>
                         </div>
-
+                        
                         <hr>
 
                         <b>Description: </b><br>
@@ -123,12 +123,12 @@
                       <div class="modal-footer">
                         <div class="btn-group">
                           {% if donation.status == 'accepted' %}
-                            <a class="btn btn-primary" href="{% url 'donationReceipt' bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
+                            <a class="btn btn-primary" href="{% url 'donationReceipt' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Download Receipt">
                               <i class="fa fa-fw fa-download" style="color:white; font-size:15px"></i></a>
                           {% endif %}
-                          <a class="btn btn-primary" href="{% url 'oneDonation' bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                          <a class="btn btn-primary" href="{% url 'oneDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
                             <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
-                          <a class="btn btn-danger" href="{% url 'deleteDonation' bid=business.id slug=donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                          <a class="btn btn-danger" href="{% url 'deleteDonation' donation.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
                                 <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a>
                            </div>
                       </div>
@@ -144,6 +144,6 @@
   </div>
 
   {% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
-</body>
+</body> 
 
 {% endblock sb_admin_content %}

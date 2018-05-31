@@ -36,7 +36,7 @@
       <div class="login-panel panel panel-default">
         <div class="panel-heading">
           <h1>
-            <img src="{% static 'images/favicon.ico' %}" width="75" height="75">
+            <img src="{% static 'images/favicon.ico' %}" width="75" height="75"> 
             Log In</h1>
         </div>
         <div class="panel-body">
@@ -50,13 +50,7 @@
             </div>
             </form>
             <div class= "small text-muted text-center">
-              Don't have an account?
-            </div>
-            <div class= "small text-muted text-center">
-              <a href="{% url "signup_customer" %}">Sign Up as a Customer</a>
-            </div>
-            <div class= "small text-muted text-center">
-              <a href="{% url "signup_owner" %}">Sign Up as a Business Owner</a>
+              <a href="{% url "signup" %}">Don't have an account? Sign Up</a>
             </div>
         </div>
       </div>
