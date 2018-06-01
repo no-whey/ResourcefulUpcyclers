@@ -15,4 +15,3 @@ python-decouple==3.1
 pytz==2017.3
 reportlab==3.4.0
 Unipath==1.1
-psycopg2-binary==2.7.4
