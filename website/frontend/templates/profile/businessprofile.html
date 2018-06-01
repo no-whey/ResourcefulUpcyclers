@@ -46,16 +46,16 @@
             </li>
             <li class="nav-item">
             	{% if user in owner_group %}
-            		<a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donations</a>
+            		<a class="nav-link" href="{% url 'allDonations' bid=business.id %}">Donations</a>
             	{% else %}
-            		<a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donate</a>
+            		<a class="nav-link" href="{% url 'allDonations' bid=business.id %}">Donate</a>
             	{% endif %}
             </li>
             <li class="nav-item">
             	{% if user in owner_group %}
-            		<a class="nav-link" href="">Requests</a>
+            		<a class="nav-link" href="{% url 'allRequests' bid=business.id %}">Requests</a>
             	{% else %}
-            		<a class="nav-link" href="">Request Item</a>
+            		<a class="nav-link" href="{% url 'newRequest' bid=business.id %}">Request Item</a>
             	{% endif %}
             </li>
           </ul>
@@ -134,7 +134,7 @@
               			<h2 class="card-title">Donations</h2>
               		</div>
               		<div class="col-md-5 mb-1 mt-1">
-              			<a href="{% url 'newDonation' bid=business.id %}" class="btn btn-primary">Donations</a>
+              			<a href="{% url 'allDonations' bid=business.id %}" class="btn btn-primary">Donations</a>
               		</div>
               	</div>
               <p class="card-text">Recent Donations:</p>
@@ -144,7 +144,7 @@
               			<h2 class="card-title">Requests</h2>
               		</div>
               		<div class="col-md-5 mb-1 mt-1">
-              			<a href="" class="btn btn-primary pull-right">Requests</a>
+              			<a href="{% url 'allRequests' bid=business.id %}" class="btn btn-primary pull-right">Requests</a>
               		</div>
               	</div>
               <p class="card-text">Recent Requests:</p>
@@ -183,7 +183,7 @@
               <h2 class="card-title">Make a Request</h2>
               <p class="card-text">Don't see something here that you would like? Let us know! Send us a request message using the link below.
               We'll let you know when it, or something similar, becomes available.</p>
-              <a href="" class="btn btn-primary" style="width: 100%">Request</a>
+              <a href="{% url 'newRequest' bid=business.id %}" class="btn btn-primary" style="width: 100%">Request</a>
 
             </div>
           </div>

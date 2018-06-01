@@ -34,6 +34,22 @@ class DonationForm(forms.Form):
                     'needs_pickup'
                     )
 
+class RequestForm(forms.Form):
+
+    name = forms.CharField( label='Name of the Item', max_length=30, required=True, help_text='General Name of Item', \
+         widget=forms.TextInput (attrs={ 'size': 60 }) )
+    text_description = forms.CharField ( label='Description of the Item', max_length=500, required=True, \
+        help_text='Describe the Item\'s features along with any flaws or impairments', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
+    user_email = forms.EmailField ( max_length=255, required=True, help_text='Email or phone number to contact you *Required', \
+        widget=forms.TextInput (attrs={ 'size': 60 }) )
+    # Be sure to add extra fields here
+    class Meta:
+        model = Request
+        fields = (  'name',
+                    'text_description',
+                    'user_email'
+                    )
+
 class UpdateDonationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

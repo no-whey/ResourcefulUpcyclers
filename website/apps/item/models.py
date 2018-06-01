@@ -35,6 +35,27 @@ class Donation(models.Model):
         donation_list = list(Donation.objects.filter(business = business_in))
         return donation_list
 
+class Request(models.Model):
+	STATUS_OPTIONS = Choices('sent', 'received')
+
+	name = models.TextField(max_length=30, blank=True)
+	text_description = models.TextField(max_length=500, blank=True)
+	inquirer = models.ForeignKey(User, related_name='request_creator', on_delete=models.CASCADE)
+	user_email = models.EmailField(max_length=255)
+	status = StatusField(choices_name='STATUS_OPTIONS', default='sent')
+	declined_reason = models.TextField(max_length=200, blank=True, default='', null=True)
+	business = models.ForeignKey(Business, on_delete=models.CASCADE)
+
+	@staticmethod
+	def get_my_requests(user):
+		request_list = list(user.request_creator.all())
+		return request_list
+
+	@staticmethod
+	def get_all_business_requests(user, business_in):
+		request_list = list(Request.objects.filter(business = business_in))
+		return request_list
+
 #Custom tag model
 #Used to bypass tagulous default model name generation
 class Inventory_Tags(tagulous.models.TagModel):
