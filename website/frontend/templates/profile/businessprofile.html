@@ -46,16 +46,16 @@
             </li>
             <li class="nav-item">
             	{% if user in owner_group %}
-            		<a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donations</a>
+            		<a class="nav-link" href="{% url 'allDonations' bid=business.id %}">Donations</a>
             	{% else %}
-            		<a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donate</a>
+            		<a class="nav-link" href="{% url 'allDonations' bid=business.id %}">Donate</a>
             	{% endif %}
             </li>
             <li class="nav-item">
             	{% if user in owner_group %}
-            		<a class="nav-link" href="">Requests</a>
+            		<a class="nav-link" href="{% url 'allRequests' bid=business.id %}">Requests</a>
             	{% else %}
-            		<a class="nav-link" href="">Request Item</a>
+            		<a class="nav-link" href="{% url 'newRequest' bid=business.id %}">Request Item</a>
             	{% endif %}
             </li>
           </ul>
@@ -134,7 +134,7 @@
               			<h2 class="card-title">Donations</h2>
               		</div>
               		<div class="col-md-5 mb-1 mt-1">
-              			<a href="{% url 'newDonation' bid=business.id %}" class="btn btn-primary">Donations</a>
+              			<a href="{% url 'allDonations' bid=business.id %}" class="btn btn-primary">Donations</a>
               		</div>
               	</div>
               <p class="card-text">Recent Donations:</p>
@@ -144,7 +144,7 @@
               			<h2 class="card-title">Requests</h2>
               		</div>
               		<div class="col-md-5 mb-1 mt-1">
-              			<a href="" class="btn btn-primary pull-right">Requests</a>
+              			<a href="{% url 'allRequests' bid=business.id %}" class="btn btn-primary pull-right">Requests</a>
               		</div>
               	</div>
               <p class="card-text">Recent Requests:</p>
@@ -164,7 +164,67 @@
               <p class="card-text">
                   {% for item in offers_list %}
 
-                    <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}<br>
+                    <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}
+                      <span data-toggle="modal" data-target="#{{ item.id }}">
+                        <button class="btn btn-primary" data-toggle="tooltip" role="button" data-placement="bottom" title="Expand">
+                          Expand
+                        </button>
+                      </span>
+                  <!--Image popup code -->
+                    <div class="modal fade" id="{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h3 class="modal-title" id="exampleModalLabel">{{ item.name.title }}</h3>
+                          </div>
+                          <div class="modal-body">
+                            <img class ="img-rounded" style="width: 100%" src={{ item.img_link }} alt=""/>
+
+                            <div class="media">
+                              <div class="media-left">
+                                <h6>Tags: </h6>
+                              </div>
+                              <div class="media-body">
+                                {% for tag in item.tag_pile.all %}
+                                  <button class="btn btn-sm" type="button" data-dismiss="modal">{{ tag }}</button>
+                                {% endfor %}
+                              </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="media">
+                                <div class="media-body" style="width: 75%">
+                                  <b>Description: </b>
+                                  {{ item.text_description }}
+                                </div>
+                                <div class="media-right" style="width: 25%">
+                                  <b>Price: </b>${{ item.price }}
+                                  <br><br>
+                                  <b>Quantity: </b>{{ item.quantity }}
+                                </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            {% if user.profile.isOwner %}
+                              <div class="btn-group">
+                                <a class="btn btn-primary" href="{% url 'editOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                              <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
+                              {% if item.private %}
+                                <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Show in Offers">
+                                  <i class="fa fa-fw fa-plus-square" style="color:white; font-size:15px"></i></a>
+                              {% else %}
+                                <a class="btn btn-primary" href="{% url 'showHideOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Remove from Offers">
+                                  <i class="fa fa-fw fa-minus-square" style="color:white; font-size:15px"></i></a>
+                              {% endif %}
+                                <a class="btn btn-danger" href="{% url 'deleteOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                  <i class="fa fa-fw fa-times" style="color:white; font-size:15px"></i></a>
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   {% endfor %}
               </p>
               <a href="{% url 'viewOffer' bid=business.id %}" class="btn btn-primary" style="width: 100%">Search</a>
@@ -183,7 +243,7 @@
               <h2 class="card-title">Make a Request</h2>
               <p class="card-text">Don't see something here that you would like? Let us know! Send us a request message using the link below.
               We'll let you know when it, or something similar, becomes available.</p>
-              <a href="" class="btn btn-primary" style="width: 100%">Request</a>
+              <a href="{% url 'newRequest' bid=business.id %}" class="btn btn-primary" style="width: 100%">Request</a>
 
             </div>
           </div>

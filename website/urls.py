@@ -53,6 +53,11 @@ urlpatterns = [
     path('business/<int:bid>/donations/delete/<slug:slug>/', item_views.deleteDonation, name='deleteDonation'),
     path('business/<int:bid>/donations/<slug:slug>/receipt', item_views.receipt, name='donationReceipt'),
 
+
+    #Requests
+    path('business/<int:bid>/newrequest/', item_views.newRequest, name='newRequest'),
+    path('business/<int:bid>/requests/', item_views.allRequests, name='allRequests'),
+
     #Categories
     path('business/<int:bid>/category-management/', item_views.manageCategories, name='manageCategories'),
     path('business/<int:bid>/categories/', item_views.allCategories, name='allCategories'),
