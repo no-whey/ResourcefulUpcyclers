@@ -165,9 +165,11 @@
                   {% for item in offers_list %}
 
                     <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}
-                      <div data-toggle="modal" data-target="#{{ item.id }}"><button class="btn"  data-toggle="tooltip" data-placement="bottom" title="Expand">
-                        <i class="fa fa-fw fa-expand" style="color:gray; font-size:15px">
-                        </i></button></div>
+                      <span data-toggle="modal" data-target="#{{ item.id }}">
+                        <button class="btn btn-primary" data-toggle="tooltip" role="button" data-placement="bottom" title="Expand">
+                          Expand
+                        </button>
+                      </span>
                   <!--Image popup code -->
                     <div class="modal fade" id="{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
