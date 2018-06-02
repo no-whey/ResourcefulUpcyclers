@@ -14,7 +14,7 @@ import csv
 import datetime
 from django.db.models import Q
 
-from .forms import DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
+from .forms import RequestForm, DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
 @login_required
@@ -129,6 +129,48 @@ def deleteDonation(request, bid, slug):
             return render(request, 'donations/deleteDonation.html', {'donation' : donation, 'business' : business})
     else:
         return redirect('allDonations', bid=bid)
+
+# For customers to create a new donation ticket
+@login_required
+def newRequest(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    if request.method == 'POST':
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            req = Request()
+            req.inquirer = request.user
+            req.business = business
+            req.save()
+            req.refresh_from_db()
+
+            req.name = form.cleaned_data.get('name')
+            req.text_description = form.cleaned_data.get('text_description')
+            req.user_email = form.cleaned_data.get('user_email')
+
+            req.save()
+            
+            #Notify owners
+            for owner in business.profile_set.all():
+                Alert.create("New Request!",
+                             "A user has made a request for \'" + req.name + "\'",
+                             owner.user)
+            # Redirect to all Donations from that user, Maybe a "Thank you" page???
+            return redirect('allRequests', bid=bid)
+    else:
+        form = RequestForm()
+    return render(request, 'requests/newRequest.html', {'form': form, 'business' : business})
+
+# For Customers to view their submitted Donations, Owners can see all donations
+@login_required
+def allRequests(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    if(request.user.profile.isOwner and request.user.profile.business==business):
+        request_list = Request.get_all_business_requests(request.user, business)
+        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business})
+    else:
+        request_list = Request.get_my_requests(request.user)
+        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business})
+
 
 # Owners can view their available inventory
 @login_required
