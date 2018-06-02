@@ -28,7 +28,7 @@
     <header class="masthead text-white" style="height: 130px">
       <div class="overlay"></div>
       <a href="{% url "home" %}">
-      	<img src="{% static 'images/ru_logo-white.png' %}" width="75" height="75" style="position: fixed;">
+      	<img src="{% static 'images/ru_logo-white.png' %}" width="75" height="75" style="position: absolute;">
   	  </a>
       <div class="container">
         <div class="row">
@@ -38,51 +38,53 @@
           </div>
           <div class="col-xl-2 mx-auto text-lg-right" style="position: relative;">
           	{% if user.is_authenticated %}
-             	<a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a><br>
-              	<a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i> Log Out</a><br>
+              		<a href="profile" style="color: white; text-decoration: none;"><i class="fa fa-fw fa-user"></i>User Profile</a><br>
+             		{% if user.profile.isOwner %}
+             			<a href="{% url 'viewBusiness' bid=user.profile.business.id %}" style="color: white; text-decoration: none; padding: 0"><i class="fa fa-fw fa-user"></i>Business Page</a>
+             		{% endif %}
+             		<br><a href="{% url 'logout' %}" style="color: white; text-decoration: none;"><i class="fa fa-fw fa-power-off"></i>Log Out</a>
             {% else %}
-				<a href="{% url 'login' %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
-				<a href="{% url 'signup_customer' %}"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
-				<a href="{% url 'signup_owner' %}"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
+              		<a class="btn btn-link" href="{% url 'login' %}" style="color: white; text-decoration: none; padding: 0;">Log In</a><br>
+
+              		<a class="btn btn-link" style="color: white; text-decoration: none; padding: 0;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false">Sign Up</a>
+              		<div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+              			<div class="card-body text-lg-left" style="background-color: black; padding: 6">
+              				
+							<a href="{% url 'signup_customer' %}" style="color: white; text-decoration: none;" ><i class="fa fa-fw fa-user"></i>User Sign Up</a></li>
+							<a href="{% url 'signup_owner' %}" style="color: white; text-decoration: none;"><i class="fa fa-fw fa-group"></i>Business Sign Up</a></li>
+							
+						</div>
+					</div>
             {% endif %}
           </div>
         </div>
       </div>
     </header>
 
-  	<div class="tab">
-	  <button class="tablinks" onclick="openTab(event, 'tab1')" id="defaultOpen">Businesses</button>
-	  <button class="tablinks" style="width:34%" onclick="openTab(event, 'tab2')">About Us</button>
-	  <button class="tablinks" onclick="openTab(event, 'tab3')">Account</button>
+  	<div class="tab btn-group" role="group" style="width: 102%">
+	  <button class="btn btn-outline-primary tablinks" onclick="openTab(event, 'tab1')" id="defaultOpen">Businesses</button>
+	  <button class="btn btn-outline-primary tablinks" onclick="openTab(event, 'tab2')">About Us</button>
+	  <button class="btn btn-outline-primary tablinks" onclick="openTab(event, 'tab3')">Account</button>
 	</div>
 
 
     <!-- Businesses -->
-    <div id="tab1" class="tabcontent bg-light" style="padding-top: 10px; padding-bottom: 10px">
-      <div class="container text-center bg-light">
+    <div id="tab1" class="tabcontent bg-light" style="padding: 10px 0 10px 0">
+      <div class="container text-center bg-light mb-3" style="padding: 0">
+      	<h2>Browse Businesses</h2><hr>	
       	<div class="row" style="padding-bottom: 15px">
-			<div class="dropdown">
-			  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" style="border-radius: 5px 0 0 5px">Dropdown Example
-			  <span class="caret"></span></button>
-			  <ul class="dropdown-menu">
-			    <li><a href="#">HTML</a></li>
-			    <li><a href="#">CSS</a></li>
-			    <li><a href="#">JavaScript</a></li>
-			  </ul>
-			</div>
-     		<input type="text" class="form-control" placeholder="Search.." style="border-radius: 0 5px 5px 0; width: 200px">
+			  <button class="btn btn-outline-primary" type="button" style="border-radius: 5px 0 0 5px">Search</button>
+     		<input type="text" class="form-control" style="border-radius: 0 5px 5px 0; width: 200px">
       	</div>
-        <div class="row">
+        <div class="row" style="padding: 0">
 
         {% for business in businesses %} 
           <div class="col-lg-3">
-            <div class="testimonial-item mx-auto mb-0 mb-lg-0">
-	           	<a href="{% url 'viewBusiness' bid=business.id %}">
-              		<img class="img-fluid rounded-circle mb-3" src="https://pre00.deviantart.net/b738/th/pre/i/2012/175/8/1/business_logo___logos_for_sale_by_aeldesign-d54nfx6.png" style="border: 1px solid lightgray; width: 220px" alt="">
-              	</a>
-	            <h5><a href="{% url 'viewBusiness' bid=business.id %}">{{ business.name }}</a></h5>
-	              <p class="font-weight-light mb-0"></p>
-	        </div>
+          	<a class="btn btn-outline-secondary mx-auto" href="{% url 'viewBusiness' bid=business.id %}">
+          		<img class="img-fluid rounded-circle mt-2 mb-3" src="https://pre00.deviantart.net/b738/th/pre/i/2012/175/8/1/business_logo___logos_for_sale_by_aeldesign-d54nfx6.png" style="border: 1px solid lightgray; width: 220px; background-color: white" alt="">
+          		<h5>{{ business.name.title }}</h5>
+          		<p class="font-weight-light mb-0"></p>
+          	</a>
           </div>
         {% endfor %} 
 		</div>
@@ -98,8 +100,8 @@
 	          	<img src="{% static 'images/about-open.jpg' %}" width="100%">
 	          </div>
 	          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-	            <h2>Fully Responsive Design</h2>
-	            <p class="lead mb-0">When you use a theme created by Start Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
+	            <h2>Connect with Local Non-Profits</h2>
+	            <p class="lead mb-0">Lorem ipsum dolor sit amet, est eu altera feugiat, eu facer possit labitur sea. Mea nihil gloriatur ex. Ius agam aperiam te. Cu quidam efficiantur complectitur nam. Lorem volumus similique mei ad.</p>
 	         </div>
 	        </div>
 	        <div class="row no-gutters">
@@ -107,15 +109,15 @@
 		          	<img src="{% static 'images/about-support.jpg' %}" width="100%">
 		          </div>
 		          <div class="col-lg-6 my-auto showcase-text">
-		            <h2>Updated For Bootstrap 4</h2>
-		            <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 4 is leading the way in mobile responsive web development! All of the themes on Start Bootstrap are now using Bootstrap 4!</p>
+		            <h2>Easy to Use Item Management Tools</h2>
+		            <p class="lead mb-0">Lorem ipsum dolor sit amet, est eu altera feugiat, eu facer possit labitur sea. Mea nihil gloriatur ex. Ius agam aperiam te. Cu quidam efficiantur complectitur nam. Lorem volumus similique mei ad.</p>
 		          </div>
 		        </div>
 		        <div class="row no-gutters">
 		          <div class="col-lg-6 order-lg-2 text-white showcase-img">{% easy_map "United States, California, Santa Cruz" 760 500 %}</div>
 		          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-		            <h2>Easy to Use &amp; Customize</h2>
-		            <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+		            <h2>Our Team</h2>
+		            <p class="lead mb-0">Lorem ipsum dolor sit amet, est eu altera feugiat, eu facer possit labitur sea. Mea nihil gloriatur ex. Ius agam aperiam te. Cu quidam efficiantur complectitur nam. Lorem volumus similique mei ad.</p>
 		          </div>
 		        </div>
 		      </div>
@@ -123,66 +125,42 @@
 		</div>
 	</div>
 
-	<div id="tab3" class="tabcontent bg-light">
-		<div class="text-center">
-			{% if user.is_authenticated %}
-             	<a href="profile" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Profile</a><br>
-             	<a href="#" class="btn btn-primary"><i class="fa fa-fw fa-envelope"></i> Inbox</a><br>
-             	<a href="#" class="btn btn-primary"><i class="fa fa-fw fa-gear"></i> Settings</a><br>
-              	<a href="{% url "logout" %}" class="btn btn-primary"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-            {% else %}
-				<a href="{% url 'login' %}" class="btn btn-primary"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a><br>
-				<a href="{% url 'signup_customer' %}" class="btn btn-primary"><i class="fa fa-fw fa-user"></i> Sign Up (Customer)</a><br>
-				<a href="{% url 'signup_owner' %}" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Sign Up (Owner)</a>
-            {% endif %}
-		</div>
+	<div id="tab3" class="tabcontent bg-light" style="padding: 10px 0 10px 0">
+		{% if user.is_authenticated %}
+			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
+				<h2>Control Panel</h2><hr>
+					<div class="row mx-auto">
+		           		<a href="profile" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-user"></i>Inventory</a><br>
+		           		<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
+		           	</div>
+		           	<div class="row mx-auto">
+		             	<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-gear"></i>Offers</a><br>
+		              	<a href="{% url "logout" %}" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
+		            </div>
+			</div>
+			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
+				<h2>Account</h2><hr>
+					<div class="row mx-auto">
+		           		<a href="profile" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+		           		<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i> Business Page</a><br>
+		           	</div>
+		           	<div class="row mx-auto">
+		             	<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-gear"></i>Alerts</a><br>
+		            </div>
+		  	</div>
+		{% else %}
+			<div class="container text-center bg-light mb-3" style="padding: 0;">
+				<h2>You Aren't Signed In</h2><hr>
+		       	<a href="{% url 'login' %}" class="btn btn-primary mx-auto" style="width: 80%; height: 10%;"><i class="fa fa-fw fa-user"></i>Log In</a><br>
+		        <h2>Or Create An Account</h2><hr>
+		        <div class="btn-group" style="width: 80%">
+				   	<a href="{% url 'signup_customer' %}" onclick class="btn btn-info mx-auto" style="width: 100%; height: 10%;"><i class="fa fa-fw fa-envelope"></i>Sign Up as a User</a>
+				   	<a href="{% url 'signup_owner' %}"  class="btn btn-info mx-auto" style="width: 100%; height: 10%;"><i class="fa fa-fw fa-gear"></i>Sign Up as a Business</a>
+				    </div>
+			    </div>
+		    </div>	
+		{% endif %}
 	</div>
-	    
-	    <!--<div class="panel-group" id="accordion">
-		  	<div class="panel panel-default">
-			  <div class="panel-heading">
-			     <h4 class="panel-title">
-				     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-			        Collapsible Group 1</a>
-			      </h4>
-			   </div>
-			   <div id="collapse1" class="panel-collapse collapse in">
-			      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-			      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-			      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-			      commodo consequat.</div>
-			   </div>
-			</div>
-			  <div class="panel panel-default">
-			    <div class="panel-heading">
-			      <h4 class="panel-title">
-			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-			        Collapsible Group 2</a>
-			      </h4>
-			    </div>
-			    <div id="collapse2" class="panel-collapse collapse">
-			      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-			      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-			      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-			      commodo consequat.</div>
-			    </div>
-			  </div>
-			  <div class="panel panel-default">
-			    <div class="panel-heading">
-			      <h4 class="panel-title">
-			        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-			        Collapsible Group 3</a>
-			      </h4>
-			    </div>
-			    <div id="collapse3" class="panel-collapse collapse">
-			      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-			      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-			      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-			      commodo consequat.</div>
-			    </div>
-			  </div>
-			</div>
-		</div> -->
 
     <!-- Footer -->
     <footer class="footer">
@@ -191,22 +169,22 @@
           <div class="col-lg-6 h-8 text-center text-lg-left my-auto">
             <ul class="list-inline mb-2">
               <li class="list-inline-item">
-                <a href="#">About</a>
+                <a href="#" style="color: white; text-decoration: none">About</a>
               </li>
               <li class="list-inline-item">&sdot;</li>
               <li class="list-inline-item">
-                <a href="#">Contact</a>
+                <a href="#" style="color: white; text-decoration: none">Contact</a>
               </li>
               <li class="list-inline-item">&sdot;</li>
               <li class="list-inline-item">
-                <a href="#">Terms of Use</a>
+                <a href="#" style="color: white; text-decoration: none">Terms of Use</a>
               </li>
               <li class="list-inline-item">&sdot;</li>
               <li class="list-inline-item">
-                <a href="#">Privacy Policy</a>
+                <a href="#" style="color: white; text-decoration: none">Privacy Policy</a>
               </li>
             </ul>
-            <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2018. All Rights Reserved.</p>
+            <p class="text-muted small mb-4 mb-lg-0">&copy; Resourceful Upcyclers 2018. All Rights Reserved.</p>
           </div>
         </div>
     </div>

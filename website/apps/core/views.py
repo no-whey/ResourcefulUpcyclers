@@ -26,7 +26,7 @@ def unique_owner_key(key):
 # Create your views here.
 def index(request):
     business_list = Business.objects.all()
-    return render(request, 'core/index.html', {'businesses' : business_list})
+    return render(request, 'core/index.html', {'businesses' : business_list, 'user' : request.user})
 
 def viewBusiness(request, bid):
     business = get_object_or_404(Business, id=bid)
