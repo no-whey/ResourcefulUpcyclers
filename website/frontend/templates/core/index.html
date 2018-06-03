@@ -129,33 +129,43 @@
 		{% if user.is_authenticated %}
 			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
 				<h2>Control Panel</h2><hr>
+					{% if user.profile.isOwner %}
 					<div class="row mx-auto">
-		           		<a href="profile" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-user"></i>Inventory</a><br>
-		           		<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
+		           		<a href="{% url 'inventory' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-user"></i>Inventory</a><br>
+		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
 		           	</div>
 		           	<div class="row mx-auto">
-		             	<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-gear"></i>Offers</a><br>
-		              	<a href="{% url "logout" %}" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
+		             	<a href="{% url 'viewOffer' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-gear"></i>Offers</a><br>
+		              	<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		            </div>
+		            {% else %}
+		            <div class="row mx-auto">
+		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
+		           		<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
+		           	</div>
+		           	{% endif %}
 			</div>
 			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
 				<h2>Account</h2><hr>
 					<div class="row mx-auto">
-		           		<a href="profile" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-user"></i> Profile</a><br>
-		           		<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i> Business Page</a><br>
+		           		<a href="profile" class="btn btn-secondary mx-auto" style="width: 50%; height: 15%; vertical-align: middle"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+		           		<a href="#" class="btn btn-secondary mx-auto" style="width: 50%; height: 15%; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Alerts</a><br>
 		           	</div>
+		           	{% if user.profile.isOwner %}
 		           	<div class="row mx-auto">
-		             	<a href="#" class="btn btn-outline-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-gear"></i>Alerts</a><br>
+		             	<a <a href="{% url 'viewBusiness' bid=user.profile.business.id %}" class="btn btn-secondary mx-auto" style="width: 100%; height: 15%; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Business Page</a><br>
 		            </div>
+		            {% endif %}
 		  	</div>
 		{% else %}
 			<div class="container text-center bg-light mb-3" style="padding: 0;">
-				<h2>You Aren't Signed In</h2><hr>
-		       	<a href="{% url 'login' %}" class="btn btn-primary mx-auto" style="width: 80%; height: 10%;"><i class="fa fa-fw fa-user"></i>Log In</a><br>
-		        <h2>Or Create An Account</h2><hr>
+				<h2>Sign In Here:</h2><hr>
+		       	<a href="{% url 'login' %}" class="btn btn-primary mx-auto" style="width: 80%; vertical-align: middle"><i class="fa fa-fw fa-user"></i>Log In</a><br><br>
+		        <h2>Don't Have an Account?</h2>
+		        <h2>Sign Up Here:</h2><hr>
 		        <div class="btn-group" style="width: 80%">
-				   	<a href="{% url 'signup_customer' %}" onclick class="btn btn-info mx-auto" style="width: 100%; height: 10%;"><i class="fa fa-fw fa-envelope"></i>Sign Up as a User</a>
-				   	<a href="{% url 'signup_owner' %}"  class="btn btn-info mx-auto" style="width: 100%; height: 10%;"><i class="fa fa-fw fa-gear"></i>Sign Up as a Business</a>
+				   	<a href="{% url 'signup_customer' %}" onclick class="btn btn-info mx-auto" style="width: 100%; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Sign Up as a User</a>
+				   	<a href="{% url 'signup_owner' %}"  class="btn btn-info mx-auto" style="width: 100%; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Sign Up as a Business</a>
 				    </div>
 			    </div>
 		    </div>	
