@@ -134,8 +134,8 @@
         {{ off.name.title }}  -  ${{ off.price }}
       </div>
       {% if forloop.counter|divisibleby:4 %}
-    </div>
-    <div class="row">
+        </div>
+        <div class="row">
       {% endif %}
         <div class="modal fade" id="{{ off.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -189,6 +189,8 @@
       {% endfor %}
     </div>
     {% endif %}
+    <br>
+    <a class = "btn btn-primary" href="{% url 'viewBusiness' bid=business.id %}"> {{ business.name.title }} Homepage </a>
     <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
   </div>
 
