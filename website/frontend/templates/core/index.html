@@ -49,10 +49,10 @@
               		<a class="btn btn-link" style="color: white; text-decoration: none; padding: 0;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false">Sign Up</a>
               		<div id="collapseOne" class="collapse" aria-labelledby="headingOne">
               			<div class="card-body text-lg-left" style="background-color: black; padding: 6">
-              				
+
 							<a href="{% url 'signup_customer' %}" style="color: white; text-decoration: none;" ><i class="fa fa-fw fa-user"></i>User Sign Up</a></li>
 							<a href="{% url 'signup_owner' %}" style="color: white; text-decoration: none;"><i class="fa fa-fw fa-group"></i>Business Sign Up</a></li>
-							
+
 						</div>
 					</div>
             {% endif %}
@@ -71,14 +71,14 @@
     <!-- Businesses -->
     <div id="tab1" class="tabcontent bg-light" style="padding: 10px 0 10px 0">
       <div class="container text-center bg-light mb-3" style="padding: 0">
-      	<h2>Browse Businesses</h2><hr>	
+      	<h2>Browse Businesses</h2><hr>
       	<div class="row" style="padding-bottom: 15px">
 			  <button class="btn btn-outline-primary" type="button" style="border-radius: 5px 0 0 5px">Search</button>
      		<input type="text" class="form-control" style="border-radius: 0 5px 5px 0; width: 200px">
       	</div>
         <div class="row" style="padding: 0">
 
-        {% for business in businesses %} 
+        {% for business in businesses %}
           <div class="col-lg-3">
           	<a class="btn btn-outline-secondary mx-auto" href="{% url 'viewBusiness' bid=business.id %}">
           		<img class="img-fluid rounded-circle mt-2 mb-3" src="https://pre00.deviantart.net/b738/th/pre/i/2012/175/8/1/business_logo___logos_for_sale_by_aeldesign-d54nfx6.png" style="border: 1px solid lightgray; width: 220px; background-color: white" alt="">
@@ -86,7 +86,7 @@
           		<p class="font-weight-light mb-0"></p>
           	</a>
           </div>
-        {% endfor %} 
+        {% endfor %}
 		</div>
 	  </div>
 	</div>
@@ -139,10 +139,7 @@
 		              	<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		            </div>
 		            {% else %}
-		            <div class="row mx-auto">
-		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
-		           		<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
-		           	</div>
+
 		           	{% endif %}
 			</div>
 			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
@@ -168,7 +165,7 @@
 				   	<a href="{% url 'signup_owner' %}"  class="btn btn-info mx-auto" style="width: 100%; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Sign Up as a Business</a>
 				    </div>
 			    </div>
-		    </div>	
+		    </div>
 		{% endif %}
 	</div>
 

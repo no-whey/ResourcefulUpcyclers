@@ -45,7 +45,7 @@
                 </td>
                 <td>{{ item.quantity }}</td>
                 <td>${{ item.price }}</td>
-                <td>{{ item.location }}</td>
+                <td>{{ item.location.name }}</td>
                 <td>{{ item.text_description }}</td>
                 {% if user.profile.isOwner %}
                 <td>{{ item.private }}</td>

@@ -44,7 +44,7 @@ urlpatterns = [
     path('business/<int:bid>/offers/', item_views.viewOffer, name='viewOffer'),
     path('business/<int:bid>/exportCSV', item_views.exportCSV, name='exportInventory'),
     path('business/<int:bid>/item/<slug:slug>/interest', item_views.interestedOffer, name='interestedOffer'),
-    
+
     #Viewing and editing Donations
     path('business/<int:bid>/newdonation/', item_views.newDonation, name='newDonation'),
     path('business/<int:bid>/donations/', item_views.allDonations, name='allDonations'),
@@ -63,12 +63,17 @@ urlpatterns = [
     path('business/<int:bid>/categories/', item_views.allCategories, name='allCategories'),
     path('business/<int:bid>/category/<slug:slug>/', item_views.oneCategory, name='oneCategory'),
 
+    #Locations
+    path('business/<int:bid>/location-management/', item_views.manageLocations, name='manageLocations'),
+    #path('business/<int:bid>/locations/', item_views.allLocations, name='allLocations'),
+    path('business/<int:bid>/location/<slug:slug>/', item_views.oneLocation, name='oneLocation'),
+
     #Requests (coming soon)
     path('request/', item_views.oneRequest, name="request" ),
 
     #View one specific business
     path('business/<int:bid>/', core_views.viewBusiness, name='viewBusiness'),
-    
+
     #Viewing alerts:
     path('business/<int:bid>/alerts/', alert_views.view_alerts, name='alerts' ),
     path('business/<int:bid>/alerts/<slug:slug>/delete', alert_views.delete_alert, name='delete_alert' ),

@@ -14,7 +14,7 @@ import csv
 import datetime
 from django.db.models import Q
 
-from .forms import RequestForm, DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
+from .forms import * #RequestForm, DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
 @login_required
@@ -40,7 +40,7 @@ def newDonation(request, bid):
             donation.needs_pickup = form.cleaned_data.get('needs_pickup')
 
             donation.save()
-            
+
             #Notify owners
             for owner in business.profile_set.all():
                 Alert.create("New Donation!",
@@ -148,7 +148,7 @@ def newRequest(request, bid):
             req.user_email = form.cleaned_data.get('user_email')
 
             req.save()
-            
+
             #Notify owners
             for owner in business.profile_set.all():
                 Alert.create("New Request!",
@@ -211,13 +211,17 @@ def newOffer(request, bid):
             offer.business = business
             offer.name = form.cleaned_data.get('name')
             offer.price = form.cleaned_data.get('price')
-            offer.location = form.cleaned_data.get('location')
+            #offer.location = form.cleaned_data.get('location')
             offer.text_description = form.cleaned_data.get('text_description')
             offer.img_link = form.cleaned_data.get('img_link')
             offer.quantity = form.cleaned_data.get('quantity')
             offer.private = form.cleaned_data.get('private')
             offer.tag_pile = form.cleaned_data.get('tag_pile')
             offer.save()
+
+            if form.cleaned_data.get('location'):
+                location = form.cleaned_data.get('location')
+                offer.location = location
 
             if form.cleaned_data.get('category'):
                 category = form.cleaned_data.get('category')
@@ -272,13 +276,17 @@ def editOffer(request, bid, slug):
 
                 offer.name = form.cleaned_data.get('name')
                 offer.price = form.cleaned_data.get('price')
-                offer.location = form.cleaned_data.get('location')
+                #offer.location = form.cleaned_data.get('location')
                 offer.text_description = form.cleaned_data.get('text_description')
                 offer.img_link = form.cleaned_data.get('img_link')
                 offer.quantity = form.cleaned_data.get('quantity')
                 offer.private = form.cleaned_data.get('private')
                 offer.tag_pile = form.cleaned_data.get('tag_pile')
                 offer.save()
+
+                if form.cleaned_data.get('location'):
+                    location = form.cleaned_data.get('location')
+                    offer.location = location
 
                 if form.cleaned_data.get('category'):
                     category = form.cleaned_data.get('category')
@@ -341,17 +349,15 @@ def interestedOffer(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
     offer = get_object_or_404(Inventory, id=slug)
     user = request.user
-    
+
     #Notify owners
     for owner in business.profile_set.all():
         Alert.create("Interest in offer!",
                      user.username + " (" + user.email + \
                         ") has shown interest in your offer of \'" + offer.name + "\'",
                      owner.user)
-    
+
     return redirect('viewOffer', bid=bid)
-    
-    
 
 @login_required
 def receipt(request, bid, slug):
@@ -429,6 +435,47 @@ def oneCategory(request, bid, slug):
         if offer is not offer.private:
             offers_list.append(offer)
     return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+
+@login_required
+def manageLocations(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    if (request.user.profile.isOwner and request.user.profile.business==business):
+        location_tree = StoreLocation.objects.filter(business=business)
+        if request.method == 'POST':
+            form = NewStoreLocationForm(request.POST)
+            if form.is_valid():
+
+                loc = StoreLocation()
+                loc.name = form.cleaned_data.get('name')
+                loc.business = business
+                if(form.cleaned_data.get('parent')):
+                    loc.parent = form.cleaned_data.get('parent')
+                loc.save()
+
+                # Redirect to all Donations from that user, Maybe a "Thank you" page???
+                return redirect('manageLocations', bid=bid)
+        else:
+            form = NewStoreLocationForm()
+        return render(request, 'storeLocation/manageLocations.html', {'location_tree' : location_tree, 'form' : form, 'business' : business})
+    return redirect('home')
+
+"""
+def allLocations(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    location_tree = StoreLocation.objects.filter(business = business)
+    return render(request, 'storeLocation/allLocations.html', {'location_tree' : location_tree, 'business' : business})
+"""
+
+# View the NON-PRIVATE offers in a category
+def oneLocation(request, bid, slug):
+    business = get_object_or_404(Business, id=bid)
+    store_location = get_object_or_404(StoreLocation, id=slug)
+    offers_list = []
+    for offer in Inventory.objects.filter(business=business):
+        if offer is not offer.private and offer.location == store_location:
+            offers_list.append(offer)
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+
 
 @login_required
 def oneRequest(request):
