@@ -86,7 +86,7 @@
           <ul class="dropdown-menu">
             {% if user.is_authenticated %}
             <li>
-              <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+              <a href="{% url "profile" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
             </li>
             <li>
               <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
@@ -192,6 +192,10 @@
 
           <li {% if nav_active == "requests" %}class="active"{% endif %}>
             <a href="{% url "request" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+          </li>
+
+          <li {% if nav_active == "return" %}class="active"{% endif %}>
+            <a href="{% url 'viewBusiness' bid=business.id %}"><i class="fa fa-fw fa-arrow-left"></i> {{ business.name.title }}</a>
           </li>
 
         </ul>
