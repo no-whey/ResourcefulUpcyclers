@@ -19,7 +19,7 @@
     <!-- Custom styles for this template -->
     <link type="text/css" href="{% static 'css/landing-page.css' %}" rel="stylesheet">
 
-    <link type="text/css" href="{% static 'css/splash.css' %}" rel="stylesheet">
+
   </head>
 
   <body style="background-color: #343a40">
@@ -61,17 +61,17 @@
       </div>
     </header>
 
-  	<div class="tab btn-group" role="group" style="width: 102%">
-	  <button class="btn btn-outline-primary tablinks" onclick="openTab(event, 'tab1')" id="defaultOpen">Businesses</button>
+  	<div class="tab btn-group bg-light" role="group" style="width: 100%; position: static;">
+	  <button class="btn btn-outline-primary tablinks" style="border-radius: 0" onclick="openTab(event, 'tab1')" id="defaultOpen">Businesses</button>
 	  <button class="btn btn-outline-primary tablinks" onclick="openTab(event, 'tab2')">About Us</button>
-	  <button class="btn btn-outline-primary tablinks" onclick="openTab(event, 'tab3')">Account</button>
+	  <button class="btn btn-outline-primary tablinks" style="border-radius: 0 0 3px 0" onclick="openTab(event, 'tab3')">Account</button>
 	</div>
 
 
     <!-- Businesses -->
     <div id="tab1" class="tabcontent bg-light" style="padding: 10px 0 10px 0">
       <div class="container text-center bg-light mb-3" style="padding: 0">
-      	<h2>Browse Businesses</h2><hr>	
+      	<h1>Browse Businesses</h1><hr>	
       	<div class="row" style="padding-bottom: 15px">
 			  <button class="btn btn-outline-primary" type="button" style="border-radius: 5px 0 0 5px">Search</button>
      		<input type="text" class="form-control" style="border-radius: 0 5px 5px 0; width: 200px">
@@ -128,40 +128,42 @@
 	<div id="tab3" class="tabcontent bg-light" style="padding: 10px 0 10px 0">
 		{% if user.is_authenticated %}
 			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
-				<h2>Control Panel</h2><hr>
+				<h1>Control Panel</h1><hr>
 					{% if user.profile.isOwner %}
 					<div class="row mx-auto">
-		           		<a href="{% url 'inventory' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-user"></i>Inventory</a><br>
-		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
+		           		<a href="{% url 'inventory' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-user"></i>Inventory</a><br>
+		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
 		           	</div>
+		           	<br>
 		           	<div class="row mx-auto">
-		             	<a href="{% url 'viewOffer' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-gear"></i>Offers</a><br>
-		              	<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
+		             	<a href="{% url 'viewOffer' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-gear"></i>Offers</a><br>
+		              	<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		            </div>
 		            {% else %}
 		            <div class="row mx-auto">
-		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
-		           		<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 50%; height: 15%;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
+		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
+		           		<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		           	</div>
 		           	{% endif %}
 			</div>
 			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
-				<h2>Account</h2><hr>
+				<h1>Account</h1><hr>
 					<div class="row mx-auto">
-		           		<a href="profile" class="btn btn-secondary mx-auto" style="width: 50%; height: 15%; vertical-align: middle"><i class="fa fa-fw fa-user"></i> Profile</a><br>
-		           		<a href="#" class="btn btn-secondary mx-auto" style="width: 50%; height: 15%; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Alerts</a><br>
+		           		<a href="profile" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-user"></i> Profile</a><br>
+		           		<a href="#" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Alerts</a><br>
 		           	</div>
 		           	{% if user.profile.isOwner %}
+		           	<br>
 		           	<div class="row mx-auto">
-		             	<a <a href="{% url 'viewBusiness' bid=user.profile.business.id %}" class="btn btn-secondary mx-auto" style="width: 100%; height: 15%; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Business Page</a><br>
+		             	<a <a href="{% url 'viewBusiness' bid=user.profile.business.id %}" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Business Page</a><br>
 		            </div>
 		            {% endif %}
 		  	</div>
 		{% else %}
 			<div class="container text-center bg-light mb-3" style="padding: 0;">
-				<h2>Sign In Here:</h2><hr>
+				<h1>Log In Here:</h1><hr>
 		       	<a href="{% url 'login' %}" class="btn btn-primary mx-auto" style="width: 80%; vertical-align: middle"><i class="fa fa-fw fa-user"></i>Log In</a><br><br>
-		        <h2>Don't Have an Account?</h2>
+		        <h1>Don't Have an Account?</h1>
 		        <h2>Sign Up Here:</h2><hr>
 		        <div class="btn-group" style="width: 80%">
 				   	<a href="{% url 'signup_customer' %}" onclick class="btn btn-info mx-auto" style="width: 100%; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Sign Up as a User</a>
