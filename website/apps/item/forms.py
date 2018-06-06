@@ -2,6 +2,7 @@ from django import forms
 from model_utils.fields import StatusField
 from model_utils import Choices
 
+from website.apps.core.models import *
 from website.apps.item.models import *
 import tagulous.forms
 from mptt.forms import *
@@ -113,7 +114,8 @@ class OfferForm(forms.ModelForm):
         widget=forms.TextInput (attrs={ 'size': 60 }) )
     quantity = forms.IntegerField ( label='Quantity', required=True, help_text='Number of items' )
     price = forms.DecimalField ( label='Price', required=True, help_text='Asking Price per Item')
-    location = forms.CharField ( label='Location', max_length=60, required=True, help_text='In-House Item Location')
+    location = TreeNodeChoiceField( label='Location', queryset=StoreLocation.objects.all(), required=False, help_text='Optional. What in-house location is this a part of?' )
+    #location = forms.CharField ( label='Location', max_length=60, required=True, help_text='In-House Item Location')
     text_description = forms.CharField (label='Description', max_length=500, required=True, help_text='Describe the Item', \
          widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
     img_link = forms.URLField ( label='Image Link', max_length=200, required=True, help_text='Link to Images of Item (use a different site)', \
@@ -147,7 +149,7 @@ class UpdateOfferForm(forms.ModelForm):
             self.fields['name'].initial = kwargs['instance'].name
             self.fields['quantity'].initial = kwargs['instance'].quantity
             self.fields['price'].initial = kwargs['instance'].price
-            self.fields['location'].initial = kwargs['instance'].location
+            #self.fields['location'].initial = kwargs['instance'].location
             self.fields['text_description'].initial = kwargs['instance'].text_description
             self.fields['img_link'].initial = kwargs['instance'].img_link
             self.fields['private'].initial = kwargs['instance'].private
@@ -162,8 +164,7 @@ class UpdateOfferForm(forms.ModelForm):
     price = forms.CharField( label='Asking Price of Item', max_length=30, required=True, help_text='Asking Price of Item', \
          widget=forms.TextInput (attrs={ 'size': 60 }) )
 
-    location = forms.CharField( label='In-House Item Location', max_length=60, required=True, help_text='In-House Item Location', \
-         widget=forms.TextInput (attrs={ 'size': 60 }) )
+    location = TreeNodeChoiceField(label='Location', queryset=StoreLocation.objects.all(), required=False, help_text='Optional. What in-house location is this a part of?' )
 
     text_description = forms.CharField ( label='Describe the Item', max_length=500, required=True, \
         help_text='Describe the Item', widget=forms.Textarea(attrs={'cols': 80, 'rows': 4}) )
@@ -200,6 +201,19 @@ class NewCategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
+        fields = ( 'name',
+                   'parent',
+                 )
+
+class NewStoreLocationForm(forms.ModelForm):
+
+    #PARENT_OPTIONS = list(Category.objects.all())
+
+    name = forms.CharField (label='Location Name', max_length=30, required=True, help_text='What type of items will be kept in this category?')
+    parent = TreeNodeChoiceField(label='Parent Location', queryset=StoreLocation.objects.all(), required=False, help_text='Optional. What is the super-location?' )
+
+    class Meta:
+        model = StoreLocation
         fields = ( 'name',
                    'parent',
                  )
