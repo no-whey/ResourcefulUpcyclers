@@ -69,17 +69,19 @@
       <!-- Heading Row -->
       <div class="row my-4">
         <div class="col-lg-7">
-          <img class="img-fluid rounded" src="{{ business.icon }}" alt="">
+          <img class="img-fluid rounded" src={{ business.icon }} style="height:270px"alt="">
         </div>
         <!-- /.col-lg-8 -->
         <div class="col-lg-5">
           <h1>{{ business.name }}</h1>
           <p>{{ business.description }}</p>
           <hr>
-          <p><b>Phone:</b> 1-800-123-456</p>
+          <p><b>Phone:</b> {{ business.phone_number }}</p>
+          <p><b>Contact Us:</b><br>
           {% for owner in owner_group %}
-            <b>Email:</b> {{ owner.email }}<br><br>
-          {% endfor %}
+            <b>{{ owner.first_name }} {{ owner.last_name }} - </b>
+            Email: {{ owner.email }}<br>
+          {% endfor %}</p>
           <p><b>Address:</b> {{ business.address }}</p>
         </div>
         <!-- /.col-md-4 -->
@@ -163,13 +165,8 @@
               		<p class="card-text">Recently added items:</p>
               <p class="card-text">
                   {% for item in offers_list %}
-
-                    <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}
-                      <span data-toggle="modal" data-target="#{{ item.id }}">
-                        <button class="btn btn-primary" data-toggle="tooltip" role="button" data-placement="bottom" title="Expand">
-                          Expand
-                        </button>
-                      </span>
+                    <a data-toggle="modal" data-target="#{{ item.id }}"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>
+                    {{ item.name.title }}  -  ${{ item.price }}
                   <!--Image popup code -->
                     <div class="modal fade" id="{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
@@ -206,7 +203,7 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-                            {% if user.profile.isOwner %}
+                            {% if user in business.owner_group %}
                               <div class="btn-group">
                                 <a class="btn btn-primary" href="{% url 'editOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
                               <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
