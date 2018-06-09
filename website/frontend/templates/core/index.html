@@ -22,10 +22,10 @@
 
   </head>
 
-  <body style="background-color: #343a40">
+  <body class="bg-dark">
 
     <!-- Masthead -->
-    <header class="masthead text-white" style="height: 130px">
+    <header class="masthead text-white bg-dark" style="height: 130px">
       <div class="overlay"></div>
       <a href="{% url "home" %}">
       	<img src="{% static 'images/ru_logo-white.png' %}" width="75" height="75" style="position: absolute;">
@@ -79,10 +79,10 @@
         <div class="row" style="padding: 0">
 
         {% for business in businesses %}
-          <div class="col-lg-3">
+          <div class="col-lg-4">
           	<a class="btn btn-outline-secondary mx-auto" href="{% url 'viewBusiness' bid=business.id %}">
           		<img class="img-fluid rounded-circle mt-2 mb-3" src="https://pre00.deviantart.net/b738/th/pre/i/2012/175/8/1/business_logo___logos_for_sale_by_aeldesign-d54nfx6.png" style="border: 1px solid lightgray; width: 220px; background-color: white" alt="">
-          		<h5>{{ business.name.title }}</h5>
+          		<h5>{{ business.name}}</h5>
           		<p class="font-weight-light mb-0"></p>
           	</a>
           </div>
@@ -140,16 +140,13 @@
 		              	<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		            </div>
 		            {% else %}
-<<<<<<< HEAD
 		            <div class="row mx-auto">
 		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
 		           		<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		           	</div>
-=======
-
->>>>>>> b60b849672391807b9f99477520f281acf5f23d9
 		           	{% endif %}
 			</div>
+			<br>
 			<div class="container text-center bg-light mb-3" style="padding: 0; width: 45%">
 				<h1>Account</h1><hr>
 					<div class="row mx-auto">
@@ -179,7 +176,7 @@
 	</div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer bg-dark">
       <div class="container">
         <div class="row">
           <div class="col-lg-6 h-8 text-center text-lg-left my-auto">

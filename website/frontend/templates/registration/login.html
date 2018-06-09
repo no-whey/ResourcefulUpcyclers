@@ -10,10 +10,10 @@
   <title>{% block title %}Resourceful Upcyclers | Sign Up{% endblock %}</title>
 
   <!-- Bootstrap Core CSS -->
-  {% block sb_admin_bootstrap_css %}<link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">{% endblock sb_admin_bootstrap_css %}
+  <link type="text/css" href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 
   <!-- Custom CSS -->
-  {% block sb_admin_css %}<link href="{% static "css/sb-admin.css"%}" rel="stylesheet">{% endblock sb_admin_css %}
+  <link type="text/css" href="{% static 'css/landing-page.css' %}" rel="stylesheet">
 
   <!-- Custom Fonts -->
   {% block sb_admin_fonts_css %}<link href="{% static "font-awesome/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">{% endblock sb_admin_fonts_css %}
@@ -30,14 +30,14 @@
 </head>
 
 <body class="bg-dark">
-  <div class="container">
+  <div class="container text-center bg-light mt-5" style="width: 400px; border-radius: 5px">
 <div class="row">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="mx-auto mt-3">
       <div class="login-panel panel panel-default">
         <div class="panel-heading">
           <h1>
             <img src="{% static 'images/favicon.ico' %}" width="75" height="75">
-            Log In</h1>
+            <b>Log In</b></h1>
         </div>
         <div class="panel-body">
           <form method="post">
@@ -46,7 +46,7 @@
             {{ form.as_p }}
             </div>
             <div class="form-group">
-            <button class="btn btn-primary btn-block" type="submit">Login</button>
+            <button class="btn btn-primary btn-block mx-auto" type="submit">Login</button>
             </div>
             </form>
             <div class= "small text-muted text-center">
@@ -55,13 +55,12 @@
             <div class= "small text-muted text-center">
               <a href="{% url "signup_customer" %}">Sign Up as a Customer</a>
             </div>
-            <div class= "small text-muted text-center">
+            <div class= "small text-muted text-center mb-3">
               <a href="{% url "signup_owner" %}">Sign Up as a Business Owner</a>
             </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
   </div>
   <!-- jQuery -->
