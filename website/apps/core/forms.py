@@ -11,13 +11,14 @@ class CreateBusinessForm(forms.Form):
         help_text='Write a short description about your Organization')
     address = forms.CharField(max_length=200, required=True,
         help_text="Format: 123 Qwerty Ave #456, City, ST 99999")
-    icon = forms.ImageField(max_length=100, required=False,
-        help_text="Upload a JPEG or PNG logo")
+    phone_number = forms.CharField(max_length=13, required=True, help_text="e.g. 1-888-123-4567")
+    icon = forms.URLField ( max_length=200, required=True, help_text='Link to Images (use a different site)')
 
     class Meta:
         model = Business
         fields = (  'name',
                     'description',
                     'address',
+                    'phone_number',
                     'icon',
                     )

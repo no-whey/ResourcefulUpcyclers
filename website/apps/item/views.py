@@ -490,8 +490,8 @@ def exportCSV(request, bid):
     response['Content-Disposition'] = 'attachment; filename=Business%s_Inventory.csv'%bid
 
     writer = csv.writer(response)
-    writer.writerow(['Item Name', 'Quantity', 'Price', 'In-House Location', 'Description', 'Image Link',])
+    writer.writerow(['Item Name', 'Quantity', 'Price', 'Private', 'Description', 'Image Link',])
     for item in offers_list:
-        writer.writerow([item.name, item.quantity, item.price, item.location, item.text_description, item.img_link,])
+        writer.writerow([item.name, item.quantity, item.price, item.private, item.text_description, item.img_link,])
 
     return response

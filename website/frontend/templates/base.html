@@ -112,9 +112,10 @@
       {% block sb_admin_sidebar %}<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
+          <!-- Debating taking this out to avoid confusion on the sidebar
           <li {% if nav_active == "aboutus" %}class="active"{% endif %}>
             <a href="{% url "home" %}"><i class="fa fa-fw fa-question"></i> About Us</a>
-          </li>
+          </li> -->
           {% if not user.is_authenticated  %}
             <li {% if nav_active == "login" %}class="active"{% endif %}>
               <a href="{% url "login" %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a>
@@ -194,7 +195,7 @@
           {% endif %}
 
           <li {% if nav_active == "requests" %}class="active"{% endif %}>
-            <a href="{% url "request" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+            <a href="{% url 'newRequest' bid=business.id %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
           </li>
 
           <li {% if nav_active == "return" %}class="active"{% endif %}>

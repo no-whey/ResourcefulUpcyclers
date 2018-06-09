@@ -81,8 +81,8 @@
         {% for business in businesses %}
           <div class="col-lg-4">
           	<a class="btn btn-outline-secondary mx-auto" href="{% url 'viewBusiness' bid=business.id %}">
-          		<img class="img-fluid rounded-circle mt-2 mb-3" src="https://pre00.deviantart.net/b738/th/pre/i/2012/175/8/1/business_logo___logos_for_sale_by_aeldesign-d54nfx6.png" style="border: 1px solid lightgray; width: 220px; background-color: white" alt="">
-          		<h5>{{ business.name}}</h5>
+          		<img class="img-fluid rounded-circle mt-2 mb-3" src={{ business.icon }} style="border: 1px solid lightgray; width: 220px; background-color: white" alt="">
+          		<h5>{{ business.name.title }}</h5>
           		<p class="font-weight-light mb-0"></p>
           	</a>
           </div>
@@ -101,7 +101,7 @@
 	          </div>
 	          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
 	            <h2>Connect with Local Non-Profits</h2>
-	            <p class="lead mb-0">Lorem ipsum dolor sit amet, est eu altera feugiat, eu facer possit labitur sea. Mea nihil gloriatur ex. Ius agam aperiam te. Cu quidam efficiantur complectitur nam. Lorem volumus similique mei ad.</p>
+	            <p class="lead mb-0">Create and host your business through the Resourceful Upcyclers website!</p>
 	         </div>
 	        </div>
 	        <div class="row no-gutters">
@@ -110,14 +110,14 @@
 		          </div>
 		          <div class="col-lg-6 my-auto showcase-text">
 		            <h2>Easy to Use Item Management Tools</h2>
-		            <p class="lead mb-0">Lorem ipsum dolor sit amet, est eu altera feugiat, eu facer possit labitur sea. Mea nihil gloriatur ex. Ius agam aperiam te. Cu quidam efficiantur complectitur nam. Lorem volumus similique mei ad.</p>
+		            <p class="lead mb-0"></p>
 		          </div>
 		        </div>
 		        <div class="row no-gutters">
 		          <div class="col-lg-6 order-lg-2 text-white showcase-img">{% easy_map "United States, California, Santa Cruz" 760 500 %}</div>
 		          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
 		            <h2>Our Team</h2>
-		            <p class="lead mb-0">Lorem ipsum dolor sit amet, est eu altera feugiat, eu facer possit labitur sea. Mea nihil gloriatur ex. Ius agam aperiam te. Cu quidam efficiantur complectitur nam. Lorem volumus similique mei ad.</p>
+		            <p class="lead mb-0"></p>
 		          </div>
 		        </div>
 		      </div>

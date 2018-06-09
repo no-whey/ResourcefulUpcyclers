@@ -85,6 +85,7 @@ def create_business(request):
             business.name = form.cleaned_data.get('name')
             business.description = form.cleaned_data.get('description')
             business.address = form.cleaned_data.get('address')
+            business.phone_number = form.cleaned_data.get('phone_number')
             if form.cleaned_data.get('icon'):
                 business.icon = form.cleaned_data.get('icon')
             o_group = Group(name=business.name)
