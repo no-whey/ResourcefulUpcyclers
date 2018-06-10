@@ -22,6 +22,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        {% if user.profile.isOwner %}
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">  
@@ -58,6 +59,7 @@
             </li>
           </ul>
         </div>
+        {% endif %}
       </div>
     </nav>
 
@@ -69,6 +71,7 @@
         <div class="col-lg-8 mx-auto">
           <h1>Your Donation Tickets:</h1>
         </div>
+        {% if user.profile.isOwner %}
         <div class="col-lg-4">
           {% if intflag %}
             <a href="{% url 'allDonations' bid=business.id %}" class="btn btn-outline-secondary pull-right"><h4>All Donations</h4></a>
@@ -76,6 +79,7 @@
             <a href="{% url 'interestedDonations' bid=business.id %}" class="btn btn-outline-secondary pull-right"><h4>Selected Donations</h4></a>
           {% endif %}
         </div>
+        {% endif %}
       </div>
   <div class="card mb-3">
     <div class="card-body">

@@ -141,8 +141,8 @@
 		            </div>
 		            {% else %}
 		            <div class="row mx-auto">
-		           		<a href="{% url 'allDonations' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
-		           		<a href="{% url 'allRequests' bid=user.profile.business.id %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
+		           		<a href="{% url 'allDonations' bid=0 %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-envelope"></i>Donations</a><br>
+		           		<a href="{% url 'allRequests' bid=0 %}" class="btn btn-primary mx-auto" style="width: 40%; height: 40px;"><i class="fa fa-fw fa-power-off"></i>Requests</a>
 		           	</div>
 		           	{% endif %}
 			</div>

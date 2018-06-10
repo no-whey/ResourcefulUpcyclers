@@ -23,6 +23,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
+          {% if user.profile.isOwner %}
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">  
               <a class="nav-link" href="{% url 'viewBusiness' bid=business.id %}"><b>{{ business.name }}</b>
@@ -57,6 +58,7 @@
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
           </ul>
+          {% endif %}
         </div>
       </div>
     </nav>

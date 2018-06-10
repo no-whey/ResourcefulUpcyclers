@@ -135,8 +135,8 @@
               		<div class="card-text">
               			<p>Use the buttpms below to  help categorize your items by type and note their in-house location.</p>
 
-	              			<a href="{% url 'manageCategories' bid=business.id %}" class="btn btn-outline-primary pull-right" style="width: 49.5%">Manage Categories</a>
-	              			<a href="{% url 'manageLocations' bid=business.id %}" class="btn btn-outline-primary pull-right" style="width: 49.5%">Manage Locations</a>
+	              			<a href="{% url 'manageCategories' bid=business.id %}" class="btn btn-outline-primary pull-left" style="width: 49%">Manage Categories</a>
+	              			<a href="{% url 'manageLocations' bid=business.id %}" class="btn btn-outline-primary pull-right" style="width: 49%">Manage Locations</a>
 
 	              	</div>
             </div>
@@ -155,6 +155,20 @@
               		</div>
               	</div>
               <p class="card-text">Recent Donations:</p>
+              {% for item in donation_list %}
+                    <div class="card">
+                    <div class="row" style="height: 100px">
+                      <div class="col-lg-6">
+                       <img src={{ item.img_link }} style="height: 100%" title={{ item.name.title }}>
+                      </div>
+                      <div class="col-lg-6 mt-1">
+                        <b>{{ item.name.title }}</b><br>
+                        <div class="text-muted">{{ item.donor_email }}<br>Location: {{ item.city }}</div>
+                      </div>
+                   </div>
+                  </div>
+                  <br>
+              {% endfor %}
               <hr>
               <div class="row">
             		<div class="col-md-7 mb-1">
@@ -165,6 +179,22 @@
               		</div>
               	</div>
               <p class="card-text">Recent Requests:</p>
+              {% for request in request_list %}
+                <div class="card">
+                    <div class="card-header">
+                      <div class="row">
+                      <div class="col-lg-6">
+                        <b>{{ request.name.title }}</b>
+                      </div>
+                      <div class="col-lg-6">
+                        {{ request.user_email }}
+                      </div>
+                    </div>
+                    </div>
+                    <div class="text-muted card-body">{{ request.text_description }}</div>
+                </div>
+                <br>
+              {% endfor %}
             </div>
           </div>
         </div>

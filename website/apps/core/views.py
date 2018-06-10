@@ -2,7 +2,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from website.apps.core.models import Business
-from website.apps.item.models import Inventory
+from website.apps.item.models import Inventory, Request, Donation
 from website.apps.core.forms import CreateBusinessForm
 from decouple import config
 
@@ -74,7 +74,9 @@ def viewBusiness(request, bid):
             messages.error(request,"Unable to upload file. "+repr(e))
 
     offers_list = Inventory.objects.filter(private=False, business=business)[::-1][:3]
-    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
+    donation_list = Donation.get_all_business_donations(request.user, business)[::-1][:2]
+    request_list = Request.get_all_business_requests(request.user, business)[::-1][:2]
+    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:3], 'donation_list' : donation_list[0:2], 'request_list' : request_list[0:2], 'user' : request.user })
 
 def create_business(request):
     if request.method == 'POST':

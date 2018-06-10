@@ -56,14 +56,18 @@ def newDonation(request, bid):
 # For Customers to view their submitted Donations, Owners can see all donations
 @login_required
 def allDonations(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    owner_group = User.objects.filter(groups__name=business.name)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
-        donation_list = Donation.get_all_business_donations(request.user, business)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : False})
+    if(request.user.profile.isOwner):
+        business = get_object_or_404(Business, id=bid)
+        if(request.user.profile.business==business):
+            owner_group = User.objects.filter(groups__name=business.name)
+            donation_list = Donation.get_all_business_donations(request.user, business)
+            return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : False})
+        else:
+            donation_list = Donation.get_my_donations(request.user)
+            return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'user' : request.user})   
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : False})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'user' : request.user})
 
 # Owners see only their interested Donations, customers get same access as allDonations view
 @login_required
@@ -165,14 +169,18 @@ def newRequest(request, bid):
 # For Customers to view their submitted Donations, Owners can see all donations
 @login_required
 def allRequests(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    owner_group = User.objects.filter(groups__name=business.name)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
-        request_list = Request.get_all_business_requests(request.user, business)
-        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
+    if(request.user.profile.isOwner):
+        business = get_object_or_404(Business, id=bid)
+        if(request.user.profile.business==business):
+            owner_group = User.objects.filter(groups__name=business.name)
+            request_list = Request.get_all_business_requests(request.user, business)
+            return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
+        else:
+            request_list = Request.get_my_requests(request.user)
+            return render(request, 'requests/allRequests.html', {'requests' : request_list, 'user' : request.user})
     else:
         request_list = Request.get_my_requests(request.user)
-        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
+        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'user' : request.user})
 
 
 # Owners can view their available inventory
