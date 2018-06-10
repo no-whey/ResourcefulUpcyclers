@@ -80,12 +80,12 @@
 
         {% for business in businesses %}
           <div class="col-lg-4">
-          	<a class="btn btn-outline-secondary mx-auto" href="{% url 'viewBusiness' bid=business.id %}">
+          	<a class="btn btn-outline-secondary mx-auto" href={% if user.is_authenticated %}"{% url 'viewBusiness' bid=business.id %}"{% else %}"{% url 'login' %}"{% endif%}>
           		<img class="img-fluid rounded-circle mt-2 mb-3" src={{ business.icon }} style="border: 1px solid lightgray; width: 220px; background-color: white" alt="">
-          		<h5>{{ business.name.title }}</h5>
-          		<p class="font-weight-light mb-0"></p>
+          		<h5>{{ business.name }}</h5>
           	</a>
           </div>
+          <hr>
         {% endfor %}
 		</div>
 	  </div>
@@ -151,12 +151,12 @@
 				<h1>Account</h1><hr>
 					<div class="row mx-auto">
 		           		<a href="profile" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-user"></i> Profile</a><br>
-		           		<a href="#" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Alerts</a><br>
+		           		<a href="{% url 'alerts' 1 %}" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-envelope"></i>Notifications</a><br>
 		           	</div>
 		           	{% if user.profile.isOwner %}
 		           	<br>
 		           	<div class="row mx-auto">
-		             	<a <a href="{% url 'viewBusiness' bid=user.profile.business.id %}" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Business Page</a><br>
+		             	<a href="{% url 'viewBusiness' bid=user.profile.business.id %}" class="btn btn-info mx-auto" style="width: 40%; height: 40px; vertical-align: middle"><i class="fa fa-fw fa-gear"></i>Business Page</a><br>
 		            </div>
 		            {% endif %}
 		  	</div>

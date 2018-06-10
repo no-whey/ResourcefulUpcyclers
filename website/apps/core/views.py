@@ -62,9 +62,8 @@ def viewBusiness(request, bid):
 		                item.name = fields[0]
 		                item.quantity = fields[1]
 		                item.price = fields[2]
-		                item.location = fields[3]
-		                item.text_description = fields[4]
-		                item.img_link = fields[5]
+		                item.text_description = fields[3]
+		                item.img_link = fields[4]
 		                item.date = datetime.date.today	
 		                item.private = False
 		                item.business = business

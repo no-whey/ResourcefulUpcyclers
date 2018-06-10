@@ -57,27 +57,29 @@ def newDonation(request, bid):
 @login_required
 def allDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
     if(request.user.profile.isOwner and request.user.profile.business==business):
         donation_list = Donation.get_all_business_donations(request.user, business)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : False})
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : False})
 
 # Owners see only their interested Donations, customers get same access as allDonations view
 @login_required
 def interestedDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
     if(request.user.profile.isOwner and request.user.profile.business==business):
         donation_list = []
         business_donations = Donation.get_all_business_donations(request.user, business)
         for donation in business_donations:
             if donation.owner_interest:
                 donation_list.append(donation)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : True})
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag': True})
 
 # For Owners to view and edit one specific donation
 @login_required
@@ -164,23 +166,25 @@ def newRequest(request, bid):
 @login_required
 def allRequests(request, bid):
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
     if(request.user.profile.isOwner and request.user.profile.business==business):
         request_list = Request.get_all_business_requests(request.user, business)
-        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business})
+        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     else:
         request_list = Request.get_my_requests(request.user)
-        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business})
+        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
 
 
 # Owners can view their available inventory
 @login_required
 def inventory(request, bid):
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)   
     if(request.user.profile.isOwner and request.user.profile.business==business):
         #Loading page
         if request.method == 'GET':
             inventory_list = Inventory.get_all_business_inventory(request.user, business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
         #Loading page after searching
         elif request.method == 'POST':
             search = str(request.POST.get('q', None))
@@ -190,11 +194,11 @@ def inventory(request, bid):
             #Non-Empty search bar
             else:
                 inventory_list = Inventory.objects.filter(tag_pile=search, business=business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
         #Other methods
         else:
             inventory_list = Inventory.get_all_business_inventory(request.user, business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     else:
         return render(request, 'index.html')
 
@@ -243,9 +247,11 @@ def newOffer(request, bid):
 def viewOffer(request, bid):
     #Loading page
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
+    
     if request.method == 'GET':
         offers_list = Inventory.objects.filter(private=False, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     #Loading page after searching
     elif request.method == 'POST':
         search = str(request.POST.get('q', None))
@@ -255,11 +261,11 @@ def viewOffer(request, bid):
         #Non-Empty search bar
         else:
             offers_list = Inventory.objects.filter(private=False, tag_pile=search, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     #Other methods
     else:
         offers_list = Inventory.objects.filter(private=False, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
 
 # Owners can edit their offers.
 @login_required
