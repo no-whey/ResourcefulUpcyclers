@@ -72,7 +72,7 @@
                         <a href="{% url 'alerts' 1 %}"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
                       </li>
                     {% endif %}
-                    
+
                   {% endfor %}
                   <li>
                     <a href="{% url 'alerts' 1 %}">View all alerts</a>
@@ -86,7 +86,7 @@
           <ul class="dropdown-menu">
             {% if user.is_authenticated %}
             <li>
-              <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+              <a href="{% url "profile" %}"><i class="fa fa-fw fa-user"></i> Profile</a>
             </li>
             <li>
               <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
@@ -112,9 +112,10 @@
       {% block sb_admin_sidebar %}<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
+          <!-- Debating taking this out to avoid confusion on the sidebar
           <li {% if nav_active == "aboutus" %}class="active"{% endif %}>
             <a href="{% url "home" %}"><i class="fa fa-fw fa-question"></i> About Us</a>
-          </li>
+          </li> -->
           {% if not user.is_authenticated  %}
             <li {% if nav_active == "login" %}class="active"{% endif %}>
               <a href="{% url "login" %}"><i class="fa fa-fw fa-arrow-circle-right"></i> Log In</a>
@@ -147,6 +148,9 @@
                 </li>
                 <li {% if nav_active == "category-management" %}class="active"{% endif %}>
                   <a href="{% url "manageCategories" bid=business.id %}"><i class="fa fa-sitemap fa-fw"></i> Manage Categories</a>
+                </li>
+                <li {% if nav_active == "location-management" %}class="active"{% endif %}>
+                  <a href="{% url "manageLocations" bid=business.id %}"><i class="fa fa-map-marker fa-fw"></i> Manage Locations</a>
                 </li>
               </ul>
             </li>
@@ -191,7 +195,11 @@
           {% endif %}
 
           <li {% if nav_active == "requests" %}class="active"{% endif %}>
-            <a href="{% url "request" %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+            <a href="{% url 'newRequest' bid=business.id %}"><i class="fa fa-fw fa-arrow-down"></i> Requests</a>
+          </li>
+
+          <li {% if nav_active == "return" %}class="active"{% endif %}>
+            <a href="{% url 'viewBusiness' bid=business.id %}"><i class="fa fa-fw fa-arrow-left"></i> {{ business.name.title }}</a>
           </li>
 
         </ul>

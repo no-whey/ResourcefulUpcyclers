@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/small-business.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 
   </head>
 
@@ -33,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">  
-              <a class="nav-link" href="{% url 'viewBusiness' bid=business.id %}">{{ business.name }}
+              <a class="nav-link" href="{% url 'viewBusiness' bid=business.id %}"><b>{{ business.name }}</b>
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -48,7 +49,7 @@
             	{% if user in owner_group %}
             		<a class="nav-link" href="{% url 'allDonations' bid=business.id %}">Donations</a>
             	{% else %}
-            		<a class="nav-link" href="{% url 'allDonations' bid=business.id %}">Donate</a>
+            		<a class="nav-link" href="{% url 'newDonation' bid=business.id %}">Donate</a>
             	{% endif %}
             </li>
             <li class="nav-item">
@@ -57,6 +58,12 @@
             	{% else %}
             		<a class="nav-link" href="{% url 'newRequest' bid=business.id %}">Request Item</a>
             	{% endif %}
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'alerts' 1 %}"><i class="fa fa-bell mt-1"></i></a>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
           </ul>
         </div>
@@ -68,18 +75,20 @@
 
       <!-- Heading Row -->
       <div class="row my-4">
-        <div class="col-lg-7">
-          <img class="img-fluid rounded" src="{{ business.icon }}" alt="">
+        <div class="col-lg-7 text-center">
+          <img class="img-fluid rounded" src={{ business.icon }} style="height:270px"alt="">
         </div>
         <!-- /.col-lg-8 -->
         <div class="col-lg-5">
           <h1>{{ business.name }}</h1>
           <p>{{ business.description }}</p>
           <hr>
-          <p><b>Phone:</b> 1-800-123-456</p>
+          <p><b>Phone:</b> {{ business.phone_number }}</p>
+          <p><b>Contact Us:</b><br>
           {% for owner in owner_group %}
-            <b>Email:</b> {{ owner.email }}<br><br>
-          {% endfor %}
+            <b>{{ owner.first_name }} {{ owner.last_name }} - </b>
+            Email: {{ owner.email }}<br>
+          {% endfor %}</p>
           <p><b>Address:</b> {{ business.address }}</p>
         </div>
         <!-- /.col-md-4 -->
@@ -90,13 +99,13 @@
       <!-- Content Row -->
       <div class="row">
         <div class="col-md-6 mb-4">
-          <div class="card h-100">
+          <div class="card">
             <div class="card-body">
             	<div class="row">
-            		<div class="col-md-7 mb-1">
+            		<div class="col-md-7">
               			<h2 class="card-title">Manage Inventory</h2>
               		</div>	
-              		<div class="col-md-5 mb-1 mt-1">
+              		<div class="col-md-5 mt-1">
               			<div class="btn-group text-center" role="group">
               				<a href="{% url 'inventory' bid=business.id %}" class="btn btn-primary pull-right">Inventory</a>
               				<a href="{% url 'viewOffer' bid=business.id %}" class="btn btn-primary pull-right">Offers</a>
@@ -121,13 +130,21 @@
 					</form>
 
               </p>
+              <hr>
+              	<h2 class="card-title mb-3">Categories and Locations</h2>
+              		<div class="card-text">
+              			<p>Use the buttpms below to  help categorize your items by type and note their in-house location.</p>
 
+	              			<a href="{% url 'manageCategories' bid=business.id %}" class="btn btn-outline-primary pull-left" style="width: 49%">Manage Categories</a>
+	              			<a href="{% url 'manageLocations' bid=business.id %}" class="btn btn-outline-primary pull-right" style="width: 49%">Manage Locations</a>
+
+	              	</div>
             </div>
           </div>
         </div>
         <!-- /.col-md-4 -->
         <div class="col-md-6 mb-4">
-          <div class="card h-100">
+          <div class="card">
             <div class="card-body">
             	<div class="row">
             		<div class="col-md-7 mb-1">
@@ -138,6 +155,20 @@
               		</div>
               	</div>
               <p class="card-text">Recent Donations:</p>
+              {% for item in donation_list %}
+                    <div class="card">
+                    <div class="row" style="height: 100px">
+                      <div class="col-lg-6">
+                       <img src={{ item.img_link }} style="height: 100%" title={{ item.name.title }}>
+                      </div>
+                      <div class="col-lg-6 mt-1">
+                        <b>{{ item.name.title }}</b><br>
+                        <div class="text-muted">{{ item.donor_email }}<br>Location: {{ item.city }}</div>
+                      </div>
+                   </div>
+                  </div>
+                  <br>
+              {% endfor %}
               <hr>
               <div class="row">
             		<div class="col-md-7 mb-1">
@@ -148,6 +179,22 @@
               		</div>
               	</div>
               <p class="card-text">Recent Requests:</p>
+              {% for request in request_list %}
+                <div class="card">
+                    <div class="card-header">
+                      <div class="row">
+                      <div class="col-lg-6">
+                        <b>{{ request.name.title }}</b>
+                      </div>
+                      <div class="col-lg-6">
+                        {{ request.user_email }}
+                      </div>
+                    </div>
+                    </div>
+                    <div class="text-muted card-body">{{ request.text_description }}</div>
+                </div>
+                <br>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -157,19 +204,24 @@
       <!-- Content Row -->
       <div class="row">
         <div class="col-md-4 mb-4">
-          <div class="card h-100">
+          <div class="card">
             <div class="card-body">
               <h2 class="card-title">Search for Items</h2>
               		<p class="card-text">Recently added items:</p>
-              <p class="card-text">
+              <div class="card-text">
                   {% for item in offers_list %}
-
-                    <a href="offers"><img src={{ item.img_link }} style="width:130px; height:145px" title={{ item.name.title }}></a>  {{ item.name.title }}  -  ${{ item.price }}
-                      <span data-toggle="modal" data-target="#{{ item.id }}">
-                        <button class="btn btn-primary" data-toggle="tooltip" role="button" data-placement="bottom" title="Expand">
-                          Expand
-                        </button>
-                      </span>
+                    <div class="card">
+                    <div class="row" style="height: 100px">
+                      <div class="col-lg-6" data-toggle="modal" data-target="#{{ item.id }}">
+                       <img src={{ item.img_link }} style="height: 100%" title={{ item.name.title }}>
+                      </div>
+                      <div class="col-lg-6 mt-1">
+                        <b>{{ item.name.title }}</b><br>
+                        <div class="text-muted">Price: {{ item.price }}<br>Quantity: {{ item.quantity }}</div>
+                      </div>
+                   </div>
+                  </div>
+                   <br>
                   <!--Image popup code -->
                     <div class="modal fade" id="{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
@@ -180,10 +232,11 @@
                           <div class="modal-body">
                             <img class ="img-rounded" style="width: 100%" src={{ item.img_link }} alt=""/>
 
-                            <div class="media">
-                              <div class="media-left">
+                            <div class="media mt-3">
+                              <div class="media-left mt-1">
                                 <h6>Tags: </h6>
                               </div>
+                              &nbsp;
                               <div class="media-body">
                                 {% for tag in item.tag_pile.all %}
                                   <button class="btn btn-sm" type="button" data-dismiss="modal">{{ tag }}</button>
@@ -206,7 +259,7 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-                            {% if user.profile.isOwner %}
+                            {% if user in business.owner_group %}
                               <div class="btn-group">
                                 <a class="btn btn-primary" href="{% url 'editOffer' bid=business.id slug=item.id %}" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit">
                               <i class="fa fa-fw fa-edit" style="color:white; font-size:15px"></i></a>
@@ -226,14 +279,14 @@
                       </div>
                     </div>
                   {% endfor %}
-              </p>
+              </div>
               <a href="{% url 'viewOffer' bid=business.id %}" class="btn btn-primary" style="width: 100%">Search</a>
             </div>
           </div>
         </div>
         <!-- /.col-md-4 -->
         <div class="col-md-4 mb-4">
-          <div class="card h-100">
+          <div class="card">
             <div class="card-body">
               <h2 class="card-title">Donate</h2>
               <p class="card-text">Here is our donation page. Send us a message detailing what you want 
@@ -250,7 +303,7 @@
         </div>
         <!-- /.col-md-4 -->
         <div class="col-md-4 mb-4">
-          <div class="card h-100">
+          <div class="card">
             <div class="card-body">
               <h2 class="card-title">Our Location</h2>
               <p class="card-text">  {% easy_map business.address 300 300 %} </p>

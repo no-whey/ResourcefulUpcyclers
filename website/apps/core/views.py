@@ -2,7 +2,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from website.apps.core.models import Business
-from website.apps.item.models import Inventory
+from website.apps.item.models import Inventory, Request, Donation
 from website.apps.core.forms import CreateBusinessForm
 from decouple import config
 
@@ -26,7 +26,7 @@ def unique_owner_key(key):
 # Create your views here.
 def index(request):
     business_list = Business.objects.all()
-    return render(request, 'core/index.html', {'businesses' : business_list})
+    return render(request, 'core/index.html', {'businesses' : business_list, 'user' : request.user})
 
 def viewBusiness(request, bid):
     business = get_object_or_404(Business, id=bid)
@@ -62,9 +62,8 @@ def viewBusiness(request, bid):
 		                item.name = fields[0]
 		                item.quantity = fields[1]
 		                item.price = fields[2]
-		                item.location = fields[3]
-		                item.text_description = fields[4]
-		                item.img_link = fields[5]
+		                item.text_description = fields[3]
+		                item.img_link = fields[4]
 		                item.date = datetime.date.today	
 		                item.private = False
 		                item.business = business
@@ -75,7 +74,9 @@ def viewBusiness(request, bid):
             messages.error(request,"Unable to upload file. "+repr(e))
 
     offers_list = Inventory.objects.filter(private=False, business=business)[::-1][:3]
-    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:4], 'user' : request.user })
+    donation_list = Donation.get_all_business_donations(request.user, business)[::-1][:2]
+    request_list = Request.get_all_business_requests(request.user, business)[::-1][:2]
+    return render(request, 'profile/businessprofile.html', {'business' : business, 'owner_group' : owner_group, 'offers_list' : offers_list[0:3], 'donation_list' : donation_list[0:2], 'request_list' : request_list[0:2], 'user' : request.user })
 
 def create_business(request):
     if request.method == 'POST':
@@ -85,6 +86,7 @@ def create_business(request):
             business.name = form.cleaned_data.get('name')
             business.description = form.cleaned_data.get('description')
             business.address = form.cleaned_data.get('address')
+            business.phone_number = form.cleaned_data.get('phone_number')
             if form.cleaned_data.get('icon'):
                 business.icon = form.cleaned_data.get('icon')
             o_group = Group(name=business.name)

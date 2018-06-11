@@ -7,3 +7,4 @@ from website.apps.item.models import *
 admin.site.register(Inventory)
 admin.site.register(Donation)
 admin.site.register(Category)
+admin.site.register(StoreLocation)

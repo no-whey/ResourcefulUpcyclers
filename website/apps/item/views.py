@@ -14,7 +14,7 @@ import csv
 import datetime
 from django.db.models import Q
 
-from .forms import RequestForm, DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
+from .forms import * #RequestForm, DonationForm, UpdateDonationForm, OfferForm, UpdateOfferForm, NewCategoryForm
 
 # For customers to create a new donation ticket
 @login_required
@@ -40,7 +40,7 @@ def newDonation(request, bid):
             donation.needs_pickup = form.cleaned_data.get('needs_pickup')
 
             donation.save()
-            
+
             #Notify owners
             for owner in business.profile_set.all():
                 Alert.create("New Donation!",
@@ -56,28 +56,34 @@ def newDonation(request, bid):
 # For Customers to view their submitted Donations, Owners can see all donations
 @login_required
 def allDonations(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
-        donation_list = Donation.get_all_business_donations(request.user, business)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+    if(request.user.profile.isOwner):
+        business = get_object_or_404(Business, id=bid)
+        if(request.user.profile.business==business):
+            owner_group = User.objects.filter(groups__name=business.name)
+            donation_list = Donation.get_all_business_donations(request.user, business)
+            return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : False})
+        else:
+            donation_list = Donation.get_my_donations(request.user)
+            return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'user' : request.user})   
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'user' : request.user})
 
 # Owners see only their interested Donations, customers get same access as allDonations view
 @login_required
 def interestedDonations(request, bid):
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
     if(request.user.profile.isOwner and request.user.profile.business==business):
         donation_list = []
         business_donations = Donation.get_all_business_donations(request.user, business)
         for donation in business_donations:
             if donation.owner_interest:
                 donation_list.append(donation)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag' : True})
     else:
         donation_list = Donation.get_my_donations(request.user)
-        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business})
+        return render(request, 'donations/allDonations.html', {'donations' : donation_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user, 'intflag': True})
 
 # For Owners to view and edit one specific donation
 @login_required
@@ -148,7 +154,7 @@ def newRequest(request, bid):
             req.user_email = form.cleaned_data.get('user_email')
 
             req.save()
-            
+
             #Notify owners
             for owner in business.profile_set.all():
                 Alert.create("New Request!",
@@ -163,24 +169,30 @@ def newRequest(request, bid):
 # For Customers to view their submitted Donations, Owners can see all donations
 @login_required
 def allRequests(request, bid):
-    business = get_object_or_404(Business, id=bid)
-    if(request.user.profile.isOwner and request.user.profile.business==business):
-        request_list = Request.get_all_business_requests(request.user, business)
-        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business})
+    if(request.user.profile.isOwner):
+        business = get_object_or_404(Business, id=bid)
+        if(request.user.profile.business==business):
+            owner_group = User.objects.filter(groups__name=business.name)
+            request_list = Request.get_all_business_requests(request.user, business)
+            return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
+        else:
+            request_list = Request.get_my_requests(request.user)
+            return render(request, 'requests/allRequests.html', {'requests' : request_list, 'user' : request.user})
     else:
         request_list = Request.get_my_requests(request.user)
-        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'business' : business})
+        return render(request, 'requests/allRequests.html', {'requests' : request_list, 'user' : request.user})
 
 
 # Owners can view their available inventory
 @login_required
 def inventory(request, bid):
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)   
     if(request.user.profile.isOwner and request.user.profile.business==business):
         #Loading page
         if request.method == 'GET':
             inventory_list = Inventory.get_all_business_inventory(request.user, business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
         #Loading page after searching
         elif request.method == 'POST':
             search = str(request.POST.get('q', None))
@@ -190,11 +202,11 @@ def inventory(request, bid):
             #Non-Empty search bar
             else:
                 inventory_list = Inventory.objects.filter(tag_pile=search, business=business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
         #Other methods
         else:
             inventory_list = Inventory.get_all_business_inventory(request.user, business)
-            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business})
+            return render(request, 'inventory/index.html', {'inventory' : inventory_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     else:
         return render(request, 'index.html')
 
@@ -211,13 +223,17 @@ def newOffer(request, bid):
             offer.business = business
             offer.name = form.cleaned_data.get('name')
             offer.price = form.cleaned_data.get('price')
-            offer.location = form.cleaned_data.get('location')
+            #offer.location = form.cleaned_data.get('location')
             offer.text_description = form.cleaned_data.get('text_description')
             offer.img_link = form.cleaned_data.get('img_link')
             offer.quantity = form.cleaned_data.get('quantity')
             offer.private = form.cleaned_data.get('private')
             offer.tag_pile = form.cleaned_data.get('tag_pile')
             offer.save()
+
+            if form.cleaned_data.get('location'):
+                location = form.cleaned_data.get('location')
+                offer.location = location
 
             if form.cleaned_data.get('category'):
                 category = form.cleaned_data.get('category')
@@ -239,9 +255,11 @@ def newOffer(request, bid):
 def viewOffer(request, bid):
     #Loading page
     business = get_object_or_404(Business, id=bid)
+    owner_group = User.objects.filter(groups__name=business.name)
+    
     if request.method == 'GET':
         offers_list = Inventory.objects.filter(private=False, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     #Loading page after searching
     elif request.method == 'POST':
         search = str(request.POST.get('q', None))
@@ -251,11 +269,11 @@ def viewOffer(request, bid):
         #Non-Empty search bar
         else:
             offers_list = Inventory.objects.filter(private=False, tag_pile=search, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
     #Other methods
     else:
         offers_list = Inventory.objects.filter(private=False, business=business)
-        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+        return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business, 'owner_group' : owner_group, 'user' : request.user})
 
 # Owners can edit their offers.
 @login_required
@@ -272,13 +290,17 @@ def editOffer(request, bid, slug):
 
                 offer.name = form.cleaned_data.get('name')
                 offer.price = form.cleaned_data.get('price')
-                offer.location = form.cleaned_data.get('location')
+                #offer.location = form.cleaned_data.get('location')
                 offer.text_description = form.cleaned_data.get('text_description')
                 offer.img_link = form.cleaned_data.get('img_link')
                 offer.quantity = form.cleaned_data.get('quantity')
                 offer.private = form.cleaned_data.get('private')
                 offer.tag_pile = form.cleaned_data.get('tag_pile')
                 offer.save()
+
+                if form.cleaned_data.get('location'):
+                    location = form.cleaned_data.get('location')
+                    offer.location = location
 
                 if form.cleaned_data.get('category'):
                     category = form.cleaned_data.get('category')
@@ -341,17 +363,15 @@ def interestedOffer(request, bid, slug):
     business = get_object_or_404(Business, id=bid)
     offer = get_object_or_404(Inventory, id=slug)
     user = request.user
-    
+
     #Notify owners
     for owner in business.profile_set.all():
         Alert.create("Interest in offer!",
                      user.username + " (" + user.email + \
                         ") has shown interest in your offer of \'" + offer.name + "\'",
                      owner.user)
-    
+
     return redirect('viewOffer', bid=bid)
-    
-    
 
 @login_required
 def receipt(request, bid, slug):
@@ -431,6 +451,47 @@ def oneCategory(request, bid, slug):
     return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
 
 @login_required
+def manageLocations(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    if (request.user.profile.isOwner and request.user.profile.business==business):
+        location_tree = StoreLocation.objects.filter(business=business)
+        if request.method == 'POST':
+            form = NewStoreLocationForm(request.POST)
+            if form.is_valid():
+
+                loc = StoreLocation()
+                loc.name = form.cleaned_data.get('name')
+                loc.business = business
+                if(form.cleaned_data.get('parent')):
+                    loc.parent = form.cleaned_data.get('parent')
+                loc.save()
+
+                # Redirect to all Donations from that user, Maybe a "Thank you" page???
+                return redirect('manageLocations', bid=bid)
+        else:
+            form = NewStoreLocationForm()
+        return render(request, 'storeLocation/manageLocations.html', {'location_tree' : location_tree, 'form' : form, 'business' : business})
+    return redirect('home')
+
+"""
+def allLocations(request, bid):
+    business = get_object_or_404(Business, id=bid)
+    location_tree = StoreLocation.objects.filter(business = business)
+    return render(request, 'storeLocation/allLocations.html', {'location_tree' : location_tree, 'business' : business})
+"""
+
+# View the NON-PRIVATE offers in a category
+def oneLocation(request, bid, slug):
+    business = get_object_or_404(Business, id=bid)
+    store_location = get_object_or_404(StoreLocation, id=slug)
+    offers_list = []
+    for offer in Inventory.objects.filter(business=business):
+        if offer is not offer.private and offer.location == store_location:
+            offers_list.append(offer)
+    return render(request, 'inventory/viewOffer.html', {'offers_list' : offers_list, 'business' : business})
+
+
+@login_required
 def oneRequest(request):
     return render(request, 'requests/request.html')
 
@@ -443,8 +504,8 @@ def exportCSV(request, bid):
     response['Content-Disposition'] = 'attachment; filename=Business%s_Inventory.csv'%bid
 
     writer = csv.writer(response)
-    writer.writerow(['Item Name', 'Quantity', 'Price', 'In-House Location', 'Description', 'Image Link',])
+    writer.writerow(['Item Name', 'Quantity', 'Price', 'Private', 'Description', 'Image Link',])
     for item in offers_list:
-        writer.writerow([item.name, item.quantity, item.price, item.location, item.text_description, item.img_link,])
+        writer.writerow([item.name, item.quantity, item.price, item.private, item.text_description, item.img_link,])
 
     return response
