@@ -69,13 +69,13 @@
                   {% for alert in user.alert_set.all %}
                     {% if not alert.read %}
                       <li>
-                        <a href="{% url 'alerts' 1 %}"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
+                        <a href="{% url 'alerts' bid=business.id %}"><span class="label label-warning">{{alert.title}}</span> <p>{{alert.message}}</p> </a>
                       </li>
                     {% endif %}
 
                   {% endfor %}
                   <li>
-                    <a href="{% url 'alerts' 1 %}">View all alerts</a>
+                    <a href="{% url 'alerts' bid=business.id %}">View all alerts</a>
                   </li>
                 {% endif %}
               </ul>

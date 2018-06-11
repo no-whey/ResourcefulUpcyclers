@@ -24,7 +24,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">  
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'viewBusiness' bid=business.id %}"><b>{{ business.name }}</b>
                 <span class="sr-only">(current)</span>
               </a>
@@ -52,7 +52,7 @@
             </li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'alerts' 1 %}"><i class="fa fa-bell mt-1"></i></a>
+                <a class="nav-link" href="{% url 'alerts' bid=business.id %}"><i class="fa fa-bell mt-1"></i></a>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
@@ -78,7 +78,7 @@
           {% if user in owner_group %}
           <div class="btn-group pull-right" role="group">
             <a href="{% url 'inventory' bid=business.id %}" class="btn btn-outline-secondary pull-right"><h4>Inventory</h4></a>
-            <a href="{% url 'newOffer' bid=business.id %}" class="btn btn-outline-secondary pull-right"><h4>New Item</h4></a>          
+            <a href="{% url 'newOffer' bid=business.id %}" class="btn btn-outline-secondary pull-right"><h4>New Item</h4></a>
           </div>
           {% endif %}
         </div>
